@@ -1,17 +1,53 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-    id          String     @id
-    username    String     @unique
-    email       String     @unique
-    masterPass  String     
-    phoneNumber String?   @unique
-    
+  id          String     @id @default(uuid())
+  email       String     @unique
+  masterPass  String
+  phoneNumber String?    @unique
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  data        Data[]
+  note        Note[]
+  trashbin    Trashbin[]
+}
+
+model Data {
+  id               String   @id @default(uuid())
+  userId           String
+  trashbinId       String
+  webSiteLink      String
+  username         String
+  passwordSecurity String?
+  encryptedPass    String
+  notes            String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trashbin         Trashbin @relation(fields: [trashbinId], references: [id], onDelete: Cascade)
+}
+
+model Note {
+  id              String   @id @default(uuid())
+  userId          String
+  noteTitle       String
+  noteDescription String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Trashbin {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  data      Data[]
+  deletedAt DateTime @default(now())
 }
