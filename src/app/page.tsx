@@ -1,7 +1,9 @@
-import Link from "next/link";
+import NavBar from "~/components/NavBar/NavBar";
 
 export default function HomePage() {
   return (
-    <div></div>
+    <div>
+      <NavBar isLogged={false} name="diocane"/>
+    </div>
   );
 }
