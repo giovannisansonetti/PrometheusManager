@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import {Input, Button} from "@nextui-org/react";
 import { EyeFilledIcon } from "./EyeFilledIcon";
 import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
+import { signup } from "~/server/auth/signup";
 
 const SignUp = () =>{
     const router = useRouter()
@@ -74,7 +75,7 @@ const SignUp = () =>{
                     <Input isRequired type="text" label="Phone number (2FA)" className="mt-4" size="sm" onValueChange={(value) => {
                             setForm(f =>({...f, phoneNumber: value}))
                           }}/>
-                    <Button className="max-w-sm mt-4" color="primary" href="/signup" variant="flat" onClick={() => {console.log(form)}}>
+                    <Button className="max-w-sm mt-4" color="primary" href="/signup" variant="flat" onClick={async() => {await signup(form)}}>
                         Sign Up
                     </Button>
                 </form>
