@@ -18,6 +18,8 @@ const SideBar = () =>{
 
     const [active, setActive] = useState("AllItems")
 
+    const [isOpen, setIsOpen] = useState(true)
+
     const handleClick = (component: string) => {
         setActive(component)
     }
@@ -40,8 +42,8 @@ const SideBar = () =>{
     }
 
     return (
-        <div className="flex h-screen p-3">
-            <Sidebar aria-label="Default sidebar example" className="w-1/6 bg-[#1a1a1a] rounded-lg overflow-hidden flex flex-col">
+        <div className="flex h-screen p-3 ">
+            <Sidebar aria-label="Default sidebar example" className="w-1/6 bg-[#1a1a1a] rounded-lg overflow-hidden flex-col hidden sm:block">
                 <Sidebar.Items>
                     <Sidebar.ItemGroup>
                         <SideMenuItem icon={AllItemsLogo} isActive={active === "AllItems"} onClick={()=>{handleClick("AllItems")}} name="All items"/>
