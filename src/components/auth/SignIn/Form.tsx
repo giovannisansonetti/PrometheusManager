@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react";
 import { FormProps } from "./Form.models";
 import { useRouter } from "next/navigation";
