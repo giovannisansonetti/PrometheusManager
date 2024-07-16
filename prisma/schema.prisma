@@ -26,7 +26,7 @@ model Data {
   webSiteLink      String
   username         String
   passwordSecurity String?
-  encryptedPass    String
+  password         String
   notes            String
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
