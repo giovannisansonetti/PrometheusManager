@@ -11,25 +11,26 @@ export async function signup(formprops: FormProps) {
     "use server"
     const supabase = createClient()
 
-    const data = {
+    const signupData = {
         email: formprops.email as string,
         password: formprops.masterPass as string,
     }
 
-    const signupData = {
+    const userData = {
         email: formprops.email as string,
         masterPass: formprops.masterPass as string,
         phoneNumber: formprops.phoneNumber as string
     }
 
-    const { error } = await supabase.auth.signUp(data)
+    const { data, error } = await supabase.auth.signUp(signupData)
 
     if (!error) {
         await db.user.create({
             data:{
-                email: signupData.email,
-                masterPass: signupData.masterPass,
-                phoneNumber: signupData.phoneNumber
+                id: data.user?.id,
+                email: userData.email,
+                masterPass: userData.masterPass,
+                phoneNumber: userData.phoneNumber
             }
         })  
         revalidatePath('/', 'layout')

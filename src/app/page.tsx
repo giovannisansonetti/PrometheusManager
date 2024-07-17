@@ -6,10 +6,9 @@ export default async function HomePage() {
 
   const supabase = createClient()
   const {data, error} = await supabase.auth.getUser()
-  
-  console.log(error)
 
   if(error || !data.user){
+
   }
 
   return (

@@ -22,16 +22,16 @@ model User {
 model Data {
   id               String   @id @default(uuid())
   userId           String
-  trashbinId       String
+  trashbinId       String?
   webSiteLink      String
   username         String
   passwordSecurity String?
   password         String
-  notes            String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  trashbin         Trashbin @relation(fields: [trashbinId], references: [id], onDelete: Cascade)
+  notes            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trashbin         Trashbin? @relation(fields: [trashbinId], references: [id], onDelete: Cascade)
 }
 
 model Note {

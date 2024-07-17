@@ -1,4 +1,4 @@
-export default interface AddItemsProps{
+export interface AddItemsProps{
     webSiteLink: string,
     username: string,
     password: string,

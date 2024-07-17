@@ -2,8 +2,9 @@
 
 import { DisplayDataProps } from "./DisplayData.models"
 import { useState } from "react"
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
-import AddItemsProps from "./AddItem.models";
+import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
+import  {type AddItemsProps} from "./AddItem.models";
+import insertData from "~/server/data/insertdata/insertdata";
 
 
 const DisplayData = ({ link, icon, email, date, type }: DisplayDataProps) => {
@@ -37,6 +38,7 @@ const DisplayData = ({ link, icon, email, date, type }: DisplayDataProps) => {
                         <ModalHeader className="flex flex-col gap-1 mt-2">Add an item</ModalHeader>
                         <ModalBody>
                         <Input
+                            isRequired
                             label="Website"
                             size="sm"
                             className="w-full"
@@ -45,6 +47,7 @@ const DisplayData = ({ link, icon, email, date, type }: DisplayDataProps) => {
                             }}
                         />
                         <Input
+                            isRequired
                             label="Email"
                             size="sm"
                             className="w-full"
@@ -53,6 +56,7 @@ const DisplayData = ({ link, icon, email, date, type }: DisplayDataProps) => {
                             }}
                         />
                         <Input
+                            isRequired
                             label="Password"
                             size="sm"
                             className="w-full"
@@ -60,7 +64,8 @@ const DisplayData = ({ link, icon, email, date, type }: DisplayDataProps) => {
                                 setForm(f =>({ ...f, password: value }))
                             }}
                         />
-                        <Input
+                        <Textarea
+                            isRequired
                             label="Notes"
                             size="sm"
                             className="w-full"
@@ -70,8 +75,8 @@ const DisplayData = ({ link, icon, email, date, type }: DisplayDataProps) => {
                         />
                         </ModalBody>
                         <ModalFooter>
-                                <Button color="danger" variant="flat" onPress={onClose}>Close</Button>
-                                <Button color="primary" variant="flat" onClick={async() =>{}}>Add</Button>
+                                <Button color="danger" variant="flat" onPress={onClose}>Reset</Button>
+                                <Button color="primary" variant="flat" onClick={async() =>{await insertData(form)}}>Add</Button>
                         </ModalFooter>
                     </>
                 )}

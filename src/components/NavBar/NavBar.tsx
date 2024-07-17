@@ -5,6 +5,7 @@ import { Button } from "@nextui-org/react"
 import Link from "next/link"
 import { useState } from "react"
 import { NavBarProps } from "./NavBar.models"
+import { signout } from "~/server/auth/signout"
 
 const NavBar = ({name} : NavBarProps) =>{
     
@@ -39,29 +40,28 @@ const NavBar = ({name} : NavBarProps) =>{
               </Link>
             </NavbarItem>
           </NavbarContent>
-          <NavbarContent justify="end">
-            <NavbarItem className="hidden sm:flex">
-              <Link href="#">Login</Link>
-            </NavbarItem>
-            <NavbarItem>
-            { name !== undefined ? (
-              <div>{name}</div>
-            ) : <Button as={Link} color="primary" href="/signup" variant="flat">
-                Sign Up
-              </Button>
-            }
-            </NavbarItem>
-          </NavbarContent>
+          { name !== undefined ? (
+              <NavbarContent justify="end">{name}</NavbarContent>
+            ) : (
+            <NavbarContent justify="end">
+              <NavbarItem className="hidden sm:flex">
+                <Link href="/auth/login">Login</Link>
+              </NavbarItem>
+              <NavbarItem>
+              <Button as={Link} color="primary" href="/auth/signup" variant="flat">
+                  Sign Up
+                </Button>
+              </NavbarItem>
+            </NavbarContent> )}
           <NavbarMenu>
-            {name !== null ? (
+            {name !== undefined ? (
               <NavbarMenuItem className="flex flex-col">
                 <Link href={"/dashboard"}>Dashboard</Link>
-                <Link href={"/profile"}>{name}</Link>
-                <Link href={"/"}>Log out</Link>
+                <div onClick={async()=>{await signout()}}>Log out</div>
               </NavbarMenuItem>
             ): (
                 <NavbarMenuItem className="flex flex-col">
-                <Link href={"/login"}>Login</Link>
+                <Link href={"/auth/login"}>Login</Link>
                 <Link href={"/dashboard"}>Dashboard</Link>
                 <Link href={"/info"}>Info</Link>
                 </NavbarMenuItem>
