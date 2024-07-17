@@ -22,20 +22,21 @@ export async function signup(formprops: FormProps) {
         phoneNumber: formprops.phoneNumber as string
     }
 
-    await db.user.create({
-        data:{
-            email: signupData.email,
-            masterPass: signupData.masterPass,
-            phoneNumber: signupData.phoneNumber
-        }
-    })
-
     const { error } = await supabase.auth.signUp(data)
 
-    if (error) {
-        console.log(error)
+    if (!error) {
+        await db.user.create({
+            data:{
+                email: signupData.email,
+                masterPass: signupData.masterPass,
+                phoneNumber: signupData.phoneNumber
+            }
+        })  
+        revalidatePath('/', 'layout')
+        redirect('/')
     }
 
-    revalidatePath('/', 'layout')
-    redirect('/')
+    console.log(error)
+    redirect('/error')
+
 }

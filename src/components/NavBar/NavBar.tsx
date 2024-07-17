@@ -6,7 +6,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { NavBarProps } from "./NavBar.models"
 
-const NavBar = ({isLogged, name} : NavBarProps) =>{
+const NavBar = ({name} : NavBarProps) =>{
     
     const [isMenuOpen, setIsMenuOpen] = useState(false)
    
@@ -40,12 +40,12 @@ const NavBar = ({isLogged, name} : NavBarProps) =>{
             </NavbarItem>
           </NavbarContent>
           <NavbarContent justify="end">
-            <NavbarItem className="hidden lg:flex">
+            <NavbarItem className="hidden sm:flex">
               <Link href="#">Login</Link>
             </NavbarItem>
             <NavbarItem>
-            { isLogged === true ? (
-              ""
+            { name !== undefined ? (
+              <div>{name}</div>
             ) : <Button as={Link} color="primary" href="/signup" variant="flat">
                 Sign Up
               </Button>
@@ -53,7 +53,7 @@ const NavBar = ({isLogged, name} : NavBarProps) =>{
             </NavbarItem>
           </NavbarContent>
           <NavbarMenu>
-            {isLogged === true ? (
+            {name !== null ? (
               <NavbarMenuItem className="flex flex-col">
                 <Link href={"/dashboard"}>Dashboard</Link>
                 <Link href={"/profile"}>{name}</Link>
