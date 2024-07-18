@@ -12,7 +12,9 @@ import Password from "~/../public/SideBar/Password.svg"
 import Settings from "~/../public/SideBar/Settings.svg"
 import Trash from "~/../public/SideBar/Trash.svg"
 import Gen from "~/../public/SideBar/Gen.svg"
-
+import { NavBar, NavbarMenuToggle } from "@nextui-org/react"
+import { slide as Menu } from 'react-burger-menu'
+import Image from "next/image"
 
 const SideBar = () =>{
 
@@ -42,7 +44,7 @@ const SideBar = () =>{
     }
 
     return (
-        <div className="flex h-screen p-3 ">
+        <div className="flex h-screen sm:p-3 ">
             <Sidebar aria-label="Default sidebar example" className="w-1/6 bg-[#161616] rounded-lg overflow-x-hidden flex-col hidden sm:block">
                 <Sidebar.Items>
                     <Sidebar.ItemGroup>
@@ -55,8 +57,10 @@ const SideBar = () =>{
                     </Sidebar.ItemGroup>
                 </Sidebar.Items>
             </Sidebar>
-            <div className="flex-grow p-3">
+            <div className="flex-grow sm:p-3">
+                
                 {renderComponent()}
+                
             </div>
         </div>
     )

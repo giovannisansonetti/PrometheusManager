@@ -6,7 +6,6 @@ import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, But
 import  {type AddItemsProps} from "./AddItem.models";
 import insertData from "~/server/data/insertdata/insertdata";
 
-
 const DisplayData = ({ link, icon, email, date, type }: DisplayDataProps) => {
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure()
@@ -23,7 +22,7 @@ const DisplayData = ({ link, icon, email, date, type }: DisplayDataProps) => {
         <div className="flex flex-col bg-[#161616] text-white w-full h-full rounded-lg overflow-hidden overflow-y-auto">
             <div className="">
                     <h1 className=""></h1>
-                    <div className="flex justify-end mt-5 mr-7">
+                    <div className="flex justify-end mt-5 mr-8  sm:mr-7 ">
                         <Button color="primary" variant="flat" onClick={onOpen}>
                                 Add an item
                         </Button>
