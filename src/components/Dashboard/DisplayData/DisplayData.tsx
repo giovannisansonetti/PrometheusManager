@@ -39,7 +39,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
 
 
 
-            <Modal isOpen={isModalOpen} onOpenChange={onOpenChange} className="w-2/4 bg-[#0a0a0a]">
+            <Modal isOpen={isModalOpen} onOpenChange={onOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
                 <ModalContent>
                     {(onClose) => (
                         <>
