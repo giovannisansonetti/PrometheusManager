@@ -7,10 +7,10 @@ const dashboard = async() =>{
     const supabase = createClient()
     const {data, error} = await supabase.auth.getUser()
     
-    //if(data.user){
+    if(data.user){
         return <UserDashboard />
-  //  }
-   // redirect("/auth/login")
+    }
+     redirect("/auth/login")
 }
 
 export default dashboard

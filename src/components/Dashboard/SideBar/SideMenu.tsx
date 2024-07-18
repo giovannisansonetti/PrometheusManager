@@ -47,7 +47,7 @@ const SideBar = () =>{
 
     return (
         <div className="flex h-screen sm:p-3 ">
-            <Sidebar aria-label="Default sidebar example" className="w-1/6 bg-[#161616] rounded-lg overflow-x-hidden flex-col hidden sm:block">
+            <Sidebar aria-label="Default sidebar example" className="w-1/6 bg-[#161616] rounded-lg overflow-x-hidden flex-col hidden sm:block p-3">
                 <Sidebar.Items>
                     <Sidebar.ItemGroup>
                         <SideMenuItem icon={AllItemsLogo} isActive={active === "AllItems"} onClick={()=>{handleClick("AllItems")}} name="All items"/>
@@ -62,12 +62,12 @@ const SideBar = () =>{
             <div className="flex-grow sm:p-3">
                 {isOpen && (
                     <div className="sm:hidden bg-[#161616] p-3">
-                        <div className="mt-2 flex flex-row" onClick={()=>{handleClick("AllItems")}}><Image className="mr-2" width={20} height={20} src={AllItemsLogo} alt={"title"}/>All items</div>
-                        <div className="mt-2 flex flex-row" onClick={()=>{handleClick("Passwords")}}><Image className="mr-2" width={20} height={20} src={Password} alt={"title"}/> Passwords</div>
-                        <div className="mt-2 flex flex-row" onClick={()=>{handleClick("Notes")}}><Image className="mr-2" width={20} height={20} src={Document} alt={"title"}/> Notes</div>
-                        <div className="mt-2 flex flex-row" onClick={()=>{handleClick("Credit Card")}}><Image className="mr-2" width={20} height={20} src={CreditCard} alt={"title"}/> Credit Cards</div>
-                        <div className="mt-2 flex flex-row" onClick={()=>{handleClick("TrashBin")}}><Image className="mr-2" width={20} height={20} src={Trash} alt={"title"}/> Trash</div>
-                        <div className="mt-2 flex flex-row" onClick={()=>{handleClick("PswGen")}}><Image className="mr-2" width={20} height={20} src={Gen} alt={"title"}/> Password Generator</div>
+                        <div className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white" onClick={()=>{handleClick("AllItems")}}><Image className="mr-2" width={20} height={20} src={AllItemsLogo} alt={"title"}/>All items</div>
+                        <div className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white" onClick={()=>{handleClick("Passwords")}}><Image className="mr-2" width={20} height={20} src={Password} alt={"title"}/> Passwords</div>
+                        <div className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white" onClick={()=>{handleClick("Notes")}}><Image className="mr-2" width={20} height={20} src={Document} alt={"title"}/> Notes</div>
+                        <div className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white" onClick={()=>{handleClick("Credit Card")}}><Image className="mr-2" width={20} height={20} src={CreditCard} alt={"title"}/> Credit Cards</div>
+                        <div className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white" onClick={()=>{handleClick("TrashBin")}}><Image className="mr-2" width={20} height={20} src={Trash} alt={"title"}/> Trash</div>
+                        <div className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white" onClick={()=>{handleClick("PswGen")}}><Image className="mr-2" width={20} height={20} src={Gen} alt={"title"}/> Password Generator</div>
                     </div>
                 )}
                 {renderComponent()}

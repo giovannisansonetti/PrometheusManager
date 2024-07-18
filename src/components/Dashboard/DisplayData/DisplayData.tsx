@@ -3,8 +3,9 @@
 import { DisplayDataProps } from "./DisplayData.models"
 import { useState } from "react"
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
-import { type AddItemsProps } from "./AddItem.models";
+import { type AddItemsProps } from "./interfaces/AddItem.models";
 import insertData from "~/server/data/insertdata/insertdata";
+import DataList from "../DataList/DataList";
 
 const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
     const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
@@ -36,9 +37,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                 </div>
                 <div className="flex w-full mt-4 border-1 border-[#27272a]"></div>
             </div>
-
-
-
+            <DataList />
             <Modal isOpen={isModalOpen} onOpenChange={onOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
                 <ModalContent>
                     {(onClose) => (
@@ -73,7 +72,6 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                                     }}
                                 />
                                 <Textarea
-                                    isRequired
                                     label="Notes"
                                     size="sm"
                                     className="w-full"
