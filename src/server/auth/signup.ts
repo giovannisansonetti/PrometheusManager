@@ -24,7 +24,7 @@ export async function signup(formprops: FormProps) {
 
     const { data, error } = await supabase.auth.signUp(signupData)
 
-    if (!error) {
+    if (!error || data.user) {
         await db.user.create({
             data:{
                 id: data.user?.id,
