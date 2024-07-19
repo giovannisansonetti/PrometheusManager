@@ -26,26 +26,12 @@ const NavBar = ({name} : NavBarProps) =>{
           </NavbarContent>
 
           <NavbarContent className="hidden sm:flex gap-4" justify="center">
-            <NavbarItem>
-              <Link color="foreground" href="/dashboard">
-                Dashboard
-              </Link>
-            </NavbarItem>
-            <NavbarItem isActive>
-              <Link href="/" aria-current="page">
-                Customers
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Link color="foreground" href="/info">
-                Info
-              </Link>
-            </NavbarItem>
+            
           </NavbarContent>
           { name !== undefined ? (
-              <NavbarContent justify="end"><div className="flex flex-row mr-3 cursor-pointer text-white hover:text-gray-300"><FaRegCircleUser className="mt-1 mr-2"/><Link href={"/profile"}>My profile </Link></div>
+              <NavbarContent justify="end"><div className="flex flex-row mr-3 cursor-pointer text-white hover:text-gray-300"><FaRegCircleUser className="mt-1 mr-1.5"/><Link href={"/dashboard"}>My profile </Link></div>
               <NavbarItem className="hidden sm:flex">
-                <Button color="danger" variant="flat" onClick={async()=>{await signout()}}><CiLogout />
+                <Button color="danger" variant="flat" onClick={async()=>{await signout()}}><CiLogout className=""/>Logout
                   </Button>
               </NavbarItem>
               </NavbarContent>

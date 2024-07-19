@@ -23,6 +23,7 @@ model Data {
   id               String   @id @default(uuid())
   userId           String
   trashbinId       String?
+  title            String
   webSiteLink      String
   username         String
   passwordSecurity String?

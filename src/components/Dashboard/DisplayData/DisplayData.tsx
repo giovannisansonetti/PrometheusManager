@@ -7,6 +7,8 @@ import { type AddItemsProps } from "./interfaces/AddItem.models";
 import insertData from "~/server/data/insertdata/insertdata";
 import DataList from "../DataList/DataList";
 import { useRouter } from 'next/navigation'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
+
 
 const DisplayData = ({title, handleMenu, isOpen }: DisplayDataProps) => {
     const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
@@ -14,6 +16,7 @@ const DisplayData = ({title, handleMenu, isOpen }: DisplayDataProps) => {
     const router = useRouter()
 
     const [form, setForm] = useState<AddItemsProps>({
+        title: "",
         webSiteLink: "",
         username: "",
         password: "",
@@ -38,9 +41,21 @@ const DisplayData = ({title, handleMenu, isOpen }: DisplayDataProps) => {
                         </button>
                     </div>
 
-                    <Button color="primary" variant="flat" onClick={onOpen}>
-                        Add an item
-                    </Button>
+                    <Dropdown className="bg-[#161616]">
+                        <DropdownTrigger>
+                            <Button 
+                            color="primary"
+                            variant="flat" 
+                            >
+                            Add an item
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu aria-label="Static Actions">
+                            <DropdownItem key="new" onClick={onOpen}>Password</DropdownItem>
+                            <DropdownItem key="copy">Note</DropdownItem>
+                            <DropdownItem key="edit">Credit Card</DropdownItem>
+                        </DropdownMenu>
+                        </Dropdown>
                 </div>
                 <div className="flex w-full mt-4 border-1 border-[#27272a]"></div>
             </div>
@@ -51,6 +66,15 @@ const DisplayData = ({title, handleMenu, isOpen }: DisplayDataProps) => {
                         <>
                             <ModalHeader className="flex flex-col gap-1 mt-2">Add an item</ModalHeader>
                             <ModalBody>
+                                <Input
+                                    isRequired
+                                    label="Title"
+                                    size="sm"
+                                    className="w-full"
+                                    onValueChange={(value) => {
+                                        setForm(f => ({ ...f, title: value }))
+                                    }}
+                                />
                                 <Input
                                     isRequired
                                     label="Website"

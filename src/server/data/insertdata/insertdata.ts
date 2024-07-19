@@ -25,6 +25,7 @@ export default async function insertData(formProps: AddItemsProps) {
   }
 
   const insertData = {
+    title: formProps.title as string,
     webSiteLink: formProps.webSiteLink as string,
     username: formProps.username as string,
     password: formProps.password as string,
@@ -35,6 +36,7 @@ export default async function insertData(formProps: AddItemsProps) {
     await db.data.create({
       data: {
         userId: user.id,
+        title: insertData.title,
         webSiteLink: insertData.webSiteLink,
         username: insertData.username,
         password: insertData.password,
