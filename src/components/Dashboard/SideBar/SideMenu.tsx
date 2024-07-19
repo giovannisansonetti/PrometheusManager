@@ -13,40 +13,14 @@ import Settings from "~/../public/SideBar/Settings.svg"
 import Trash from "~/../public/SideBar/Trash.svg"
 import Gen from "~/../public/SideBar/Gen.svg"
 import Image from "next/image"
+import { SideMenuProps } from "./SideMenu.models"
 
-const SideBar = () =>{
-
-    const [active, setActive] = useState("AllItems")
-
-    const [isOpen, setIsOpen] = useState(false)
-
+const SideBar = ({active, setActive, isOpen}: SideMenuProps) =>{
     const handleClick = (component: string) => {
         setActive(component)
     }
-
-    const handleMenu = () =>{
-        setIsOpen(!isOpen)
-    }
-
-    const renderComponent = () =>{
-        switch(active){
-            case "AllItems":
-                return <DisplayData title={"All items"} handleMenu={handleMenu} isOpen={isOpen}/>
-            case "Passwords":
-                return <DisplayData title={"Passwords"} handleMenu={handleMenu} isOpen={isOpen }/>
-            case "Notes":
-                return <DisplayData title={"Notes"} handleMenu={handleMenu} isOpen={isOpen}/>
-            case "CreditCards":
-                return <DisplayData title={"Credit Card"} handleMenu={handleMenu} isOpen={isOpen}/>
-            case "PswGen":
-                return <DisplayData title={""} handleMenu={handleMenu} isOpen={isOpen}/>
-            default:
-                return null;
-        }
-    }
-
     return (
-        <div className="flex h-screen sm:p-3 ">
+        <>
             <Sidebar aria-label="Default sidebar example" className="w-1/6 bg-[#161616] rounded-lg overflow-x-hidden flex-col hidden sm:block p-3">
                 <Sidebar.Items>
                     <Sidebar.ItemGroup>
@@ -70,9 +44,8 @@ const SideBar = () =>{
                         <div className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white" onClick={()=>{handleClick("PswGen")}}><Image className="mr-2" width={20} height={20} src={Gen} alt={"title"}/> Password Generator</div>
                     </div>
                 )}
-                {renderComponent()}
             </div>
-        </div>
+        </>
     )
 }
 
