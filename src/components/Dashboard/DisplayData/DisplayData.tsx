@@ -6,9 +6,12 @@ import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, But
 import { type AddItemsProps } from "./interfaces/AddItem.models";
 import insertData from "~/server/data/insertdata/insertdata";
 import DataList from "../DataList/DataList";
+import { useRouter } from 'next/navigation'
 
-const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
+const DisplayData = ({title, handleMenu, isOpen }: DisplayDataProps) => {
     const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
+
+    const router = useRouter()
 
     const [form, setForm] = useState<AddItemsProps>({
         webSiteLink: "",
@@ -17,12 +20,16 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
         notes: ""
     })
 
+    const handleClick = async() =>{
+        await insertData(form)
+        router.push('/dashboard')
+    }
+
     return (
         <div className="flex flex-col bg-[#161616] text-white w-full h-full sm:rounded-lg overflow-hidden overflow-y-auto">
-            <div className="">
-                <h1 className=""></h1>
-                
-                <div className="flex justify-end items-center mt-5 mr-7">
+            <div className="">      
+                <h1 className="hidden ">{title}</h1>          
+                <div className="flex justify-end items-center mt-5 mr-7 ">
                     <div className="w-full block sm:hidden">
                         <button onClick={handleMenu} className="p-2 rounded ml-5 ">
                             <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isOpen ? 'rotate-45 translate-y-1' : '-translate-y-0.5'}`}></span>
@@ -82,7 +89,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="danger" variant="flat" onPress={onClose}>Reset</Button>
-                                <Button color="primary" variant="flat" onClick={async () => { await insertData(form) }}>Add</Button>
+                                <Button color="primary" variant="flat" onClick={async() => { await handleClick()}}>Add</Button>
                             </ModalFooter>
                         </>
                     )}

@@ -31,15 +31,15 @@ const SideBar = () =>{
     const renderComponent = () =>{
         switch(active){
             case "AllItems":
-                return <DisplayData handleMenu={handleMenu} isOpen={isOpen}/>
+                return <DisplayData title={"All items"} handleMenu={handleMenu} isOpen={isOpen}/>
             case "Passwords":
-                return <DisplayData handleMenu={handleMenu} isOpen={isOpen }/>
+                return <DisplayData title={"Passwords"} handleMenu={handleMenu} isOpen={isOpen }/>
             case "Notes":
-                return <DisplayData handleMenu={handleMenu} isOpen={isOpen}/>
+                return <DisplayData title={"Notes"} handleMenu={handleMenu} isOpen={isOpen}/>
             case "CreditCards":
-                return <DisplayData handleMenu={handleMenu} isOpen={isOpen}/>
+                return <DisplayData title={"Credit Card"} handleMenu={handleMenu} isOpen={isOpen}/>
             case "PswGen":
-                return <DisplayData handleMenu={handleMenu} isOpen={isOpen}/>
+                return <DisplayData title={""} handleMenu={handleMenu} isOpen={isOpen}/>
             default:
                 return null;
         }
