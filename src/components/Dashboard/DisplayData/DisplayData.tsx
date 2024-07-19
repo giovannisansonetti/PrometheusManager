@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 
 
-const DisplayData = ({title, handleMenu, isOpen }: DisplayDataProps) => {
+const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
     const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
 
     const router = useRouter()
@@ -23,15 +23,14 @@ const DisplayData = ({title, handleMenu, isOpen }: DisplayDataProps) => {
         notes: ""
     })
 
-    const handleClick = async() =>{
+    const handleClick = async () => {
         await insertData(form)
         router.push('/dashboard')
     }
 
     return (
         <div className="flex flex-col bg-[#161616] text-white w-full h-full sm:rounded-lg overflow-hidden overflow-y-auto">
-            <div className="">      
-                <h1 className="hidden ">{title}</h1>          
+            <div className="">
                 <div className="flex justify-end items-center mt-5 mr-7 ">
                     <div className="w-full block sm:hidden">
                         <button onClick={handleMenu} className="p-2 rounded ml-5 ">
@@ -43,11 +42,11 @@ const DisplayData = ({title, handleMenu, isOpen }: DisplayDataProps) => {
 
                     <Dropdown className="bg-[#161616]">
                         <DropdownTrigger>
-                            <Button 
-                            color="primary"
-                            variant="flat" 
+                            <Button
+                                color="primary"
+                                variant="flat"
                             >
-                            Add an item
+                                Add an item
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Static Actions">
@@ -55,7 +54,7 @@ const DisplayData = ({title, handleMenu, isOpen }: DisplayDataProps) => {
                             <DropdownItem key="copy">Note</DropdownItem>
                             <DropdownItem key="edit">Credit Card</DropdownItem>
                         </DropdownMenu>
-                        </Dropdown>
+                    </Dropdown>
                 </div>
                 <div className="flex w-full mt-4 border-1 border-[#27272a]"></div>
             </div>
@@ -113,7 +112,7 @@ const DisplayData = ({title, handleMenu, isOpen }: DisplayDataProps) => {
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="danger" variant="flat" onPress={onClose}>Reset</Button>
-                                <Button color="primary" variant="flat" onClick={async() => { await handleClick()}}>Add</Button>
+                                <Button color="primary" variant="flat" onClick={async () => { await handleClick() }}>Add</Button>
                             </ModalFooter>
                         </>
                     )}
