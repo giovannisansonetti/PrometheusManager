@@ -20,14 +20,16 @@ model User {
 }
 
 model Data {
-  id               String   @id @default(uuid())
+  id               String    @id @default(uuid())
   userId           String
   trashbinId       String?
   title            String
   webSiteLink      String
   username         String
   passwordSecurity String?
-  password         String
+  password         String //this is the encrypted data
+  iv               String
+  salt             String
   notes            String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
