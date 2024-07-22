@@ -8,6 +8,7 @@ import insertData from "~/server/data/insertdata/insertdata";
 import DataList from "../DataList/DataList";
 import { useRouter } from 'next/navigation'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
+import { type AddNoteProps } from "./interfaces/AddNote.models";
 
 
 const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
@@ -23,7 +24,12 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
         notes: ""
     })
 
-    const handleClick = async () => {
+    const [noteForm, setNoteForm] = useState<AddNoteProps>({
+        title: "", 
+        description: "",
+    })
+
+    const handlePasswordClick = async () => {
         await insertData(form)
         router.push('/dashboard')
     }
@@ -51,7 +57,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Static Actions">
                             <DropdownItem key="new" onClick={onOpen}>Password</DropdownItem>
-                            <DropdownItem key="copy">Note</DropdownItem>
+                            <DropdownItem key="copy" >Note</DropdownItem>
                             <DropdownItem key="edit">Credit Card</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
@@ -107,6 +113,39 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                                     className="w-full"
                                     onValueChange={(value) => {
                                         setForm(f => ({ ...f, notes: value }))
+                                    }}
+                                />
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="danger" variant="flat" onPress={onClose}>Reset</Button>
+                                <Button color="primary" variant="flat" onClick={async () => { await handlePasswordClick() }}>Add</Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+
+            <Modal isOpen={isModalOpen} onOpenChange={onOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1 mt-2">Create a secure note</ModalHeader>
+                            <ModalBody>
+                                <Input
+                                    isRequired
+                                    label="Note title"
+                                    size="sm"
+                                    className="w-full"
+                                    onValueChange={(value) => {
+                                        setNoteForm(f => ({ ...f, title: value }))
+                                    }}
+                                />              
+                                <Textarea
+                                    label="Description"
+                                    size="sm"
+                                    className="w-full"
+                                    onValueChange={(value) => {
+                                        setNoteForm(f => ({ ...f, description: value }))
                                     }}
                                 />
                             </ModalBody>
