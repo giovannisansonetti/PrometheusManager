@@ -2,21 +2,23 @@
 
 import { DisplayDataProps } from "./DisplayData.models"
 import { useState } from "react"
-import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
-import { type AddItemsProps } from "./interfaces/AddItem.models";
-import insertData from "~/server/data/insertdata/insertdata";
-import DataList from "../DataList/DataList";
+import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react"
+import { type AddItemsProps } from "./interfaces/AddItem.models"
 import { useRouter } from 'next/navigation'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
-import { type AddNoteProps } from "./interfaces/AddNote.models";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react"
+import { AddNoteProps } from "./interfaces/AddNote.models"
+import { insertNote } from "~/server/data/insertdata/insertNotes"
+import insertData from "~/server/data/insertdata/insertData"
+import DataList from "../DataList/DataList"
 
 
 const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
-    const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
+    const { isOpen: isPasswordModalOpen, onOpen: onPasswordModalOpen, onOpenChange: onPasswordModalOpenChange } = useDisclosure()
+    const { isOpen: isNoteModalOpen, onOpen: onNoteModalOpen, onOpenChange: onNoteModalOpenChange } = useDisclosure()
 
     const router = useRouter()
 
-    const [form, setForm] = useState<AddItemsProps>({
+    const [dataform, setDataForm] = useState<AddItemsProps>({
         title: "",
         webSiteLink: "",
         username: "",
@@ -30,8 +32,13 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
     })
 
     const handlePasswordClick = async () => {
-        await insertData(form)
-        router.push('/dashboard')
+        await insertData(dataform)
+        router.refresh()
+    }
+
+    const handleNoteClick = async () => {
+        await insertNote(noteForm)
+        router.refresh()
     }
 
     return (
@@ -56,16 +63,18 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Static Actions">
-                            <DropdownItem key="new" onClick={onOpen}>Password</DropdownItem>
-                            <DropdownItem key="copy" >Note</DropdownItem>
+                            <DropdownItem key="new" onClick={onPasswordModalOpen}>Password</DropdownItem>
+                            <DropdownItem key="copy" onClick={onNoteModalOpen}>Note</DropdownItem>
                             <DropdownItem key="edit">Credit Card</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </div>
                 <div className="flex w-full mt-4 border-1 border-[#27272a]"></div>
             </div>
+
             <DataList />
-            <Modal isOpen={isModalOpen} onOpenChange={onOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
+
+            <Modal isOpen={isPasswordModalOpen} onOpenChange={onPasswordModalOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -77,7 +86,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                                     size="sm"
                                     className="w-full"
                                     onValueChange={(value) => {
-                                        setForm(f => ({ ...f, title: value }))
+                                        setDataForm(props => ({ ...props, title: value }))
                                     }}
                                 />
                                 <Input
@@ -86,7 +95,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                                     size="sm"
                                     className="w-full"
                                     onValueChange={(value) => {
-                                        setForm(f => ({ ...f, webSiteLink: value }))
+                                        setDataForm(props => ({ ...props, webSiteLink: value }))
                                     }}
                                 />
                                 <Input
@@ -95,7 +104,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                                     size="sm"
                                     className="w-full"
                                     onValueChange={(value) => {
-                                        setForm(f => ({ ...f, username: value }))
+                                        setDataForm(props => ({ ...props, username: value }))
                                     }}
                                 />
                                 <Input
@@ -104,7 +113,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                                     size="sm"
                                     className="w-full"
                                     onValueChange={(value) => {
-                                        setForm(f => ({ ...f, password: value }))
+                                        setDataForm(props => ({ ...props, password: value }))
                                     }}
                                 />
                                 <Textarea
@@ -112,12 +121,11 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                                     size="sm"
                                     className="w-full"
                                     onValueChange={(value) => {
-                                        setForm(f => ({ ...f, notes: value }))
+                                        setDataForm(props => ({ ...props, notes: value }))
                                     }}
                                 />
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="danger" variant="flat" onPress={onClose}>Reset</Button>
                                 <Button color="primary" variant="flat" onClick={async () => { await handlePasswordClick() }}>Add</Button>
                             </ModalFooter>
                         </>
@@ -125,7 +133,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                 </ModalContent>
             </Modal>
 
-            <Modal isOpen={isModalOpen} onOpenChange={onOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
+            <Modal isOpen={isNoteModalOpen} onOpenChange={onNoteModalOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -137,21 +145,26 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                                     size="sm"
                                     className="w-full"
                                     onValueChange={(value) => {
-                                        setNoteForm(f => ({ ...f, title: value }))
+                                        setNoteForm(props => ({ ...props, title: value }))
                                     }}
                                 />              
                                 <Textarea
+                                    isRequired
                                     label="Description"
                                     size="sm"
-                                    className="w-full"
                                     onValueChange={(value) => {
-                                        setNoteForm(f => ({ ...f, description: value }))
+                                        setNoteForm(props => ({ ...props, description: value }))
+                                    }}
+                                    disableAnimation
+                                    disableAutosize
+                                    classNames={{
+                                        base: "w-full",
+                                        input: "resize-y min-h-[40px]",
                                     }}
                                 />
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="danger" variant="flat" onPress={onClose}>Reset</Button>
-                                <Button color="primary" variant="flat" onClick={async () => { await handleClick() }}>Add</Button>
+                                <Button color="primary" variant="flat" onClick={async () => { await handleNoteClick() }}>Add</Button>
                             </ModalFooter>
                         </>
                     )}

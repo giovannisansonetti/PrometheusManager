@@ -1,4 +1,4 @@
 export interface AddNoteProps{
-    title: "", 
-    description: "",
+    title: string 
+    description: string
 }
