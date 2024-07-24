@@ -6,11 +6,10 @@ import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, But
 import { type AddItemsProps } from "./interfaces/AddItem.models"
 import { useRouter } from 'next/navigation'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react"
-import { AddNoteProps } from "./interfaces/AddNote.models"
+import { AddNoteProps } from "../DisplayNotes/interfaces/AddNote.models"
 import { insertNote } from "~/server/data/insertdata/insertNotes"
-import insertData from "~/server/data/insertdata/insertData"
 import DataList from "../DataList/DataList"
-
+import insertData from "~/server/data/insertdata/insertdata"
 
 const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
     const { isOpen: isPasswordModalOpen, onOpen: onPasswordModalOpen, onOpenChange: onPasswordModalOpenChange } = useDisclosure()

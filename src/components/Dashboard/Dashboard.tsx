@@ -3,6 +3,7 @@ import { useState } from "react"
 import SideBar from "./SideBar/SideMenu"
 import DisplayData from "./DisplayData/DisplayData"
 import MobileSideBar from "./SideBar/MobileSideBar"
+import DisplayNotes from "./DisplayNotes/DisplayNotes"
 
 const UserDashboard = () => {
 
@@ -17,7 +18,7 @@ const UserDashboard = () => {
             case "Passwords":
                 return <DisplayData handleMenu={handleMenu} isOpen={isOpen} />
             case "Notes":
-                return <DisplayData handleMenu={handleMenu} isOpen={isOpen} />
+                return <DisplayNotes handleMenu={handleMenu} isOpen={isOpen} />
             case "CreditCards":
                 return <DisplayData handleMenu={handleMenu} isOpen={isOpen} />
             case "PswGen":
