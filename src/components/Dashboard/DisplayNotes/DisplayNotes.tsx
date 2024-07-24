@@ -3,6 +3,7 @@ import { DisplayNotesProps } from "./DisplayNotes.models"
 import { AddNoteProps } from "./interfaces/AddNote.models"
 import {Modal, ModalBody, ModalContent, ModalHeader, ModalFooter, Input, Textarea, Button, useDisclosure } from "@nextui-org/react"
 import { insertNote } from "~/server/data/insertdata/insertNotes"
+import NotesList from "./NotesList/NotesList"
 
 const DisplayNotes = ({handleMenu, isOpen}: DisplayNotesProps) =>{
 
@@ -33,11 +34,13 @@ const DisplayNotes = ({handleMenu, isOpen}: DisplayNotesProps) =>{
                         variant="flat"
                         onClick={onNoteModalOpen}
                     >
-                        Add an item
+                        Add a Note
                     </Button>
                     </div>
                 <div className="flex w-full mt-4 border-1 border-[#27272a]"></div>
             </div>
+
+            <NotesList />
 
             <Modal isOpen={isNoteModalOpen} onOpenChange={onNoteModalOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
                 <ModalContent>

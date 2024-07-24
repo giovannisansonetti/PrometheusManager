@@ -3,7 +3,7 @@ import { Note } from "@prisma/client";
 import { createClient } from "utils/supabase/server";
 import { db } from "~/server/db";
 
-export async function fetchData(){
+export async function fetchNotes(){
     const supabase = createClient()
 
     const { data, error } = await supabase.auth.getUser();

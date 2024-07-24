@@ -4,6 +4,7 @@ import SideBar from "./SideBar/SideMenu"
 import DisplayData from "./DisplayData/DisplayData"
 import MobileSideBar from "./SideBar/MobileSideBar"
 import DisplayNotes from "./DisplayNotes/DisplayNotes"
+import AllItems from "./AllItems/AllItems"
 
 const UserDashboard = () => {
 
@@ -14,7 +15,7 @@ const UserDashboard = () => {
     const renderComponent = () => {
         switch (active) {
             case "AllItems":
-                return <DisplayData handleMenu={handleMenu} isOpen={isOpen} />
+                return <AllItems handleMenu={handleMenu} isOpen={isOpen} />
             case "Passwords":
                 return <DisplayData handleMenu={handleMenu} isOpen={isOpen} />
             case "Notes":

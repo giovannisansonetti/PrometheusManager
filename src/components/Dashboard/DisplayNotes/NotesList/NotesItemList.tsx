@@ -2,7 +2,7 @@ import { NotesListProps } from "../interfaces/NotesList.models"
 import Image from "next/image"
 import React from 'react'
 
-const NotesList = ({ title, image, date, onClick, onDelete, onModify}: NotesListProps) => {
+const NotesListItem = ({ title, image, date, onClick, onDelete, onModify}: NotesListProps) => {
     return (
         <div className="w-[80%] h-20 ml-[12%] top-5 border-1 border-[#27272a] rounded-md flex flex-row relative text-white mb-4 cursor-pointer" onClick={onClick}>
             <div className="flex items-center ml-4">
@@ -22,4 +22,4 @@ const NotesList = ({ title, image, date, onClick, onDelete, onModify}: NotesList
     )
 }
 
-export default NotesList
+export default NotesListItem

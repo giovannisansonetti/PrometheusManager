@@ -3,6 +3,6 @@ export interface NotesListProps{
     date: string
     image: string
     onClick: () => void
-    onDelete: () => void
-    onModify: () => void
+    onDelete?: () => void
+    onModify?: () => void
 }

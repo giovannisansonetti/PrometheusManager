@@ -1,6 +1,6 @@
 "use client"
 
-import { DisplayDataProps } from "./DisplayData.models"
+import { DisplayDataProps } from "./interfaces/DisplayData.models"
 import { useState } from "react"
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react"
 import { type AddItemsProps } from "./interfaces/AddItem.models"
@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react"
 import { AddNoteProps } from "../DisplayNotes/interfaces/AddNote.models"
 import { insertNote } from "~/server/data/insertdata/insertNotes"
-import DataList from "../DataList/DataList"
+import DataList from "./DataList/DataList"
 import insertData from "~/server/data/insertdata/insertdata"
 
 const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
@@ -25,18 +25,8 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
         notes: ""
     })
 
-    const [noteForm, setNoteForm] = useState<AddNoteProps>({
-        title: "", 
-        description: "",
-    })
-
     const handlePasswordClick = async () => {
         await insertData(dataform)
-        router.refresh()
-    }
-
-    const handleNoteClick = async () => {
-        await insertNote(noteForm)
         router.refresh()
     }
 
@@ -51,23 +41,15 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                             <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isOpen ? '-rotate-45 -translate-y-1' : 'translate-y-0.5'}`}></span>
                         </button>
                     </div>
-
-                    <Dropdown className="bg-[#161616]">
-                        <DropdownTrigger>
-                            <Button
-                                color="primary"
-                                variant="flat"
-                            >
-                                Add an item
-                            </Button>
-                        </DropdownTrigger>
-                        <DropdownMenu aria-label="Static Actions">
-                            <DropdownItem key="new" onClick={onPasswordModalOpen}>Password</DropdownItem>
-                            <DropdownItem key="copy" onClick={onNoteModalOpen}>Note</DropdownItem>
-                            <DropdownItem key="edit">Credit Card</DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
+                    <Button
+                        color="primary"
+                        variant="flat"
+                        onClick={onPasswordModalOpen}
+                    >
+                        Add a password
+                    </Button>
                 </div>
+                
                 <div className="flex w-full mt-4 border-1 border-[#27272a]"></div>
             </div>
 
