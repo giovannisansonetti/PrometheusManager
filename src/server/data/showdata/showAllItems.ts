@@ -1,4 +1,4 @@
-"use server"
+"use server" // request function
 import { Data } from "@prisma/client";
 import { Note } from "@prisma/client";
 import { createClient } from "utils/supabase/server";
@@ -19,19 +19,18 @@ export async function fetchAllitems(){
     })
 
     if(user){
-        const [data, notes] = await Promise.all([
+        const [dataItems, notesItems] = await Promise.all([
             db.data.findMany({
                 where: { userId: user.id },
-                orderBy: { createdAt: 'desc' }
             }),
             db.note.findMany({
                 where: { userId: user.id },
-                orderBy: { createdAt: 'desc' }
             })
         ])
 
-        const allItems = [...data, ...notes]
+        const allItems = {data: dataItems, notes: notesItems}
+
         console.log(JSON.stringify(allItems))
-        return JSON.stringify(allItems)
+        return allItems
     }
 }
