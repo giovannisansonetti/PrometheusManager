@@ -1,6 +1,6 @@
 "use server"
 import { createClient } from "utils/supabase/server";
-import { AddNoteProps } from "~/components/Dashboard/DisplayData/interfaces/AddNote.models";
+import { AddNoteProps } from "~/components/Dashboard/DisplayNotes/interfaces/AddNote.models";
 import { db } from "~/server/db";
 
 export async function insertNote(formProps: AddNoteProps) {
@@ -33,7 +33,7 @@ export async function insertNote(formProps: AddNoteProps) {
                 }
             })}
         catch(dbError){
-            console.log(dbError)
+            return JSON.stringify({error: "Internal Server Error"})
         }
     }
     else{

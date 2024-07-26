@@ -44,6 +44,6 @@ export default async function insertData(formProps: AddItemsProps) {
     });
     
   } catch (dbError) {
-    console.error("Error inserting data:", dbError);
+      return JSON.stringify({error: "Internal Server Error"})
   }
 }

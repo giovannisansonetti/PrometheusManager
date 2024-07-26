@@ -24,20 +24,21 @@ export async function signup(formprops: FormProps) {
 
     const { data, error } = await supabase.auth.signUp(signupData)
 
-    if (!error || data.user) {
-        await db.user.create({
-            data:{
-                id: data.user?.id,
-                email: userData.email,
-                masterPass: userData.masterPass,
-                phoneNumber: userData.phoneNumber
-            }
-        })  
-        revalidatePath('/', 'layout')
-        redirect('/')
+    try{
+        if (!error || data.user) {
+            await db.user.create({
+                data:{
+                    id: data.user?.id,
+                    email: userData.email,
+                    masterPass: userData.masterPass,
+                    phoneNumber: userData.phoneNumber
+                }
+            })  
+            revalidatePath('/', 'layout')
+            redirect('/')
+        }
+    }catch(dbError){
+        return JSON.stringify({error: "Error in the db"})
     }
-
-    console.log(error)
-    redirect('/error')
 
 }

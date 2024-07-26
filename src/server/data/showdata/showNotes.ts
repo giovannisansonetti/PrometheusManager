@@ -18,11 +18,21 @@ export async function fetchNotes(){
     })
 
     if(user){
-        const data: Note[] = await db.note.findMany({
-            where: {
-                userId: user.id
+        try{
+            const data: Note[] = await db.note.findMany({
+                where: {
+                    userId: user.id
+                }
+            })  
+
+            if (data.length !== 0) {
+                return JSON.stringify(data)
             }
-        })  
-        return JSON.stringify(data)
+            return JSON.stringify({ message: "No notes found" })
+            
+        }catch(error){
+            return 
+        }
+
     }
 }

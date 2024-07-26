@@ -18,12 +18,20 @@ export async function fetchData(){
     })
 
     if(user){
-        const data: Data[] = await db.data.findMany({
-            where: {
-                userId: user.id
+        try {
+            const data: Data[] = await db.data.findMany({
+                where: {
+                    userId: user.id
+                }
+            })
+            if(data.length !== 0){
+                return JSON.stringify(data)
             }
-        })  
-        return JSON.stringify(data)
+            return JSON.stringify({message: "No data saved"})
+            
+    }catch(error){
+        return
+    }
     }
     
 }

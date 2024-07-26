@@ -20,7 +20,8 @@ export async function signIn(formprops: FormProps) {
         revalidatePath('/', 'layout')
         redirect('/')
     }
+    return JSON.stringify({error: "User not found"})
 
-    console.log(error)
-    redirect('/error')
+
+
 }

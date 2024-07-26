@@ -10,10 +10,9 @@ export async function signout() {
 
     const { error } = await supabase.auth.signOut()
 
-    if(!error){
+    if (!error) {
         revalidatePath('/', 'layout')
         redirect('/')
     }
-
-    console.log("user session doesn't exist")
+    return JSON.stringify({error: "User not found"})
 }
