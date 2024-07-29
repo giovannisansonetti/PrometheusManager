@@ -1,8 +1,8 @@
 "use server"
 
-import { Data, Note } from "@prisma/client"
 import { createClient } from "utils/supabase/server"
 import { db } from "~/server/db"
+import { AllItems } from "./allitems.models"
 
 export async function fetchAllitems() {
     const supabase = createClient()
@@ -15,32 +15,40 @@ export async function fetchAllitems() {
     }
 
     const user = await db.user.findUnique({
-        where: { id: data.user.id },
+        where: { id: data.user.id }
     })
 
     if (user) {
         try {
-            const dataItems: Data[] = await db.data.findMany({
-                where: { userId: user.id }
-            })
-
-            const notes: Note[] = await db.note.findMany({
-                where: { userId: user.id }
-            })
-
-            const allItems = {
-                dataItems,
-                notes
-            }
-
-            if (dataItems.length !== 0 || notes.length !== 0) {
-                return JSON.stringify(allItems)
-            }
-
-            return JSON.stringify({ message: "No data saved" })
-
-        } catch (error) {
-            console.error("Error fetching items:", error)
+            const [dataItems, noteItems] = await Promise.all([
+              db.data.findMany({ where: { userId: user.id} }),
+              db.note.findMany({ where: { userId: user.id} }),
+            ])
+        
+            const items: AllItems[] = [
+                ...dataItems.map(item => ({
+                  ...item,
+                  type: 'data' as const,
+                  title: item.title,
+                  webSiteLink: item.webSiteLink,
+                  username: item.username,
+                  password: item.password,
+                  notes: item.notes,
+                })),
+                ...noteItems.map(item => ({
+                  ...item,
+                  type: 'note' as const,
+                  noteTitle: item.noteTitle,
+                  noteDescription: item.noteDescription,
+                })),
+              ];
+        
+              items.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+        
+            return JSON.stringify(items)
+          } catch (error) {
+            console.error("Error fetching items:", error);
+            return JSON.stringify({ message: "Error fetching items" });
+          }
         }
-    }
 }
