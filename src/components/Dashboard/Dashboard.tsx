@@ -21,9 +21,9 @@ const UserDashboard = () => {
             case "Notes":
                 return <DisplayNotes handleMenu={handleMenu} isOpen={isOpen} />
             case "CreditCards":
-                return <DisplayData handleMenu={handleMenu} isOpen={isOpen} />
+            case "TrashBin":
+                return
             case "PswGen":
-                return <DisplayData handleMenu={handleMenu} isOpen={isOpen} />
             default:
                 return null;
         }
