@@ -42,24 +42,36 @@ const NotesList = () =>{
                     {note.map((item) => (
                             <NotesListItem image={NoteIcon} title={item.noteTitle} date={item.createdAt.toLocaleDateString('it-IT')} onClick={() =>{handleClick(item)}} />
                     ))}
-                    <Modal isOpen={isModalOpen} onOpenChange={onOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
+                    <Modal isOpen={isModalOpen} onOpenChange={onOpenChange} className="w-[80%] bottom-[40%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
                         <ModalContent>
                         {(onClose) => (
                             <>
-                                <ModalHeader className="flex flex-col gap-1 mt-2"></ModalHeader>
-                                <ModalBody>
-                                    {/* {selectData && ( 
-                                        TODO
-                                    )}*/}
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button color="primary" variant="flat" onClick={() => {}}>Add</Button>
-                                </ModalFooter>
+                                    <ModalHeader className="flex flex-col gap-1 mt-2">
+                                    {selectNote && (
+                                            <>
+                                                <h2 className="text-2xl font-bold">{selectNote.noteTitle}</h2>
+                                                <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
+                                                <p className="text-sm text-gray-500">
+                                                    Created on: {selectNote.createdAt.toLocaleDateString('it-IT')}
+                                                </p>
+                                            </>
+                                    )}
+                                    </ModalHeader>
+                                    <ModalBody>
+                                        {selectNote && (
+                                            <div className="flex flex-col gap-2">
+                                                <p className="text-lg font-bold">Content</p>
+                                                <p className="text-sm">{selectNote.noteDescription}</p>
+                                            </div>
+                                        )}
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
+                                    </ModalFooter>
                             </>
                         )}
                     </ModalContent>
                     </Modal>
-                    
             </div>
             ) : (
                 <div className="flex flex-col justify-center items-center">

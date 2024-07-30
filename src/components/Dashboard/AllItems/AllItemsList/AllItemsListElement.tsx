@@ -10,9 +10,9 @@ interface AllItemsListElementProps {
   onModify?: () => void
 }
 
-const AllItemsListElement = ({ item, date }: AllItemsListElementProps) => {
+const AllItemsListElement = ({ item, date, onClick }: AllItemsListElementProps) => {
   return (
-    <div className="w-[80%] h-20 ml-[12%] top-5 border-1 border-[#27272a] rounded-md flex flex-row relative text-white mb-4 cursor-pointer">
+    <div className="w-[80%] h-20 ml-[12%] top-5 border-1 border-[#27272a] rounded-md flex flex-row relative text-white mb-4 cursor-pointer" onClick={onClick}>
       <div className="flex items-center ml-4">
         <div className="w-8">
           {item.type === "data" && (
@@ -24,7 +24,7 @@ const AllItemsListElement = ({ item, date }: AllItemsListElementProps) => {
       {item.type === "data" && (
         <div className="flex flex-col justify-center ml-5">
           <div className="font-bold">{item.title}</div>
-          <div>{item.username}</div>
+          <div className="hidden sm:flex">{item.username}</div>
         </div>
       )}
       {item.type === "note" && (

@@ -15,7 +15,7 @@ const DataListItem = ({ title, link, email, date, onClick, onDelete, onModify}: 
                 <div className="font-bold">
                     {title}
                 </div>
-                <div>
+                <div className="hidden sm:flex">
                     {email}
                 </div>
            </div>

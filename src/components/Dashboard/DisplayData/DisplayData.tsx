@@ -13,8 +13,7 @@ import insertData from "~/server/data/insertdata/insertdata"
 
 const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
     const { isOpen: isPasswordModalOpen, onOpen: onPasswordModalOpen, onOpenChange: onPasswordModalOpenChange } = useDisclosure()
-    const { isOpen: isNoteModalOpen, onOpen: onNoteModalOpen, onOpenChange: onNoteModalOpenChange } = useDisclosure()
-
+    
     const router = useRouter()
 
     const [dataform, setDataForm] = useState<AddItemsProps>({
@@ -46,7 +45,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                         variant="flat"
                         onClick={onPasswordModalOpen}
                     >
-                        Add a password
+                        Add data
                     </Button>
                 </div>
                 
@@ -108,44 +107,6 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="primary" variant="flat" onClick={async () => { await handlePasswordClick() }}>Add</Button>
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-
-            <Modal isOpen={isNoteModalOpen} onOpenChange={onNoteModalOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1 mt-2">Create a secure note</ModalHeader>
-                            <ModalBody>
-                                <Input
-                                    isRequired
-                                    label="Note title"
-                                    size="sm"
-                                    className="w-full"
-                                    onValueChange={(value) => {
-                                        setNoteForm(props => ({ ...props, title: value }))
-                                    }}
-                                />              
-                                <Textarea
-                                    isRequired
-                                    label="Description"
-                                    size="sm"
-                                    onValueChange={(value) => {
-                                        setNoteForm(props => ({ ...props, description: value }))
-                                    }}
-                                    disableAnimation
-                                    disableAutosize
-                                    classNames={{
-                                        base: "w-full",
-                                        input: "resize-y min-h-[40px]",
-                                    }}
-                                />
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color="primary" variant="flat" onClick={async () => { await handleNoteClick() }}>Add</Button>
                             </ModalFooter>
                         </>
                     )}

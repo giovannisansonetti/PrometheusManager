@@ -28,8 +28,8 @@ model Data {
   username         String
   passwordSecurity String?
   password         String //this is the encrypted data
-  iv               String
-  salt             String
+  iv               String?
+  salt             String?
   notes            String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
