@@ -23,22 +23,30 @@ export async function signup(formprops: FormProps) {
     }
 
     const { data, error } = await supabase.auth.signUp(signupData)
-
-    try{
-        if (!error || data.user) {
-            await db.user.create({
-                data:{
-                    id: data.user?.id,
-                    email: userData.email,
-                    masterPass: userData.masterPass,
-                    phoneNumber: userData.phoneNumber
-                }
-            })  
-            revalidatePath('/', 'layout')
-            redirect('/')
-        }
-    }catch(dbError){
-        return JSON.stringify({error: "Error in the db"})
+    
+    if (!error || data.user) {
+        await db.user.create({
+            data:{
+                id: data.user?.id,
+                email: userData.email,
+                masterPass: userData.masterPass,
+                phoneNumber: userData.phoneNumber
+            }
+        })  
+        revalidatePath('/', 'layout')
+        redirect('/')
+    }
+    console.log(error)
+    
+    if(error.code === "weak_password"){
+        return JSON.stringify({ error: "Weak password, make it longer" })
+    }
+    if(error.code === "user_already_exists"){
+        return JSON.stringify({ error: "Email already registered" })
+    }
+    if(error.code === "validation_failed"){
+        return JSON.stringify({ error: "Invalid email format" })
     }
 
+    return JSON.stringify({error: error?.message})
 }

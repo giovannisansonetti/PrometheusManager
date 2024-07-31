@@ -13,15 +13,15 @@ export async function signIn(formprops: FormProps) {
         password: formprops.masterPass as string,
     }
 
-
     const { error } = await supabase.auth.signInWithPassword(data)
 
     if (!error) {
         revalidatePath('/', 'layout')
         redirect('/')
     }
-    return JSON.stringify({error: "User not found"})
 
+    console.log(error)
 
+    return JSON.stringify({ error: "User not found" })
 
 }
