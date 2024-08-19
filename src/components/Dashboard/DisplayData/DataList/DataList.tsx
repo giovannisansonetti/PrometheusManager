@@ -77,11 +77,6 @@ const DataList = () =>{
                                                     Password: <span className="font-normal">{selectData.password}</span>
                                                 </p>
                                                 <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
-                                                {selectData.passwordSecurity && (
-                                                    <p className="text-sm font-medium">
-                                                        Security: <span className="font-normal">{selectData.passwordSecurity}</span>
-                                                    </p>
-                                                )}
                                             </div>
                                         </div>
                                         )}

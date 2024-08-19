@@ -8,33 +8,31 @@ datasource db {
 }
 
 model User {
-  id          String     @id @default(uuid())
-  email       String     @unique
+  id          String   @id @default(uuid())
+  email       String   @unique
   masterPass  String
-  phoneNumber String?    @unique
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  phoneNumber String?  @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   data        Data[]
   note        Note[]
-  trashbin    Trashbin[]
 }
 
 model Data {
-  id               String    @id @default(uuid())
+  id               String   @id @default(uuid())
   userId           String
-  trashbinId       String?
   title            String
   webSiteLink      String
   username         String
-  passwordSecurity String?
   password         String //this is the encrypted data
   iv               String?
   salt             String?
   notes            String?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
-  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  trashbin         Trashbin? @relation(fields: [trashbinId], references: [id], onDelete: Cascade)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  isDeleted        Boolean
+  deletedAt        Boolean?
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Note {
@@ -42,18 +40,9 @@ model Note {
   userId          String
   noteTitle       String
   noteDescription String
-  trashbinId      String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  isDeleted       Boolean
+  deletedAt       DateTime? @default(now())
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  trashbin        Trashbin? @relation(fields: [trashbinId], references: [id], onDelete: Cascade)
-}
-
-model Trashbin {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  data      Data[]
-  note      Note[]
-  deletedAt DateTime @default(now())
 }

@@ -5,9 +5,6 @@ import { useState } from "react"
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react"
 import { type AddItemsProps } from "./interfaces/AddItem.models"
 import { useRouter } from 'next/navigation'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react"
-import { AddNoteProps } from "../DisplayNotes/interfaces/AddNote.models"
-import { insertNote } from "~/server/data/insertdata/insertNotes"
 import DataList from "./DataList/DataList"
 import insertData from "~/server/data/insertdata/insertdata"
 

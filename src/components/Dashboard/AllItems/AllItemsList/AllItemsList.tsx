@@ -89,20 +89,16 @@ const AllItemsList = () =>{
                                                     Password: <span className="font-normal">{data.password}</span>
                                                 </p>
                                                 <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
-                                                {data.passwordSecurity && (
-                                                    <p className="text-sm font-medium">
-                                                        Security: <span className="font-normal">{data.passwordSecurity}</span>
-                                                    </p>
-                                                )}
                                             </div>
                                         </div>
                                         )}
-                                        {data && (
-                                            <ModalFooter>
-                                                <Button color="danger" variant="flat" onClick={async() => {deleteData(data.id)}}>Delete</Button>
-                                                <Button color="primary" variant="flat" onClick={onClose}>Edit</Button>
-                                            </ModalFooter>)}
                                     </ModalBody>
+                                    {data &&
+                                        <ModalFooter>
+                                            <Button color="primary" variant="flat">Edit</Button>
+                                            <Button color="danger" variant="flat" onClick={async() =>{deleteData(data.id)}}>Delete</Button>
+                                        </ModalFooter>
+                                    }
                                 </>
                                 </>
                             )}

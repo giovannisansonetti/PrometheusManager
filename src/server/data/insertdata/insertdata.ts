@@ -40,6 +40,7 @@ export default async function insertData(formProps: AddItemsProps) {
         username: insertData.username,
         password: insertData.password,
         notes: insertData.notes,
+        isDeleted: false
       },
     });
     

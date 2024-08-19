@@ -34,12 +34,14 @@ export async function fetchAllitems() {
                   username: item.username,
                   password: item.password,
                   notes: item.notes,
+                  isDeleted: item.isDeleted,
                 })),
                 ...noteItems.map(item => ({
                   ...item,
                   type: 'note' as const,
                   noteTitle: item.noteTitle,
                   noteDescription: item.noteDescription,
+                  isDeleted: item.isDeleted,
                 })),
               ];
         

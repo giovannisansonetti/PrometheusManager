@@ -2,7 +2,7 @@
 import { createClient } from "utils/supabase/server";
 import { db } from "~/server/db";
 
-export default async function(dataId: string){
+export default async function deleteData(dataId: string){
     const supabase = createClient()
     const { data: authData, error } = await supabase.auth.getUser()
 
@@ -18,8 +18,13 @@ export default async function(dataId: string){
     })
 
     if(user){
-        
+        await db.data.update({
+            where:{
+                id: dataId
+            },
+            data:{
+                isDeleted: true
+            }
+        })
     }
-
-
 }
