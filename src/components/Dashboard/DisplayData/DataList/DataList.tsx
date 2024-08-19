@@ -9,7 +9,7 @@ const DataList = () =>{
 
     const [data, setData] = useState<Data[] | null>(null)
     const [selectData, setSelectData] = useState<Data | null>(null)
-    const [error, setError] = useState("")
+    const [noData, setNoData] = useState<string | null>(null)
     const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
 
     const handleClick = (data: Data) =>{
@@ -21,17 +21,20 @@ const DataList = () =>{
         const getData = async () => {
             const responseString = await fetchData()
             if (responseString) {
-                const response: Data[] = JSON.parse(responseString);
-                response.forEach(element=>{
-                    let date = element.createdAt as unknown as string
-                    element.createdAt = new Date(date)
-                    date = element.updatedAt as unknown as string
-                    element.updatedAt = new Date(date)
-                })
-                setData(response)
+                const response = JSON.parse(responseString)
+                if (Array.isArray(response)) {
+                    response.forEach((element: Data) => {
+                        element.createdAt = new Date(element.createdAt as unknown as string)
+                        element.updatedAt = new Date(element.updatedAt as unknown as string)
+                    })
+                    setData(response)
+                } else if (response.message === "No data found") {
+                    setNoData(response.message)
+                    setData(null)
                 }
             }
-            getData()
+        }
+        getData()
     }, [])
     
     return(
@@ -94,17 +97,21 @@ const DataList = () =>{
                 </div>
             ) : (
                 <div className="flex flex-col justify-center items-center">
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
+                    {noData ? (<></>) : (
+                        <>
+                        <DataListIdle />
+                        <DataListIdle />
+                        <DataListIdle />
+                        <DataListIdle />
+                        <DataListIdle />
+                        <DataListIdle />
+                        <DataListIdle />
+                        <DataListIdle />
+                        <DataListIdle />
+                        <DataListIdle />
+                        <DataListIdle />
+                    </>
+                    )}
                 </div>
             )} 
         </>
