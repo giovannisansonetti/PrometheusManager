@@ -6,6 +6,7 @@ import { AllItems } from "~/server/data/showdata/allitems.models"
 import AllItemsListElement from "./AllItemsListElement"
 import Data from "./interfaces/Data.models"
 import Note from "./interfaces/Note.models"
+import deleteData from "~/server/data/deleteData/deleteData"
 
 const AllItemsList = () =>{
 
@@ -96,10 +97,12 @@ const AllItemsList = () =>{
                                             </div>
                                         </div>
                                         )}
+                                        {data && (
+                                            <ModalFooter>
+                                                <Button color="danger" variant="flat" onClick={async() => {deleteData(data.id)}}>Delete</Button>
+                                                <Button color="primary" variant="flat" onClick={onClose}>Edit</Button>
+                                            </ModalFooter>)}
                                     </ModalBody>
-                                    <ModalFooter>
-                                        <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
-                                    </ModalFooter>
                                 </>
                                 </>
                             )}
@@ -130,6 +133,7 @@ const AllItemsList = () =>{
                                         )}
                                     </ModalBody>
                                     <ModalFooter>
+                                        <Button color="danger" variant="flat" onClick={async() => {}}>Delete</Button>
                                         <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
                                     </ModalFooter>
                             </>
