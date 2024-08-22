@@ -7,41 +7,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User { //no password stored, as supabase hashes the password and saves it in their own db
-  id          String   @id @default(uuid())
-  email       String   @unique
-  phoneNumber String?  @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  data        Data[]
-  note        Note[]
+model User {
+  id               String             @id @default(uuid())
+  email            String             @unique
+  phoneNumber      String?            @unique
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  data             Data[]
+  note             Note[]
+  userloginhistory UserLoginHistory[]
 }
 
+model UserLoginHistory {
+  id         String   @id @default(uuid())
+  ipAddress  String
+  deviceInfo String
+  loginAt    DateTime @default(now())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// perhaps add a user preference and settings table in the future
+
 model Data {
-  id               String   @id @default(uuid())
-  userId           String
-  title            String
-  webSiteLink      String
-  username         String
-  password         String //this is the encrypted data
-  iv               String?
-  salt             String?
-  notes            String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  isDeleted        Boolean
-  deletedAt        Boolean?
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          String   @id @default(uuid())
+  userId      String
+  title       String
+  webSiteLink String
+  username    String
+  password    String //this is the encrypted data
+  iv          String?
+  salt        String?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  isDeleted   Boolean
+  deletedAt   Boolean?
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Note {
-  id              String   @id @default(uuid())
+  id              String    @id @default(uuid())
   userId          String
   noteTitle       String
   noteDescription String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
   isDeleted       Boolean
   deletedAt       DateTime? @default(now())
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
