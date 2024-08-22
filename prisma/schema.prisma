@@ -7,10 +7,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model User { //no password stored, as supabase hashes the password and saves it in their own db
   id          String   @id @default(uuid())
   email       String   @unique
-  masterPass  String
   phoneNumber String?  @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

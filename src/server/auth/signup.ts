@@ -6,7 +6,6 @@ import { db } from "../db"
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
-
 export async function signup(formprops: FormProps) {
     "use server"
     const supabase = createClient()
@@ -18,18 +17,16 @@ export async function signup(formprops: FormProps) {
 
     const userData = {
         email: formprops.email as string,
-        masterPass: formprops.masterPass as string,
         phoneNumber: formprops.phoneNumber as string
     }
 
     const { data, error } = await supabase.auth.signUp(signupData)
-    
+
     if (!error || data.user) {
         await db.user.create({
             data:{
                 id: data.user?.id,
                 email: userData.email,
-                masterPass: userData.masterPass,
                 phoneNumber: userData.phoneNumber
             }
         })  
