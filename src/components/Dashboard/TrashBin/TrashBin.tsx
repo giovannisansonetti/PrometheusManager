@@ -1,6 +1,8 @@
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react"
 import { TrashBinProps } from "./interfaces/TrashBinProps.models"
 import TrashBinList from "./TrashBinItemList/TrashBinList"
+import deleteAll from "~/server/data/manageData/delete/deleteAll"
+import restoreAll from "~/server/data/manageData/restore/restoreAll"
 
 const TrashBin = ({handleMenu, isOpen}: TrashBinProps) => {
     
@@ -45,7 +47,7 @@ const TrashBin = ({handleMenu, isOpen}: TrashBinProps) => {
                             <ModalHeader className="flex flex-col gap-1 mt-2">Do you want to delete all the items?</ModalHeader>
                             <ModalFooter>
                                 <Button color="primary" variant="flat" onPress={onClose}>Undo</Button>
-                                <Button color="danger" variant="flat" onClick={async() => {}}>Delete</Button>
+                                <Button color="danger" variant="flat" onClick={async() => {deleteAll()}}>Delete</Button>
                             </ModalFooter>
                         </>
                     )}
@@ -59,7 +61,7 @@ const TrashBin = ({handleMenu, isOpen}: TrashBinProps) => {
                             <ModalHeader className="flex flex-col gap-1 mt-2">Do you want to restore all the items?</ModalHeader>
                             <ModalFooter>
                                 <Button color="primary" variant="flat" onPress={onClose}>Undo</Button>
-                                <Button color="danger" variant="flat" onClick={async() => {}}>Delete</Button>
+                                <Button color="danger" variant="flat" onClick={async() => {restoreAll()}}>Delete</Button>
                             </ModalFooter>
                         </>
                     )}

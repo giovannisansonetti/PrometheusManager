@@ -7,6 +7,7 @@ import Data from "./interfaces/Data.models"
 import Note from "./interfaces/Note.models"
 import deleteData from "~/server/data/deleteData/deleteData"
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton"
+import deleteNote from "~/server/data/deleteData/deleteNote"
 
 const AllItemsList = () =>{
 
@@ -128,10 +129,12 @@ const AllItemsList = () =>{
                                             </div>
                                         )}
                                     </ModalBody>
-                                    <ModalFooter>
-                                        <Button color="danger" variant="flat" onClick={async() => {}}>Delete</Button>
-                                        <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
-                                    </ModalFooter>
+                                    {note &&
+                                        <ModalFooter>
+                                            <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
+                                            <Button color="danger" variant="flat" onClick={async() => {deleteNote(note.id)}}>Delete</Button>
+                                        </ModalFooter>
+                                    }
                             </>
                         )}
                     </ModalContent>
