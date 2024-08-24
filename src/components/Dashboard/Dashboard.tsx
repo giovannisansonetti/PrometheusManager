@@ -27,7 +27,7 @@ const UserDashboard = () => {
             case "TrashBin":
                 return <TrashBin handleMenu={handleMenu} isOpen={isOpen} />
             case "PswGen":
-                return <PswGenerator />
+                return <PswGenerator handleMenu={handleMenu} isOpen={isOpen} />
             default:
                 return null;
         }
