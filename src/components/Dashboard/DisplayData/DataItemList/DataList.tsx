@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { type Data } from "./interfaces/Data";
 import { fetchData } from "~/server/data/showdata/showdata";
 import DataListItem from "./DataListItem";
-import DataListIdle from "./DataListIdle";
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
+import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
 
 const DataList = () =>{
 
@@ -94,17 +94,17 @@ const DataList = () =>{
                 <div className="flex flex-col justify-center items-center">
                     {noData ? (<></>) : (
                         <>
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
                     </>
                     )}
                 </div>

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { fetchAllitems } from "~/server/data/showdata/showAllItems"
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react"
-import DataListIdle from "../../DisplayData/DataList/DataListIdle"
 import { AllItems } from "~/server/data/showdata/allitems.models"
 import AllItemsListElement from "./AllItemsListElement"
 import Data from "./interfaces/Data.models"
 import Note from "./interfaces/Note.models"
 import deleteData from "~/server/data/deleteData/deleteData"
+import ListSkeleton from "~/components/ListSkeleton/ListSkeleton"
 
 const AllItemsList = () =>{
 
@@ -141,17 +141,17 @@ const AllItemsList = () =>{
 
             ) : (
                 <div className="flex flex-col justify-center items-center">
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
                 </div>
             )}
         </div>

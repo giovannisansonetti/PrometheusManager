@@ -3,7 +3,7 @@ import { DisplayNotesProps } from "./DisplayNotes.models"
 import { AddNoteProps } from "./interfaces/AddNote.models"
 import {Modal, ModalBody, ModalContent, ModalHeader, ModalFooter, Input, Textarea, Button, useDisclosure } from "@nextui-org/react"
 import { insertNote } from "~/server/data/insertdata/insertNotes"
-import NotesList from "./NotesList/NotesList"
+import NotesList from "./NotesItemList/NotesList"
 
 const DisplayNotes = ({handleMenu, isOpen}: DisplayNotesProps) =>{
 

@@ -1,6 +1,6 @@
-import {Skeleton} from "@nextui-org/react";
+import { Skeleton } from "@nextui-org/react";
 
-const NotesIdle = () =>{
+const ListSkeleton = () =>{
     return(
         <div className="w-3/4 flex p-4 justify-center items-center gap-3 mt-5 border-1 border-[#27272a]">
             <div>
@@ -13,4 +13,5 @@ const NotesIdle = () =>{
         </div>
     )
 }
-export default NotesIdle
+
+export default ListSkeleton

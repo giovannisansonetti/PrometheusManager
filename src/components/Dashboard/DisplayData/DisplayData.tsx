@@ -5,7 +5,7 @@ import { useState } from "react"
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react"
 import { type AddItemsProps } from "./interfaces/AddItem.models"
 import { useRouter } from 'next/navigation'
-import DataList from "./DataList/DataList"
+import DataList from "./DataItemList/DataList"
 import insertData from "~/server/data/insertdata/insertdata"
 
 const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {

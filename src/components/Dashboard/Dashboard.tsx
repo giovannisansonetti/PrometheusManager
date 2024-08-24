@@ -5,6 +5,7 @@ import DisplayData from "./DisplayData/DisplayData"
 import MobileSideBar from "./SideBar/MobileSideBar"
 import DisplayNotes from "./DisplayNotes/DisplayNotes"
 import AllItems from "./AllItems/AllItems"
+import TrashBin from "./TrashBin/TrashBin"
 
 const UserDashboard = () => {
 
@@ -21,8 +22,9 @@ const UserDashboard = () => {
             case "Notes":
                 return <DisplayNotes handleMenu={handleMenu} isOpen={isOpen} />
             case "CreditCards":
-            case "TrashBin":
                 return
+            case "TrashBin":
+                return <TrashBin handleMenu={handleMenu} isOpen={isOpen} />
             case "PswGen":
             default:
                 return null;

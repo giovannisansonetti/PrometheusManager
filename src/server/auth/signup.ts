@@ -26,15 +26,15 @@ export async function signup(formprops: FormProps) {
 
     const ip = await getIp()
 
-    if (!error || data.user) {
-        await db.user.create({
-            data:{
-                id: data.user?.id,
-                email: userData.email,
-                phoneNumber: userData.phoneNumber
-            }
-        })  
+    if (!error){  
         if(data.user) {
+            await db.user.create({
+                data:{
+                    id: data.user?.id,
+                    email: userData.email,
+                    phoneNumber: userData.phoneNumber
+                }
+            })
             await db.userLoginHistory.create({
                 data:{
                     userId: data.user.id,

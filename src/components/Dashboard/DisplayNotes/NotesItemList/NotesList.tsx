@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { type Note } from "../interfaces/Note"
 import { fetchNotes } from "~/server/data/showdata/showNotes"
-import NotesListItem from "./NotesItemList"
-import NotesIdle from "./NotesIdle"
+import NotesListItem from "./NotesListElement"
+import ListSkeleton from "~/components/ListSkeleton/ListSkeleton"
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react"
 import NoteIcon from "~/../public/SideBar/Document.svg"
 
@@ -83,15 +83,15 @@ const NotesList = () => {
                         <></>
                     ) : (
                         <>
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
                         </>
                     )}
                 </div>
