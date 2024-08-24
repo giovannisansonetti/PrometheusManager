@@ -7,7 +7,6 @@ interface AllItemsListElementProps {
   item: AllItems
   date: string
   onClick?: () => void 
-  onModify?: () => void
 }
 
 const AllItemsListElement = ({ item, date, onClick }: AllItemsListElementProps) => {
