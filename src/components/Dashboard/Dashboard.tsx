@@ -6,6 +6,7 @@ import MobileSideBar from "./SideBar/MobileSideBar"
 import DisplayNotes from "./DisplayNotes/DisplayNotes"
 import AllItems from "./AllItems/AllItems"
 import TrashBin from "./TrashBin/TrashBin"
+import PswGenerator from "./Tools/PswGenerator/PswGenerator"
 
 const UserDashboard = () => {
 
@@ -26,6 +27,7 @@ const UserDashboard = () => {
             case "TrashBin":
                 return <TrashBin handleMenu={handleMenu} isOpen={isOpen} />
             case "PswGen":
+                return <PswGenerator />
             default:
                 return null;
         }
