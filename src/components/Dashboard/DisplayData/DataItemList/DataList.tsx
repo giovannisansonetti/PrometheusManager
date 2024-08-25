@@ -73,8 +73,12 @@ const DataList = () =>{
                                                     Username: <span className="font-normal">{selectData.username}</span>
                                                 </p>
                                                 <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
-                                                <p className="text-md font-medium mt-2">
+                                                <p className="text-md font-medium mt-2 overflow-hidden text-ellipsis">
                                                     Password: <span className="font-normal">{selectData.password}</span>
+                                                </p>
+                                                <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
+                                                <p className="text-md font-medium mt-2">
+                                                    Password Security: <span className="font-normal">{selectData.passwordSecurity}</span>
                                                 </p>
                                                 <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
                                             </div>

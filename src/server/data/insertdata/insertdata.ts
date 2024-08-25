@@ -1,4 +1,5 @@
 "use server"
+import checkSecurityPass from "utils/pswsecuritychecker";
 import { createClient } from "utils/supabase/server";
 import { type AddItemsProps } from "~/components/Dashboard/DisplayData/interfaces/AddItem.models";
 import { db } from "~/server/db";
@@ -31,6 +32,8 @@ export default async function insertData(formProps: AddItemsProps) {
     notes: formProps.notes as string,
   }
 
+  const passwordSecurity = checkSecurityPass(insertData.password)
+
   try {
     await db.data.create({
       data: {
@@ -40,6 +43,7 @@ export default async function insertData(formProps: AddItemsProps) {
         username: insertData.username,
         password: insertData.password,
         notes: insertData.notes,
+        passwordSecurity: passwordSecurity,
         isDeleted: false
       },
     });

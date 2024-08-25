@@ -5,15 +5,16 @@ import { AllItems } from "~/server/data/showdata/allitems.models"
 import AllItemsListElement from "./AllItemsListElement"
 import Data from "./interfaces/Data.models"
 import Note from "./interfaces/Note.models"
-import deleteData from "~/server/data/deleteData/deleteData"
+import deleteData from "~/server/data/moveToTrash/deleteData"
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton"
-import deleteNote from "~/server/data/deleteData/deleteNote"
+import deleteNote from "~/server/data/moveToTrash/deleteNote"
 
 const AllItemsList = () =>{
 
     const { isOpen: isPasswordModalOpen, onOpen: onPasswordModalOpen, onOpenChange: onPasswordModalOpenChange } = useDisclosure()
     const { isOpen: isNoteModalOpen, onOpen: onNoteModalOpen, onOpenChange: onNoteModalOpenChange } = useDisclosure()
 
+    const [loading, setLoading] = useState(false)
 
     const [items, setItems] = useState<AllItems[] | null>(null)
     const [error, setError] = useState("")
@@ -32,6 +33,19 @@ const AllItemsList = () =>{
             onNoteModalOpen()
         }
     }
+
+    const handleDelete = async(type: string, id: string) =>{
+        if(type === "data"){
+            setLoading(true)
+            await deleteData(id)
+            setLoading(false)
+        }
+        if(type === "note"){
+            setLoading(true)
+            await deleteNote(id)
+            setLoading(false)
+        }
+    }   
 
     useEffect(() => {
         const getItems = async() => {
@@ -90,6 +104,10 @@ const AllItemsList = () =>{
                                                     Password: <span className="font-normal">{data.password}</span>
                                                 </p>
                                                 <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
+                                                <p className="text-md font-medium mt-2">
+                                                    Password Security: <span className="font-normal">{data.passwordSecurity}</span>
+                                                </p>
+                                                <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
                                             </div>
                                         </div>
                                         )}
@@ -97,7 +115,7 @@ const AllItemsList = () =>{
                                     {data &&
                                         <ModalFooter>
                                             <Button color="primary" variant="flat">Edit</Button>
-                                            <Button color="danger" variant="flat" onClick={async() =>{deleteData(data.id)}}>Delete</Button>
+                                            {loading ? (<Button color="danger" isLoading>Deleting</Button>) : (<Button color="danger" variant="flat" onClick={async() =>{handleDelete("data", data.id)}}>Delete</Button>)}
                                         </ModalFooter>
                                     }
                                 </>
@@ -132,7 +150,7 @@ const AllItemsList = () =>{
                                     {note &&
                                         <ModalFooter>
                                             <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
-                                            <Button color="danger" variant="flat" onClick={async() => {deleteNote(note.id)}}>Delete</Button>
+                                            {loading ? (<Button color="danger" isLoading>Deleting</Button>) : (<Button color="danger" variant="flat" onClick={async() => {handleDelete("note", note.id)}}>Delete</Button>)}
                                         </ModalFooter>
                                     }
                             </>

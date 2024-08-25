@@ -5,6 +5,7 @@ export interface Data{
     username: string,
     password: string,
     notes?: string,
+    passwordSecurity: string,
     createdAt: Date,
     updatedAt: Date
 }

@@ -3,11 +3,28 @@ import { TrashBinProps } from "./interfaces/TrashBinProps.models"
 import TrashBinList from "./TrashBinItemList/TrashBinList"
 import deleteAll from "~/server/data/manageData/delete/deleteAll"
 import restoreAll from "~/server/data/manageData/restore/restoreAll"
+import { useState } from "react"
 
 const TrashBin = ({handleMenu, isOpen}: TrashBinProps) => {
     
     const { isOpen: isDeleteAllModalOpen, onOpen: onDeleteAllModalOpen, onOpenChange: onDeleteAllOpenChange } = useDisclosure()
     const { isOpen: isRestoreAllModalOpen, onOpen: onRestoreAllModalOpen, onOpenChange: onRestoreAllModalOpenChange} = useDisclosure()
+
+    const [deleteLoading, setDeleteLoading] = useState(false)
+    const [restoreLoading, setRestoreLoading] = useState(false)
+
+    const handleDeleteAll = async() =>{
+        setDeleteLoading(true)
+        await deleteAll()
+        setDeleteLoading(false)
+    }
+
+    const handleRestoreAll = async() =>{
+        setDeleteLoading(true)
+        await restoreAll()
+        setDeleteLoading(false)
+    }
+
 
     return(
         <div className="flex flex-col bg-[#161616] text-white w-full h-full sm:rounded-lg overflow-hidden overflow-y-auto">
@@ -47,7 +64,7 @@ const TrashBin = ({handleMenu, isOpen}: TrashBinProps) => {
                             <ModalHeader className="flex flex-col gap-1 mt-2">Do you want to delete all the items?</ModalHeader>
                             <ModalFooter>
                                 <Button color="primary" variant="flat" onPress={onClose}>Undo</Button>
-                                <Button color="danger" variant="flat" onClick={async() => {deleteAll()}}>Delete</Button>
+                                {deleteLoading ? (<Button color="danger" isLoading>Deleting</Button>) : (<Button color="danger" variant="flat" onClick={async() => {handleDeleteAll()}}>Delete</Button>)}
                             </ModalFooter>
                         </>
                     )}
@@ -61,14 +78,13 @@ const TrashBin = ({handleMenu, isOpen}: TrashBinProps) => {
                             <ModalHeader className="flex flex-col gap-1 mt-2">Do you want to restore all the items?</ModalHeader>
                             <ModalFooter>
                                 <Button color="primary" variant="flat" onPress={onClose}>Undo</Button>
-                                <Button color="danger" variant="flat" onClick={async() => {restoreAll()}}>Delete</Button>
+                                {restoreLoading ? (<Button color="danger" isLoading>Restoring</Button>) : (<Button color="danger" variant="flat" onClick={async() => {handleRestoreAll()}}>Restore all items</Button>)}
                             </ModalFooter>
                         </>
                     )}
                 </ModalContent>
             </Modal>
         </div>
-
     )
 }
 

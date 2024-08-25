@@ -30,20 +30,21 @@ model UserLoginHistory {
 // perhaps add a user preference and settings table in the future
 
 model Data {
-  id          String   @id @default(uuid())
-  userId      String
-  title       String
-  webSiteLink String
-  username    String
-  password    String //this is the encrypted data
-  iv          String?
-  salt        String?
-  notes       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  isDeleted   Boolean
-  deletedAt   Boolean?
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id               String   @id @default(uuid())
+  userId           String
+  title            String
+  webSiteLink      String
+  username         String
+  password         String //this is the encrypted data
+  iv               String?
+  salt             String?
+  notes            String?
+  passwordSecurity String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  isDeleted        Boolean
+  deletedAt        Boolean?
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Note {

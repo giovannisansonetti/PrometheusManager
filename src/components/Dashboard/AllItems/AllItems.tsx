@@ -16,6 +16,7 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
     const { isOpen: isNoteModalOpen, onOpen: onNoteModalOpen, onOpenChange: onNoteModalOpenChange } = useDisclosure()
 
     const router = useRouter()
+    const [loading, setLoading] = useState(false)
 
     const [dataform, setDataForm] = useState<AddItemsProps>({
         title: "",
@@ -31,13 +32,24 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
     })
 
     const handlePasswordClick = async () => {
-        await insertData(dataform)
-        router.refresh()
+        if(dataform.title !== "" && dataform.webSiteLink !== "" && dataform.password !== ""){
+            setLoading(true)
+            await insertData(dataform)
+            // display success message 
+            router.refresh()
+            setLoading(false)
+        }
+
+        // display error message
     }
 
     const handleNoteClick = async () => {
-        await insertNote(noteForm)
-        router.refresh()
+        if(noteForm.title !== "" && noteForm.description !== ""){
+            setLoading(true)
+            await insertNote(noteForm)
+            router.refresh()
+            setLoading(false)
+        }
     }
 
     return (
@@ -125,7 +137,7 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
                                 />
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" variant="flat" onClick={async () => { await handlePasswordClick() }}>Add</Button>
+                                {loading ? (<Button color="primary" isLoading>Adding item</Button>) : (<Button color="primary" variant="flat" onClick={async () => { await handlePasswordClick() }}>Add</Button> )}
                             </ModalFooter>
                         </>
                     )}
@@ -163,7 +175,7 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
                                 />
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" variant="flat" onClick={async () => { await handleNoteClick() }}>Add</Button>
+                                {loading ? (<Button color="primary" isLoading>Adding item</Button>) : (<Button color="primary" variant="flat" onClick={async () => { await handleNoteClick() }}>Add</Button>)}
                             </ModalFooter>
                         </>
                     )}

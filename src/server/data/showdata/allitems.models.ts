@@ -9,6 +9,7 @@ type DataItem = {
     notes: string | null
     createdAt: Date
     updatedAt: Date
+    passwordSecurity: string
     isDeleted: boolean
 }
   

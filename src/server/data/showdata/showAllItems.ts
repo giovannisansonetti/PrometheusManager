@@ -34,6 +34,7 @@ export async function fetchAllitems() {
                   username: item.username,
                   password: item.password,
                   notes: item.notes,
+                  passwordSecurity: item.passwordSecurity,
                   isDeleted: item.isDeleted,
                 })),
                 ...noteItems.map(item => ({

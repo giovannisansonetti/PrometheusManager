@@ -7,6 +7,7 @@ export default interface Data{
     username: string
     password: string
     notes: string | null
+    passwordSecurity: string
     createdAt: Date
     updatedAt: Date
     isDeleted: boolean
