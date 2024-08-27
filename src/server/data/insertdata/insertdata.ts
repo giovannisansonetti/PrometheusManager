@@ -46,9 +46,10 @@ export default async function insertData(formProps: AddItemsProps) {
         passwordSecurity: passwordSecurity,
         isDeleted: false
       },
-    });
+    })
+    return JSON.stringify({message: "Item created"})
     
   } catch (dbError) {
-      return JSON.stringify({error: "Internal Server Error"})
+      return JSON.stringify({error: "Database Error"})
   }
 }

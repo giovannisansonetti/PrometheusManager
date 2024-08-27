@@ -4,18 +4,37 @@ import { AddNoteProps } from "./interfaces/AddNote.models"
 import {Modal, ModalBody, ModalContent, ModalHeader, ModalFooter, Input, Textarea, Button, useDisclosure } from "@nextui-org/react"
 import { insertNote } from "~/server/data/insertdata/insertNotes"
 import NotesList from "./NotesItemList/NotesList"
+import AlertEvent from "~/components/Events/Alerts/Alert"
 
 const DisplayNotes = ({handleMenu, isOpen}: DisplayNotesProps) =>{
 
     const { isOpen: isNoteModalOpen, onOpen: onNoteModalOpen, onOpenChange: onNoteModalOpenChange } = useDisclosure()
+
+    const [loading, setLoading] = useState(false)
+    const [success, setSuccess] = useState(false)
+    const [error, setError] = useState<string>("")
 
     const [noteForm, setNoteForm] = useState<AddNoteProps>({
         title: "", 
         description: "",
     })
 
-    const handleNoteClick = async () => {
-        await insertNote(noteForm)
+    const handleNoteClick = async (onClose: ()=> void) => {
+        if(noteForm.title !== "" && noteForm.description !== ""){
+            setLoading(true)
+            try{
+                await insertNote(noteForm)
+                setSuccess(true)
+                setTimeout(()=>{
+                    onClose()
+                    setSuccess(false)
+                }, 2000)
+            }catch(err){
+                setError("There was an error while adding your note")
+            }finally{
+                setLoading(false)
+            }
+        }
     }
 
     return (
@@ -46,6 +65,18 @@ const DisplayNotes = ({handleMenu, isOpen}: DisplayNotesProps) =>{
                 <ModalContent>
                     {(onClose) => (
                         <>
+                            { success ? (
+                            <div className="flex justify-center items-center">
+                                <AlertEvent type="success" description="Item added correctly" className="w-2/4 mt-3"/>
+                            </div>
+                            ) : null}
+                        
+                            { error ? (
+                            <div className="flex justify-center items-center">
+                                <AlertEvent type="error" description={error} className="w-2/4 mt-3"/>
+                            </div>
+                            ) : null}
+                            
                             <ModalHeader className="flex flex-col gap-1 mt-2">Create a secure note</ModalHeader>
                             <ModalBody>
                                 <Input
@@ -73,7 +104,7 @@ const DisplayNotes = ({handleMenu, isOpen}: DisplayNotesProps) =>{
                                 />
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" variant="flat" onClick={async () => { await handleNoteClick() }}>Add</Button>
+                            {loading ? (<Button color="primary" isLoading>Adding item</Button>) : (<Button color="primary" variant="flat" onClick={async () => { await handleNoteClick(onClose) }}>Add</Button> )}
                             </ModalFooter>
                         </>
                     )}

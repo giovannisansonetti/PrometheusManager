@@ -8,6 +8,7 @@ import Note from "./interfaces/Note.models"
 import deleteData from "~/server/data/moveToTrash/deleteData"
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton"
 import deleteNote from "~/server/data/moveToTrash/deleteNote"
+import Alert from "~/components/Events/Alerts/Alert"
 
 const AllItemsList = () =>{
 
@@ -17,8 +18,9 @@ const AllItemsList = () =>{
     const [loading, setLoading] = useState(false)
 
     const [items, setItems] = useState<AllItems[] | null>(null)
-    const [error, setError] = useState("")
 
+    const [error, setError] = useState("")
+    
     const [data, setData] = useState<Data | null>(null)
     const [note, setNote] = useState<Note | null>(null)
 
