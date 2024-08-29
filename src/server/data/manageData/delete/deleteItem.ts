@@ -14,6 +14,7 @@ export default async function deleteItem(itemId: string){
     if(data.user){
         await db.data.delete({
             where:{
+                userId: data.user.id,
                 id: itemId
             }
         })

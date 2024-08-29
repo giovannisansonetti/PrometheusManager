@@ -36,6 +36,6 @@ export async function signIn(formprops: FormProps) {
 
     console.log(error)
 
-    return JSON.stringify({ error: "User not found" })
+    if(error.code === "")return JSON.stringify({ error: "User not found" })
 
 }

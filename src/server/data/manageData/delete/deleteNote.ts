@@ -14,6 +14,7 @@ export default async function deleteNote(noteId: string){
     if(data.user){
         await db.note.delete({
             where:{
+                userId: data.user.id,
                 id: noteId
             }
         })

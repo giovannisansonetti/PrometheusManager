@@ -4,6 +4,7 @@ import TrashBinList from "./TrashBinItemList/TrashBinList"
 import deleteAll from "~/server/data/manageData/delete/deleteAll"
 import restoreAll from "~/server/data/manageData/restore/restoreAll"
 import { useState } from "react"
+import AlertEvent from "~/components/Events/Alerts/Alert"
 
 const TrashBin = ({handleMenu, isOpen}: TrashBinProps) => {
     
@@ -13,16 +14,40 @@ const TrashBin = ({handleMenu, isOpen}: TrashBinProps) => {
     const [deleteLoading, setDeleteLoading] = useState(false)
     const [restoreLoading, setRestoreLoading] = useState(false)
 
-    const handleDeleteAll = async() =>{
+
+    const [success, setSuccess] = useState(false)
+    const [error, setError] = useState<string>("")
+
+    const handleDeleteAll = async(onClose: ()=>void) =>{
         setDeleteLoading(true)
-        await deleteAll()
-        setDeleteLoading(false)
+        try{
+            await deleteAll()
+            setSuccess(false)
+            setTimeout(()=>{
+                onClose()
+                setSuccess(false)
+            }, 2000)
+        }catch(err){
+            setError("Error while deleting data")
+        }finally{
+            setDeleteLoading(false)
+        }
     }
 
-    const handleRestoreAll = async() =>{
+    const handleRestoreAll = async(onClose: ()=>void) =>{
         setDeleteLoading(true)
-        await restoreAll()
-        setDeleteLoading(false)
+        try{
+            await restoreAll()
+            setSuccess(false)
+            setTimeout(()=>{
+                onClose()
+                setSuccess(false)
+            }, 2000)
+        }catch(err){
+            setError("Error while restoring all items")
+        }finally{
+            setRestoreLoading(false)
+        }
     }
 
 
@@ -61,10 +86,22 @@ const TrashBin = ({handleMenu, isOpen}: TrashBinProps) => {
                 <ModalContent>
                     {(onClose) => (
                         <>
+                        { success ? (
+                            <div className="flex justify-center items-center">
+                                <AlertEvent type="success" description="All items have been deleted" className="w-2/4 mt-3"/>
+                            </div>
+                        ) : null}
+                        
+                        { error ? (
+                        <div className="flex justify-center items-center">
+                            <AlertEvent type="error" description={error} className="w-2/4 mt-3"/>
+                        </div>
+
+                        ) : null}
                             <ModalHeader className="flex flex-col gap-1 mt-2">Do you want to delete all the items?</ModalHeader>
                             <ModalFooter>
                                 <Button color="primary" variant="flat" onPress={onClose}>Undo</Button>
-                                {deleteLoading ? (<Button color="danger" isLoading>Deleting</Button>) : (<Button color="danger" variant="flat" onClick={async() => {handleDeleteAll()}}>Delete</Button>)}
+                                {deleteLoading ? (<Button color="danger" isLoading>Deleting</Button>) : (<Button color="danger" variant="flat" onClick={async() => {handleDeleteAll(onClose)}}>Delete</Button>)}
                             </ModalFooter>
                         </>
                     )}
@@ -75,10 +112,22 @@ const TrashBin = ({handleMenu, isOpen}: TrashBinProps) => {
                 <ModalContent>
                     {(onClose) => (
                         <>
+                            { success ? (
+                                <div className="flex justify-center items-center">
+                                    <AlertEvent type="success" description="All items have been restored" className="w-2/4 mt-3"/>
+                                </div>
+                            ) : null}
+                            
+                            { error ? (
+                            <div className="flex justify-center items-center">
+                                <AlertEvent type="error" description={error} className="w-2/4 mt-3"/>
+                            </div>
+                            ) : null}
+
                             <ModalHeader className="flex flex-col gap-1 mt-2">Do you want to restore all the items?</ModalHeader>
                             <ModalFooter>
                                 <Button color="primary" variant="flat" onPress={onClose}>Undo</Button>
-                                {restoreLoading ? (<Button color="danger" isLoading>Restoring</Button>) : (<Button color="danger" variant="flat" onClick={async() => {handleRestoreAll()}}>Restore all items</Button>)}
+                                {restoreLoading ? (<Button color="danger" isLoading>Restoring</Button>) : (<Button color="danger" variant="flat" onClick={async() => {handleRestoreAll(onClose)}}>Restore all items</Button>)}
                             </ModalFooter>
                         </>
                     )}

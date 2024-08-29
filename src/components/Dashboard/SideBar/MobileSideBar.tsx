@@ -12,6 +12,7 @@ import Password from "~/../public/SideBar/Password.svg"
 import Settings from "~/../public/SideBar/Settings.svg"
 import Trash from "~/../public/SideBar/Trash.svg"
 import Gen from "~/../public/SideBar/Gen.svg"
+import HealthCheck from "~/../public/SideBar/HealthCheck.svg"
 import Image from "next/image"
 import { SideMenuProps } from "./SideMenu.models"
 
@@ -31,6 +32,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
                     <div className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white" onClick={() => { handleClick("Credit Card") }}><Image className="mr-2" width={20} height={20} src={CreditCard} alt={"title"} /> Credit Cards</div>
                     <div className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white" onClick={() => { handleClick("TrashBin") }}><Image className="mr-2" width={20} height={20} src={Trash} alt={"title"} /> Trash</div>
                     <div className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white" onClick={() => { handleClick("PswGen") }}><Image className="mr-2" width={20} height={20} src={Gen} alt={"title"} /> Password Generator</div>
+                    <div className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white" onClick={() => { handleClick("PswHealthCheck") }}><Image className="mr-2" width={20} height={20} src={HealthCheck} alt={"title"} /> Password Health Check</div>
                 </div>
             )}
         </>

@@ -12,6 +12,7 @@ import Password from "~/../public/SideBar/Password.svg"
 import Settings from "~/../public/SideBar/Settings.svg"
 import Trash from "~/../public/SideBar/Trash.svg"
 import Gen from "~/../public/SideBar/Gen.svg"
+import HealthCheck from "~/../public/SideBar/HealthCheck.svg"
 import Image from "next/image"
 import { SideMenuProps } from "./SideMenu.models"
 
@@ -29,7 +30,10 @@ const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
                         <SideMenuItem icon={Document} isActive={active === "Notes"} onClick={() => { handleClick("Notes") }} name="Notes" />
                         <SideMenuItem icon={CreditCard} isActive={active === "CreditCards"} onClick={() => { handleClick("CreditCards") }} name="Credit Cards" />
                         <SideMenuItem icon={Trash} isActive={active === "TrashBin"} onClick={() => { handleClick("TrashBin") }} name="Trash" />
-                        <SideMenuItem icon={Gen} isActive={active === "PswGen"} onClick={() => { handleClick("PswGen") }} name="Password Generator" />
+                        <div className="absoulute bottom-3">
+                            <SideMenuItem icon={Gen} isActive={active === "PswGen"} onClick={() => { handleClick("PswGen") }} name="Password Generator" />
+                            <SideMenuItem icon={HealthCheck} isActive={active === "PswHealthCheck"} onClick={() => { handleClick("PswHealthCheck") }} name="Password Health Check" />
+                        </div>
                     </Sidebar.ItemGroup>
                 </Sidebar.Items>
             </Sidebar>

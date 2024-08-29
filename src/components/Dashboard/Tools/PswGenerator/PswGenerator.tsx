@@ -2,7 +2,8 @@ import { useState } from "react"
 import { Button, Slider, Switch } from "@nextui-org/react"
 import pswgen from "utils/pswgen"
 import checkSecurityPass from "utils/pswsecuritychecker"
-import PswGeneratorProps from "./PswGeneratorProps.models"
+import { PswGeneratorProps } from "./PswGeneratorProps.models"
+
 
 const PswGenerator = ({ handleMenu, isOpen }:PswGeneratorProps) => {
 

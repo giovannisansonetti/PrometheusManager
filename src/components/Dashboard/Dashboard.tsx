@@ -7,6 +7,7 @@ import DisplayNotes from "./DisplayNotes/DisplayNotes"
 import AllItems from "./AllItems/AllItems"
 import TrashBin from "./TrashBin/TrashBin"
 import PswGenerator from "./Tools/PswGenerator/PswGenerator"
+import PswHealthCheck from "./Tools/PasswordHealthCheck/PswHealthCheck"
 
 const UserDashboard = () => {
 
@@ -28,6 +29,8 @@ const UserDashboard = () => {
                 return <TrashBin handleMenu={handleMenu} isOpen={isOpen} />
             case "PswGen":
                 return <PswGenerator handleMenu={handleMenu} isOpen={isOpen} />
+            case "PswHealthCheck":
+                return <PswHealthCheck handleMenu={handleMenu} isOpen={isOpen} />
             default:
                 return null;
         }

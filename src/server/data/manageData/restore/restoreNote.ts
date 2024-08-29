@@ -15,6 +15,7 @@ export default async function restoreNote(noteId: string){
     if(data.user){
         await db.note.update({
             where:{
+                userId: data.user.id,
                 id: noteId
             },
             data:{

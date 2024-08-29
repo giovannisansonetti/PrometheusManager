@@ -14,11 +14,13 @@ export default async function deleteAll(){
     if(data.user){
         await db.data.deleteMany({
             where:{
+                userId: data.user.id,
                 isDeleted: true
             }
         })
         await db.note.deleteMany({
             where:{
+                userId: data.user.id,
                 isDeleted: true
             }
         })

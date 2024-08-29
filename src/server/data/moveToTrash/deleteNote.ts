@@ -20,6 +20,7 @@ export default async function deleteNote(noteId: string){
     if(user){
         await db.note.update({
             where:{
+                userId: supabaseUserId,
                 id: noteId
             },
             data:{

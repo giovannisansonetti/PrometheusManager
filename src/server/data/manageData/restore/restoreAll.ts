@@ -14,6 +14,7 @@ export default async function restoreAll(){
     if(data.user){
         await db.note.updateMany({
             where:{
+                userId: data.user.id,
                 isDeleted: true
             },
             data:{
@@ -23,6 +24,7 @@ export default async function restoreAll(){
 
         await db.data.updateMany({
             where:{
+                userId: data.user.id,
                 isDeleted: true
             },
             data:{

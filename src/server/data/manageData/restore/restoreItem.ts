@@ -15,6 +15,7 @@ export default async function restoreItem(itemId: string){
     if(data.user){
         await db.data.update({
             where:{
+                userId: data.user.id,
                 id: itemId
             },
             data:{
