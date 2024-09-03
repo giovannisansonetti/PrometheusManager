@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react"
 import fetchHealthCheck from "~/server/data/healthCheck/healthCheck"
+import Image from "next/image"
+import arrow from "~/../public/arrow-right-short.svg"
+import { IconBxXCircle } from "public/IconBxXCircle"
+import { IconIonCopy } from "public/IconIonCopy"
+import { IconBxTime } from "public/IconBxTime"
 
 interface PswHealthCheckProps{
     handleMenu: ()=>void
@@ -9,7 +14,7 @@ interface PswHealthCheckProps{
 interface HealthCheck{
     weakPassword: number
     oldPassword: number
-    reusedPasswords: number
+    reusedPasswords: { password: string; _count: number }[]
 }
 
 const PswHealthCheck = ({handleMenu, isOpen}: PswHealthCheckProps) =>{
@@ -20,6 +25,7 @@ const PswHealthCheck = ({handleMenu, isOpen}: PswHealthCheckProps) =>{
             const healthCheck = await fetchHealthCheck()
             if(healthCheck){
                 const response: HealthCheck = JSON.parse(healthCheck)
+                console.log(response)
                 if(response){
                     setHealthCheckItems(response)
                 }
@@ -43,25 +49,79 @@ const PswHealthCheck = ({handleMenu, isOpen}: PswHealthCheckProps) =>{
                 Password Health Check
             </h1>
 
-            <div className="flex w-full mt-4 border-1 border-[#27272a]"></div>
+            <div className="flex w-full mt-5 border-1 border-[#27272a]"></div>
             { healthCheckItems ? (
                 <div className="w-full h-screen flex flex-col items-center justify-center gap-5">
-                <div className="w-[80%] h-[15%] sm:w-2/4 sm:h-1/4 border-1 rounded-lg">
-                    {healthCheckItems.weakPassword} weak passwords have been found 
+
+                <div className="w-[80%] h-[15%] sm:w-2/4 sm:h-1/4 border-1 border-[#27272a] rounded-lg flex justify-between items-center bg-[#131314] cursor-pointer">
+                    {healthCheckItems.weakPassword > 0 ? (
+                        <div className="justify-start ml-7">
+                            <div className="flex-col">
+                                <div className="flex flex-row"><IconBxXCircle height={"40px"}/><h1 className="text-[25px] ml-2">Weak passwords(s) found</h1></div>
+                                <div className="sm:text-[35px] sm:mt-5 ml-2 flex flex-row">{healthCheckItems.weakPassword}</div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="justify-start ml-7">
+                            <div className="flex-col">
+                                <IconBxXCircle />
+                                <h1 className="text-[20px]">Weak passwords(s) found</h1>
+                                <div className="sm:text-[35px] sm:mt-5">0</div>
+                            </div>
+                        </div>
+                    )}
+                    <Image width={"40"} height={"40"} src={arrow} alt="" className="cursor-pointer flex justify-end mr-2"></Image>
                 </div>
 
-                <div className="w-[80%] h-[15%] sm:w-2/4 sm:h-1/4 border-1 rounded-lg">
-                    {healthCheckItems.reusedPasswords} reused passwords have been found 
+                <div className="w-[80%] h-[15%] sm:w-2/4 sm:h-1/4 border-1 border-[#27272a] rounded-lg flex justify-between items-center bg-[#131314] cursor-pointer">
+                    {healthCheckItems.reusedPasswords && healthCheckItems.reusedPasswords.length > 0 ? (
+                            <div className="justify-start ml-7">
+                                <div className="flex-col">
+                                    <div className="flex flex-row"><IconIonCopy height={"35px"}/><h1 className="text-[25px] ml-2">Reused passwords(s) found</h1></div>
+                                    <div className="sm:text-[35px] sm:mt-5 ml-2 flex flex-row">{healthCheckItems.reusedPasswords.length}</div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="justify-start ml-7">
+                                <div className="flex-col">
+                                    <div className="flex flex-row"><IconIonCopy height={"35px"}/><h1 className="text-[25px] ml-2">Reused passwords(s) found</h1></div>
+                                    <div className="sm:text-[35px] sm:mt-5 ml-2 flex flex-row">0</div>
+                                </div>
+                            </div>
+                        )}
+                        <Image width={"40"} height={"40"}
+                            src={arrow}
+                            alt=""
+                            className="cursor-pointer flex justify-end mr-2"
+                        />
                 </div>
 
-                <div className="w-[80%] h-[15%] sm:w-2/4 sm:h-1/4 border-1 rounded-lg">
-                    {healthCheckItems.oldPassword} old passwords have been found 
+                <div className="w-[80%] h-[15%] sm:w-2/4 sm:h-1/4 border-1 border-[#27272a] rounded-lg flex justify-between items-center bg-[#131314] cursor-pointer">
+                    {healthCheckItems.oldPassword > 0 ?(
+                        <div className="justify-start ml-7">
+                                    <div className="flex-col">
+                                        <div className="flex flex-row"><IconBxTime height={"35px"}/><h1 className="text-[25px] ml-2">Old password(s) found</h1></div>
+                                        <div className="sm:text-[35px] sm:mt-5 ml-2 flex flex-row">{healthCheckItems.oldPassword}</div>
+                                    </div>
+                                </div>
+                        ) : (
+                            <div className="justify-start ml-7">
+                                <div className="flex-col">
+                                    <div className="flex flex-row"><IconBxTime height={"35px"}/><h1 className="text-[25px] ml-2">Old passwords(s) found</h1></div>
+                                    <div className="sm:text-[35px] sm:mt-5 ml-2 flex flex-row">0</div>
+                                </div>
+                            </div>)
+                    }
+                    <Image width={"40"} height={"40"} src={arrow} alt="" className="cursor-pointer flex justify-end mr-2"></Image>
                 </div>
-            </div>) : (
-                <div className="w-full h-screen flex flex-col items-center justify-center gap-5">
-                    Couldn't fetch data
+
                 </div>
-            )}
+                ) :
+                (
+                    <div className="w-full h-screen flex flex-col items-center justify-center gap-5">
+                        Couldn't fetch data
+                    </div>
+                )}
         </div>
     )
 }

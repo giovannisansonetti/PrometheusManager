@@ -4,6 +4,7 @@ import { fetchData } from "~/server/data/showdata/showdata";
 import DataListItem from "./DataListItem";
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
+import deleteData from "~/server/data/moveToTrash/deleteData";
 
 const DataList = () =>{
 
@@ -85,9 +86,10 @@ const DataList = () =>{
                                         </div>
                                         )}
                                     </ModalBody>
-                                    <ModalFooter>
-                                        <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
-                                    </ModalFooter>
+                                    <ModalFooter>                                            
+                                            <Button color="danger" variant="flat" onClick={async() =>{deleteNote(selectNote.id)}}>Delete Note</Button>
+                                            <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
+                                        </ModalFooter>
                                 </>
                                 </>
                             )}

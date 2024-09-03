@@ -5,6 +5,7 @@ import NotesListItem from "./NotesListElement"
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton"
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react"
 import NoteIcon from "~/../public/SideBar/Document.svg"
+import deleteNote from "~/server/data/moveToTrash/deleteNote"
 
 const NotesList = () => {
     const [notes, setNotes] = useState<Note[] | null>(null)
@@ -69,9 +70,13 @@ const NotesList = () => {
                                             </div>
                                         )}
                                     </ModalBody>
-                                    <ModalFooter>
-                                        <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
-                                    </ModalFooter>
+                                    
+                                    {selectNote && (
+                                        <ModalFooter>                                            
+                                            <Button color="danger" variant="flat" onClick={async() =>{deleteNote(selectNote.id)}}>Delete Note</Button>
+                                            <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
+                                        </ModalFooter>
+                                    )}
                                 </>
                             )}
                         </ModalContent>

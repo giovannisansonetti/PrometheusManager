@@ -9,7 +9,7 @@ export default async function fetchHealthCheck(){
     const { data, error } = await supabase.auth.getUser()
 
     const sixtyDaysAgo = new Date()
-    sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60)
+    sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 90)
 
     if(error){
         console.log(error)
