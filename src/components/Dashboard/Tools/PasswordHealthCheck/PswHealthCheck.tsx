@@ -1,26 +1,29 @@
 import { useEffect, useState } from "react"
-import fetchOldPassword from "~/server/data/healthCheck/oldpasswords"
-import fetchWeakPasswords from "~/server/data/healthCheck/weakpasswords"
-import fetchReusedPassword from "~/server/data/healthCheck/reusedpasswords"
+import fetchHealthCheck from "~/server/data/healthCheck/healthCheck"
 
 interface PswHealthCheckProps{
     handleMenu: ()=>void
     isOpen: boolean
 }
 
-const PswHealthCheck = ({handleMenu, isOpen}: PswHealthCheckProps) =>{
+interface HealthCheck{
+    weakPassword: number
+    oldPassword: number
+    reusedPasswords: number
+}
 
-    const [nWeakPasswords, setNWeakPasswords] = useState<number>() // number of weak passwords stored
-    const [nOldPasswords, setNOldPasswords] = useState<number>() // number of old passwords stored
-    const [nReusedPasswords, setNreusedPasswords] = useState<number>()  // number of reused passwords stored
+const PswHealthCheck = ({handleMenu, isOpen}: PswHealthCheckProps) =>{
+    const [healthCheckItems, setHealthCheckItems] = useState<HealthCheck | null>(null) 
 
     useEffect(() =>{
         const HealthCheck = async() =>{
-            const weakPasswordReq = await fetchWeakPasswords()
-            const reusedPassword = await fetchReusedPassword()
-
-            setNWeakPasswords(weakPasswordReq)
-            setNreusedPasswords(reusedPassword)
+            const healthCheck = await fetchHealthCheck()
+            if(healthCheck){
+                const response: HealthCheck = JSON.parse(healthCheck)
+                if(response){
+                    setHealthCheckItems(response)
+                }
+            }
         }
         
         HealthCheck()
@@ -41,20 +44,24 @@ const PswHealthCheck = ({handleMenu, isOpen}: PswHealthCheckProps) =>{
             </h1>
 
             <div className="flex w-full mt-4 border-1 border-[#27272a]"></div>
-
-            <div className="w-full h-screen flex flex-col items-center justify-center gap-5">
+            { healthCheckItems ? (
+                <div className="w-full h-screen flex flex-col items-center justify-center gap-5">
                 <div className="w-[80%] h-[15%] sm:w-2/4 sm:h-1/4 border-1 rounded-lg">
-                    {nWeakPasswords} weak passwords have been found 
+                    {healthCheckItems.weakPassword} weak passwords have been found 
                 </div>
 
                 <div className="w-[80%] h-[15%] sm:w-2/4 sm:h-1/4 border-1 rounded-lg">
-                    {nReusedPasswords} reused passwords have been found 
+                    {healthCheckItems.reusedPasswords} reused passwords have been found 
                 </div>
 
                 <div className="w-[80%] h-[15%] sm:w-2/4 sm:h-1/4 border-1 rounded-lg">
-                
+                    {healthCheckItems.oldPassword} old passwords have been found 
                 </div>
-            </div>
+            </div>) : (
+                <div className="w-full h-screen flex flex-col items-center justify-center gap-5">
+                    Couldn't fetch data
+                </div>
+            )}
         </div>
     )
 }
