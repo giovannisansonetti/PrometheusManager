@@ -86,10 +86,12 @@ const DataList = () =>{
                                         </div>
                                         )}
                                     </ModalBody>
-                                    <ModalFooter>                                            
-                                            <Button color="danger" variant="flat" onClick={async() =>{deleteNote(selectNote.id)}}>Delete Note</Button>
+                                    { selectData && (
+                                        <ModalFooter>                                       
+                                            <Button color="danger" variant="flat" onClick={async() =>{deleteData(selectData.id)}}>Delete data</Button>
                                             <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
                                         </ModalFooter>
+                                    )}
                                 </>
                                 </>
                             )}

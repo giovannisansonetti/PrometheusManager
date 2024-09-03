@@ -12,12 +12,20 @@ const NotesList = () => {
     const [selectNote, setSelectNote] = useState<Note | null>(null)
     const [noNotesMessage, setNoNotesMessage] = useState<string | null>(null)
 
+    const [loading, setLoading] = useState(false)
+
     const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
 
     const handleClick = (note: Note) => {
         setSelectNote(note)
         onOpen()
     }
+
+    const handleDelete = async(id: string) =>{
+        setLoading(true)
+        await deleteNote(id)
+        setLoading(false)
+    }   
 
     useEffect(() => {
         const getNotes = async () => {
@@ -72,9 +80,9 @@ const NotesList = () => {
                                     </ModalBody>
                                     
                                     {selectNote && (
-                                        <ModalFooter>                                            
-                                            <Button color="danger" variant="flat" onClick={async() =>{deleteNote(selectNote.id)}}>Delete Note</Button>
-                                            <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
+                                        <ModalFooter>
+                                            {loading ? (<Button color="danger" isLoading>Deleting</Button>) : (<Button color="danger" variant="flat" onClick={async() => {handleDelete(selectNote.id)}}>Delete note</Button>)}                                        
+                                            <Button color="primary" variant="flat" onPress={onClose}>Close</Button>
                                         </ModalFooter>
                                     )}
                                 </>
