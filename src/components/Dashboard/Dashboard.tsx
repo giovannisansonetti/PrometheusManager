@@ -41,9 +41,9 @@ const UserDashboard = () => {
     }
 
     return (
-        <div className="flex h-screen sm:p-3 ">
+        <div className="flex h-screen sm:p-3">
             <SideBar active={active} setActive={setActive} isOpen={isOpen} setIsOpen={setIsOpen} />
-            <div className="flex-grow md:p-3">
+            <div className="flex-grow lg:p-3">
                 <MobileSideBar active={active} setActive={setActive} isOpen={isOpen} setIsOpen={setIsOpen}></MobileSideBar>
                 {renderComponent()}
             </div>

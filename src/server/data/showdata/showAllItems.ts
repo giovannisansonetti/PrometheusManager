@@ -21,8 +21,15 @@ export async function fetchAllitems() {
     if (user) {
         try {
             const [dataItems, noteItems] = await Promise.all([
-              db.data.findMany({ where: { userId: user.id} }),
-              db.note.findMany({ where: { userId: user.id} }),
+              db.data.findMany({
+                 where:{ 
+                  userId: user.id
+                } 
+              }),
+              db.note.findMany({
+                 where:{
+                   userId: user.id} 
+              }),
             ])
         
             const items: AllItems[] = [

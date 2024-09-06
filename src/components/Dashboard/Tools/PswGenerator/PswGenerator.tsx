@@ -29,17 +29,21 @@ const PswGenerator = ({ handleMenu, isOpen }:PswGeneratorProps) => {
   
   return (
     <div className="flex flex-col bg-[#161616] text-white w-full h-full sm:rounded-lg overflow-hidden overflow-y-auto items-center">
-    <div className="w-full flex items-center justify-between p-4 sm:hidden">
-            <button onClick={handleMenu} className="p-2 rounded ml-5 ">
-                <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isOpen ? 'rotate-45 translate-y-1' : '-translate-y-0.5'}`}></span>
-                <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${isOpen ? 'opacity-0' : 'opacity-100'}`}></span>
-                <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isOpen ? '-rotate-45 -translate-y-1' : 'translate-y-0.5'}`}></span>
-            </button>
-        </div>    
+        <div className="relative w-full">
+            <div className="flex justify-end items-center mt-5 mr-7">
+                <div className="lg:hidden flex">
+                    <button onClick={handleMenu} className="p-2 rounded ml-5">
+                        <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isOpen ? 'rotate-45 translate-y-1' : '-translate-y-0.5'}`}></span>
+                        <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${isOpen ? 'opacity-0' : 'opacity-100'}`}></span>
+                        <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isOpen ? '-rotate-45 -translate-y-1' : 'translate-y-0.5'}`}></span>
+                    </button>
+                </div>
 
-        <h1 className="text-[20px] mt-4 sm:text-[30px] flex justify-center">
-            Password Generator
-        </h1>
+                <h1 className="lg:text-[30px] flex justify-center w-full">
+                    Password Generator
+                </h1>
+            </div>                
+        </div>   
 
         <div className="flex w-full mt-4 border-1 border-[#27272a]"></div>
 
@@ -53,12 +57,12 @@ const PswGenerator = ({ handleMenu, isOpen }:PswGeneratorProps) => {
             <div className="w-full sm:w-2/4 flex flex-row mt-4 justify-between px-4 sm:px-0">
                 <div className="justify-start">Length</div>
                 <Slider
-                step={1}
-                maxValue={32}
-                minValue={5}
-                defaultValue={5}
-                className="w-3/4 sm:max-w-sm justify-end"
-                onChange={setLength}
+                    step={1}
+                    maxValue={32}
+                    minValue={5}
+                    defaultValue={5}
+                    className="w-3/4 sm:max-w-sm justify-end"
+                    onChange={setLength}
                 />
                 <div className="justify-end">{length}</div>
             </div>

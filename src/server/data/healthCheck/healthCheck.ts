@@ -59,7 +59,7 @@ export default async function fetchHealthCheck(){
             where: {
                 userId: data.user.id, 
                 isDeleted: false 
-            }
+            },
         })
 
         return JSON.stringify({ 
