@@ -7,17 +7,9 @@ import { IconIonCopy } from "public/IconIonCopy"
 import { IconBxTime } from "public/IconBxTime"
 import IssueList from "./IssueList/IssueList"
 import back from "~/../public/back-svgrepo-com.svg" 
-
-interface PswHealthCheckProps{
-    handleMenu: ()=>void
-    isOpen: boolean
-}
-
-interface HealthCheck{
-    weakPassword: number
-    oldPassword: number
-    reusedPasswords: { password: string; _count: number }[]
-}
+import PswHealthCheckProps from "./interfaces/HealthCheck.models"
+import HealthCheck from "./interfaces/HealthCheck.models"
+import PswHealthSkeleton from "~/components/ListSkeleton/PswHealthSkeleton"
 
 const PswHealthCheck = ({handleMenu, isOpen}: PswHealthCheckProps) =>{
 
@@ -44,7 +36,17 @@ const PswHealthCheck = ({handleMenu, isOpen}: PswHealthCheckProps) =>{
     const renderIssue = () =>{
         if(currentView === "weakPasswords"){
             return(
-                <IssueList />
+                <IssueList type="weakPasswords"/>
+            )
+        }
+        if(currentView === "reusedPasswords"){
+            return(
+                <IssueList type="reusedPasswords"/>
+            )
+        }
+        if(currentView === "oldPasswords"){
+            return(
+                <IssueList type="oldPasswords"/>
             )
         }
     }
@@ -90,7 +92,7 @@ const PswHealthCheck = ({handleMenu, isOpen}: PswHealthCheckProps) =>{
                     )}
 
                     { currentView === "oldPasswords" && (
-                        <h1 className="lg:text-[30px] text-center w-full">
+                        <h1 className="lg:text-[30px] justify-center text-center w-full">
                             Reused passwords list
                         </h1>
                     )}
@@ -171,8 +173,10 @@ const PswHealthCheck = ({handleMenu, isOpen}: PswHealthCheckProps) =>{
                     </div>
 
                 ) : (
-                    <div className="w-[80%] h-[15%] sm:w-2/4 sm:h-1/4 border-1 border-[#27272a] rounded-lg flex justify-between items-center bg-[#131314] cursor-pointer">
-                        Couldn't fetch data
+                    <div className="w-full h-screen flex flex-col items-center justify-center gap-5">
+                        <PswHealthSkeleton />
+                        <PswHealthSkeleton />
+                        <PswHealthSkeleton />
                     </div>
                     )}
 

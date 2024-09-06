@@ -62,7 +62,11 @@ const PswGenerator = ({ handleMenu, isOpen }:PswGeneratorProps) => {
                     minValue={5}
                     defaultValue={5}
                     className="w-3/4 sm:max-w-sm justify-end"
-                    onChange={setLength}
+                    onChange={(value) => {
+                        if (typeof value === 'number') {
+                          setLength(value)
+                        }
+                    }}
                 />
                 <div className="justify-end">{length}</div>
             </div>
