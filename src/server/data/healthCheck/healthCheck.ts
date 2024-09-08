@@ -16,31 +16,33 @@ export default async function fetchHealthCheck(){
     }
 
     if(data.user){
-        const weakPasswordCount = await db.data.aggregate({
+        const weakPasswords = await db.data.groupBy({
+            by: ['password'],
             _count: {
-                _all: true 
+                password: true
             },
-            where:{
+            where: {
                 userId: data.user.id,
                 OR: [
                     { passwordSecurity: "Very Weak" },
                     { passwordSecurity: "Weak" },
-                    { passwordSecurity: "Very Weak - Common Password"}
+                    { passwordSecurity: "Very Weak - Common Password" }
                 ],
                 isDeleted: false
             }
         })
 
-        const oldPassword = await db.data.aggregate({
+        const oldPasswords = await db.data.groupBy({
+            by: ['password'],
             _count: {
-                _all: true 
+                password: true
             },
-            where:{
+            where: {
                 userId: data.user.id,
-
                 createdAt: {
-                    gte: sixtyDaysAgo // returns the count of only the passwords that are 60 days old
-                }
+                    gte: sixtyDaysAgo // 90 days old passwords
+                },
+                isDeleted: false
             }
         })
 
@@ -63,9 +65,10 @@ export default async function fetchHealthCheck(){
         })
 
         return JSON.stringify({ 
-            weakPassword: weakPasswordCount._count._all, 
-            oldPassword: oldPassword._count._all, 
+            weakPassword: weakPasswords, 
+            oldPassword: oldPasswords, 
             reusedPasswords: reusedPasswords
         })
+        
     }
 }
