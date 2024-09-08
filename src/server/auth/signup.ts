@@ -5,6 +5,7 @@ import { type FormProps } from "~/components/auth/SignUp/Form.models"
 import { db } from "../db"
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import getIp from "utils/retrieveInfo/info"
 
 
 export async function signup(formprops: FormProps) {
@@ -18,21 +19,31 @@ export async function signup(formprops: FormProps) {
 
     const userData = {
         email: formprops.email as string,
-        masterPass: formprops.masterPass as string,
         phoneNumber: formprops.phoneNumber as string
     }
 
     const { data, error } = await supabase.auth.signUp(signupData)
-    
-    if (!error || data.user) {
-        await db.user.create({
-            data:{
-                id: data.user?.id,
-                email: userData.email,
-                masterPass: userData.masterPass,
-                phoneNumber: userData.phoneNumber
-            }
-        })  
+
+    const ip = await getIp()
+
+    if (!error){  
+        if(data.user) {
+            await db.user.create({
+                data:{
+                    id: data.user?.id,
+                    email: userData.email,
+                    phoneNumber: userData.phoneNumber
+                }
+            })
+            await db.userLoginHistory.create({
+                data:{
+                    userId: data.user.id,
+                    ipAddress: ip,
+                    deviceInfo: "no device" 
+                }
+            })
+        }
+
         revalidatePath('/', 'layout')
         redirect('/')
     }

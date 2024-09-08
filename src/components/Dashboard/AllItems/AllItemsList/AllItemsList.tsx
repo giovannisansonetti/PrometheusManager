@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react"
 import { fetchAllitems } from "~/server/data/showdata/showAllItems"
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react"
-import DataListIdle from "../../DisplayData/DataList/DataListIdle"
 import { AllItems } from "~/server/data/showdata/allitems.models"
 import AllItemsListElement from "./AllItemsListElement"
 import Data from "./interfaces/Data.models"
 import Note from "./interfaces/Note.models"
-import deleteData from "~/server/data/deleteData/deleteData"
+import deleteData from "~/server/data/moveToTrash/deleteData"
+import ListSkeleton from "~/components/ListSkeleton/ListSkeleton"
+import deleteNote from "~/server/data/moveToTrash/deleteNote"
+import Alert from "~/components/Events/Alerts/Alert"
 
 const AllItemsList = () =>{
 
     const { isOpen: isPasswordModalOpen, onOpen: onPasswordModalOpen, onOpenChange: onPasswordModalOpenChange } = useDisclosure()
     const { isOpen: isNoteModalOpen, onOpen: onNoteModalOpen, onOpenChange: onNoteModalOpenChange } = useDisclosure()
 
+    const [loading, setLoading] = useState(false)
 
     const [items, setItems] = useState<AllItems[] | null>(null)
-    const [error, setError] = useState("")
 
+    const [error, setError] = useState("")
+    
     const [data, setData] = useState<Data | null>(null)
     const [note, setNote] = useState<Note | null>(null)
 
@@ -31,6 +35,19 @@ const AllItemsList = () =>{
             onNoteModalOpen()
         }
     }
+
+    const handleDelete = async(type: string, id: string) =>{
+        if(type === "data"){
+            setLoading(true)
+            await deleteData(id)
+            setLoading(false)
+        }
+        if(type === "note"){
+            setLoading(true)
+            await deleteNote(id)
+            setLoading(false)
+        }
+    }   
 
     useEffect(() => {
         const getItems = async() => {
@@ -89,20 +106,20 @@ const AllItemsList = () =>{
                                                     Password: <span className="font-normal">{data.password}</span>
                                                 </p>
                                                 <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
-                                                {data.passwordSecurity && (
-                                                    <p className="text-sm font-medium">
-                                                        Security: <span className="font-normal">{data.passwordSecurity}</span>
-                                                    </p>
-                                                )}
+                                                <p className="text-md font-medium mt-2">
+                                                    Password Security: <span className="font-normal">{data.passwordSecurity}</span>
+                                                </p>
+                                                <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
                                             </div>
                                         </div>
                                         )}
-                                        {data && (
-                                            <ModalFooter>
-                                                <Button color="danger" variant="flat" onClick={async() => {deleteData(data.id)}}>Delete</Button>
-                                                <Button color="primary" variant="flat" onClick={onClose}>Edit</Button>
-                                            </ModalFooter>)}
                                     </ModalBody>
+                                    {data &&
+                                        <ModalFooter>
+                                            <Button color="primary" variant="flat">Edit</Button>
+                                            {loading ? (<Button color="danger" isLoading>Deleting</Button>) : (<Button color="danger" variant="flat" onClick={async() =>{handleDelete("data", data.id)}}>Delete</Button>)}
+                                        </ModalFooter>
+                                    }
                                 </>
                                 </>
                             )}
@@ -132,10 +149,12 @@ const AllItemsList = () =>{
                                             </div>
                                         )}
                                     </ModalBody>
-                                    <ModalFooter>
-                                        <Button color="danger" variant="flat" onClick={async() => {}}>Delete</Button>
-                                        <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
-                                    </ModalFooter>
+                                    {note &&
+                                        <ModalFooter>
+                                            <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
+                                            {loading ? (<Button color="danger" isLoading>Deleting</Button>) : (<Button color="danger" variant="flat" onClick={async() => {handleDelete("note", note.id)}}>Delete</Button>)}
+                                        </ModalFooter>
+                                    }
                             </>
                         )}
                     </ModalContent>
@@ -145,17 +164,17 @@ const AllItemsList = () =>{
 
             ) : (
                 <div className="flex flex-col justify-center items-center">
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
-                    <DataListIdle />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
+                    <ListSkeleton />
                 </div>
             )}
         </div>

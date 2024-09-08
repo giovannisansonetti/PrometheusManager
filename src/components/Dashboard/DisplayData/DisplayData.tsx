@@ -5,16 +5,17 @@ import { useState } from "react"
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react"
 import { type AddItemsProps } from "./interfaces/AddItem.models"
 import { useRouter } from 'next/navigation'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react"
-import { AddNoteProps } from "../DisplayNotes/interfaces/AddNote.models"
-import { insertNote } from "~/server/data/insertdata/insertNotes"
-import DataList from "./DataList/DataList"
+import DataList from "./DataItemList/DataList"
 import insertData from "~/server/data/insertdata/insertdata"
+import AlertEvent from "~/components/Events/Alerts/Alert"
 
 const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
     const { isOpen: isPasswordModalOpen, onOpen: onPasswordModalOpen, onOpenChange: onPasswordModalOpenChange } = useDisclosure()
     
     const router = useRouter()
+    const [loading, setLoading] = useState(false)
+    const [success, setSuccess] = useState(false)
+    const [error, setError] = useState<string>("")
 
     const [dataform, setDataForm] = useState<AddItemsProps>({
         title: "",
@@ -24,9 +25,25 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
         notes: ""
     })
 
-    const handlePasswordClick = async () => {
-        await insertData(dataform)
-        router.refresh()
+    const handlePasswordClick = async (onClose: ()=> void) => {
+        if(dataform.title !== "" && dataform.webSiteLink !== "" && dataform.password !== ""){
+            setLoading(true)
+            try{
+                await insertData(dataform)
+                setSuccess(true)
+                setTimeout(()=>{
+                    onClose() 
+                    setSuccess(false)
+                    router.refresh()
+                }, 2000)
+            }catch(error){
+                setError("There was an error while adding your item")
+            }finally{
+                setLoading(false)
+            }  
+        } else {
+            setError("Please fill in all required fields.")
+        }
     }
 
     return (
@@ -58,6 +75,17 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                 <ModalContent>
                     {(onClose) => (
                         <>
+                        { success ? (
+                            <div className="flex justify-center items-center">
+                                <AlertEvent type="success" description="Item added correctly" className="w-2/4 mt-3"/>
+                            </div>
+                        ) : null}
+                        
+                        { error ? (
+                        <div className="flex justify-center items-center">
+                            <AlertEvent type="error" description={error} className="w-2/4 mt-3"/>
+                        </div>
+                        ) : null}
                             <ModalHeader className="flex flex-col gap-1 mt-2">Add an item</ModalHeader>
                             <ModalBody>
                                 <Input
@@ -106,7 +134,11 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                                 />
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" variant="flat" onClick={async () => { await handlePasswordClick() }}>Add</Button>
+                            {loading ? (
+                                <Button color="primary" isLoading>Adding item</Button>
+                            ) : (
+                                <Button color="primary" variant="flat" onClick={async () => { await handlePasswordClick(onClose) }}>Add</Button>
+                            )}
                             </ModalFooter>
                         </>
                     )}

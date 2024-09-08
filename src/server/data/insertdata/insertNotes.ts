@@ -29,7 +29,8 @@ export async function insertNote(formProps: AddNoteProps) {
                 data: {
                     userId: user.id,
                     noteTitle: insertNote.title,
-                    noteDescription: insertNote.description
+                    noteDescription: insertNote.description,
+                    isDeleted: false
                 }
             })}
         catch(dbError){

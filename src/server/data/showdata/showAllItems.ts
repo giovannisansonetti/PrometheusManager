@@ -21,8 +21,15 @@ export async function fetchAllitems() {
     if (user) {
         try {
             const [dataItems, noteItems] = await Promise.all([
-              db.data.findMany({ where: { userId: user.id} }),
-              db.note.findMany({ where: { userId: user.id} }),
+              db.data.findMany({
+                 where:{ 
+                  userId: user.id
+                } 
+              }),
+              db.note.findMany({
+                 where:{
+                   userId: user.id} 
+              }),
             ])
         
             const items: AllItems[] = [
@@ -34,12 +41,15 @@ export async function fetchAllitems() {
                   username: item.username,
                   password: item.password,
                   notes: item.notes,
+                  passwordSecurity: item.passwordSecurity,
+                  isDeleted: item.isDeleted,
                 })),
                 ...noteItems.map(item => ({
                   ...item,
                   type: 'note' as const,
                   noteTitle: item.noteTitle,
                   noteDescription: item.noteDescription,
+                  isDeleted: item.isDeleted,
                 })),
               ];
         

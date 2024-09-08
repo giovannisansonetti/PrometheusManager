@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { type Data } from "./interfaces/Data";
 import { fetchData } from "~/server/data/showdata/showdata";
 import DataListItem from "./DataListItem";
-import DataListIdle from "./DataListIdle";
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
+import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
+import deleteData from "~/server/data/moveToTrash/deleteData";
 
 const DataList = () =>{
 
@@ -73,22 +74,24 @@ const DataList = () =>{
                                                     Username: <span className="font-normal">{selectData.username}</span>
                                                 </p>
                                                 <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
-                                                <p className="text-md font-medium mt-2">
+                                                <p className="text-md font-medium mt-2 overflow-hidden text-ellipsis">
                                                     Password: <span className="font-normal">{selectData.password}</span>
                                                 </p>
                                                 <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
-                                                {selectData.passwordSecurity && (
-                                                    <p className="text-sm font-medium">
-                                                        Security: <span className="font-normal">{selectData.passwordSecurity}</span>
-                                                    </p>
-                                                )}
+                                                <p className="text-md font-medium mt-2">
+                                                    Password Security: <span className="font-normal">{selectData.passwordSecurity}</span>
+                                                </p>
+                                                <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
                                             </div>
                                         </div>
                                         )}
                                     </ModalBody>
-                                    <ModalFooter>
-                                        <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
-                                    </ModalFooter>
+                                    { selectData && (
+                                        <ModalFooter>                                       
+                                            <Button color="danger" variant="flat" onClick={async() =>{deleteData(selectData.id)}}>Delete data</Button>
+                                            <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
+                                        </ModalFooter>
+                                    )}
                                 </>
                                 </>
                             )}
@@ -99,17 +102,17 @@ const DataList = () =>{
                 <div className="flex flex-col justify-center items-center">
                     {noData ? (<></>) : (
                         <>
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
-                        <DataListIdle />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
+                        <ListSkeleton />
                     </>
                     )}
                 </div>

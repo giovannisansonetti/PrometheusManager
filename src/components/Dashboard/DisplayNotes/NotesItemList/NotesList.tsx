@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react"
 import { type Note } from "../interfaces/Note"
 import { fetchNotes } from "~/server/data/showdata/showNotes"
-import NotesListItem from "./NotesItemList"
-import NotesIdle from "./NotesIdle"
+import NotesListItem from "./NotesListElement"
+import ListSkeleton from "~/components/ListSkeleton/ListSkeleton"
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react"
 import NoteIcon from "~/../public/SideBar/Document.svg"
+import deleteNote from "~/server/data/moveToTrash/deleteNote"
 
 const NotesList = () => {
     const [notes, setNotes] = useState<Note[] | null>(null)
     const [selectNote, setSelectNote] = useState<Note | null>(null)
     const [noNotesMessage, setNoNotesMessage] = useState<string | null>(null)
+
+    const [loading, setLoading] = useState(false)
 
     const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -17,6 +20,12 @@ const NotesList = () => {
         setSelectNote(note)
         onOpen()
     }
+
+    const handleDelete = async(id: string) =>{
+        setLoading(true)
+        await deleteNote(id)
+        setLoading(false)
+    }   
 
     useEffect(() => {
         const getNotes = async () => {
@@ -69,9 +78,13 @@ const NotesList = () => {
                                             </div>
                                         )}
                                     </ModalBody>
-                                    <ModalFooter>
-                                        <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
-                                    </ModalFooter>
+                                    
+                                    {selectNote && (
+                                        <ModalFooter>
+                                            {loading ? (<Button color="danger" isLoading>Deleting</Button>) : (<Button color="danger" variant="flat" onClick={async() => {handleDelete(selectNote.id)}}>Delete note</Button>)}                                        
+                                            <Button color="primary" variant="flat" onPress={onClose}>Close</Button>
+                                        </ModalFooter>
+                                    )}
                                 </>
                             )}
                         </ModalContent>
@@ -83,15 +96,15 @@ const NotesList = () => {
                         <></>
                     ) : (
                         <>
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
-                            <NotesIdle />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
+                            <ListSkeleton />
                         </>
                     )}
                 </div>

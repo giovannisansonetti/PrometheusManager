@@ -8,52 +8,53 @@ datasource db {
 }
 
 model User {
-  id          String     @id @default(uuid())
-  email       String     @unique
-  masterPass  String
-  phoneNumber String?    @unique
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  data        Data[]
-  note        Note[]
-  trashbin    Trashbin[]
+  id               String             @id @default(uuid())
+  email            String             @unique
+  phoneNumber      String?            @unique
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  data             Data[]
+  note             Note[]
+  userloginhistory UserLoginHistory[]
 }
 
+model UserLoginHistory {
+  id         String   @id @default(uuid())
+  ipAddress  String
+  deviceInfo String
+  loginAt    DateTime @default(now())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// perhaps add a user preference and settings table in the future
+
 model Data {
-  id               String    @id @default(uuid())
+  id               String   @id @default(uuid())
   userId           String
-  trashbinId       String?
   title            String
   webSiteLink      String
   username         String
-  passwordSecurity String?
   password         String //this is the encrypted data
   iv               String?
   salt             String?
   notes            String?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
-  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  trashbin         Trashbin? @relation(fields: [trashbinId], references: [id], onDelete: Cascade)
+  passwordSecurity String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  isDeleted        Boolean
+  deletedAt        Boolean?
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Note {
-  id              String   @id @default(uuid())
+  id              String    @id @default(uuid())
   userId          String
   noteTitle       String
   noteDescription String
-  trashbinId      String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  trashbin        Trashbin? @relation(fields: [trashbinId], references: [id], onDelete: Cascade)
-}
-
-model Trashbin {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  data      Data[]
-  note      Note[]
-  deletedAt DateTime @default(now())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  isDeleted       Boolean
+  deletedAt       DateTime? @default(now())
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
