@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { type Data } from "./interfaces/Data";
-import { fetchData } from "~/server/data/showdata/showdata";
 import DataListItem from "./DataListItem";
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
 import deleteData from "~/server/data/moveToTrash/deleteData";
+import useSWR from 'swr'
+
+const fetcher = (url: string) => fetch(url).then(res => res.json()) 
 
 const DataList = () =>{
+    const { data, error, isLoading } = useSWR<Data[]>('/api/data/showData', fetcher)
+    console.log(data)
 
-    const [data, setData] = useState<Data[] | null>(null)
+    //const [data, setData] = useState<Data[] | null>(null)
     const [selectData, setSelectData] = useState<Data | null>(null)
     const [noData, setNoData] = useState<string | null>(null)
     const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
@@ -18,33 +22,44 @@ const DataList = () =>{
         onOpen()
     }
 
-    useEffect(() => {
-        const getData = async () => {
-            const responseString = await fetchData()
-            if (responseString) {
-                const response = JSON.parse(responseString)
-                if (Array.isArray(response)) {
-                    response.forEach((element: Data) => {
-                        element.createdAt = new Date(element.createdAt as unknown as string)
-                        element.updatedAt = new Date(element.updatedAt as unknown as string)
-                    })
-                    setData(response)
-                } else if (response.message === "No data found") {
-                    setNoData(response.message)
-                    setData(null)
-                }
-            }
-        }
-        getData()
-    }, [])
-    
+    if (error) {
+        return <div>Error loading data.</div>;
+    }
+
+    if (isLoading) {
+        return (
+            <div className="flex flex-col justify-center items-center">
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+            </div>
+        )
+    }
+
+
     return(
         <>
             { data ? (
                 <div className="overflow-auto overflow-x-hidden h-full mr-auto ml-auto w-full">
-                    {data.map((item) => (
-                            <DataListItem title={item.title} link={item.webSiteLink} email={item.username} date={item.createdAt.toLocaleDateString('it-IT')} onClick={() =>{handleClick(item)}}></DataListItem>
-                    ))}
+                    {data.map((item) => {
+                        const createdAtDate = new Date(item.createdAt)
+                        return (
+                            <DataListItem 
+                                key={item.id} 
+                                title={item.title} 
+                                link={item.webSiteLink} 
+                                email={item.username} 
+                                date={createdAtDate.toLocaleDateString('it-IT')} 
+                                onClick={() => handleClick(item)}
+                            />
+                        )
+                    })}
                     <Modal isOpen={isModalOpen} onOpenChange={onOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
                         <ModalContent>
                         {(onClose) => (
@@ -119,7 +134,6 @@ const DataList = () =>{
             )} 
         </>
     )
-
 }
 
 export default DataList
