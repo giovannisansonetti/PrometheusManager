@@ -1,3 +1,5 @@
+import Data from "~/components/Dashboard/AllItems/AllItemsList/interfaces/Data.models"
+
 export interface DataListProps{
     title?: string
     link?: string //link of the site for the account
@@ -9,4 +11,11 @@ export interface DataListProps{
     onClick?: () => void
     onDelete?: () => void
     onModify?: () => void
+}
+
+export type ApiResponse = {
+    status: number
+    message?: string
+    error?: boolean
+    data?: Data[]
 }

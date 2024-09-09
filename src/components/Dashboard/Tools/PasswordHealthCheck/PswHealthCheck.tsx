@@ -8,29 +8,36 @@ import { IconBxTime } from "public/IconBxTime"
 import IssueList from "./IssueList/IssueList"
 import back from "~/../public/back-svgrepo-com.svg" 
 import PswHealthCheckProps from "./interfaces/HealthCheck.models"
-import HealthCheck from "./interfaces/HealthCheck.models"
+import {type HealthCheck, ApiResponse} from "./interfaces/HealthCheck.models"
 import PswHealthSkeleton from "~/components/ListSkeleton/PswHealthSkeleton"
+import useSWR from "swr"
+import { fetcher } from "~/server/fetcher"
 
 type ViewState = "overview" | "weakPasswords" | "reusedPasswords" | "oldPasswords"
 
 const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
+
+    const { data, error, isLoading } = useSWR<ApiResponse>("api/healthCheck", fetcher)
+    console.log(data)
+    
     const [healthCheckItems, setHealthCheckItems] = useState<HealthCheck | null>(null)
     const [currentView, setCurrentView] = useState<ViewState>("overview")
-  
+    
     useEffect(() => {
-      const HealthCheck = async () => {
-        const healthCheck = await fetchHealthCheck()
-        if (healthCheck) {
-          const response: HealthCheck = JSON.parse(healthCheck)
-          console.log(response)
-          if (response) {
-            setHealthCheckItems(response)
-          }
+        if (data) {
+          setHealthCheckItems(data.data)
         }
-      }
-  
-      HealthCheck()
-    }, [])
+    }, [data]);
+
+
+    if(isLoading){
+        <div className="w-full h-screen flex flex-col items-center justify-center gap-5">
+            <PswHealthSkeleton />
+            <PswHealthSkeleton />
+            <PswHealthSkeleton />
+        </div>
+    }
+    
   
     const renderIssue = () => {
       if (currentView === "weakPasswords") {
@@ -71,16 +78,16 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
                 {currentView === "overview" ? (
                 <div className="flex lg:hidden">
                     <button onClick={handleMenu} className="p-2 rounded ml-5 ">
-                    <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isOpen ? "rotate-45 translate-y-1" : "-translate-y-0.5"}`}></span>
-                    <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${isOpen ? "opacity-0" : "opacity-100"}`}></span>
-                    <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isOpen ? "-rotate-45 -translate-y-1" : "translate-y-0.5"}`}></span>
+                        <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isOpen ? "rotate-45 translate-y-1" : "-translate-y-0.5"}`}></span>
+                        <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${isOpen ? "opacity-0" : "opacity-100"}`}></span>
+                        <span className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isOpen ? "-rotate-45 -translate-y-1" : "translate-y-0.5"}`}></span>
                     </button>
                 </div>
                 ) : (
                 <div className="flex">
                     <div className="ml-5 flex flex-row cursor-pointer items-center" onClick={() => setCurrentView("overview")}>
-                    <Image src={back} width={19} height={19} alt="back" />
-                    <span className="ml-1 text-[14px] sm:text-[16px]">Back</span>
+                        <Image src={back} width={19} height={19} alt="back" />
+                        <span className="ml-1 text-[14px] sm:text-[16px]">Back</span>
                     </div>
                 </div>
                 )}
@@ -114,8 +121,8 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
                         <div className="justify-start ml-7">
                             <div className="flex-col">
                                 <div className="flex flex-row">
-                                    <IconBxXCircle height={"40px"} />
-                                    <h1 className="lg:text-[25px] ml-2">Weak passwords(s) found</h1>
+                                    <IconBxXCircle height={"35px"} />
+                                    <h1 className="text-[18px] lg:text-[25px] ml-2">Weak password(s) found</h1>
                                 </div>
                                 <div className="text-[25px] lg:text-[35px] sm:mt-5 ml-2 flex flex-row">
                                 {healthCheckItems.weakPassword.length}
@@ -125,9 +132,13 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
                     ) : (
                         <div className="justify-start ml-7">
                             <div className="flex-col">
-                                <IconBxXCircle />
-                                <h1 className="text-[20px]">Weak passwords(s) found</h1>
-                                <div className="text-[25px] lg:text-[35px] sm:mt-5 ml-2 flex flex-row">0</div>
+                                <div className="flex flex-row">
+                                    <IconBxXCircle height={"35px"} />
+                                    <h1 className="text-[18px] lg:text-[25px] ml-2">Weak password(s) found</h1>
+                                </div>
+                                <div className="text-[25px] lg:text-[35px] sm:mt-5 ml-2 flex flex-row">
+                                    0
+                                </div>
                             </div>
                         </div>
                     )}

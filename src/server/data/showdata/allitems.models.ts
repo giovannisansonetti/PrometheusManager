@@ -23,6 +23,12 @@ type NoteItem = {
     updatedAt: Date
     isDeleted: boolean
 }
-  
+
 export type AllItems = DataItem | NoteItem
-  
+ 
+export type ApiResponse = {
+    status: number,
+    message?: string,
+    error: boolean,
+    data: AllItems[]
+}

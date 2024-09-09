@@ -5,25 +5,20 @@ import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, But
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
 import deleteData from "~/server/data/moveToTrash/deleteData";
 import useSWR from 'swr'
-
-const fetcher = (url: string) => fetch(url).then(res => res.json()) 
+import { fetcher } from "~/server/fetcher";
+import { type ApiResponse } from "./interfaces/DataList.models";
 
 const DataList = () =>{
-    const { data, error, isLoading } = useSWR<Data[]>('/api/data/showData', fetcher)
+    const { data, error, isLoading } = useSWR<ApiResponse>('/api/data/showData', fetcher)
     console.log(data)
 
     //const [data, setData] = useState<Data[] | null>(null)
     const [selectData, setSelectData] = useState<Data | null>(null)
-    const [noData, setNoData] = useState<string | null>(null)
     const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
 
     const handleClick = (data: Data) =>{
         setSelectData(data)
         onOpen()
-    }
-
-    if (error) {
-        return <div>Error loading data.</div>;
     }
 
     if (isLoading) {
@@ -42,24 +37,45 @@ const DataList = () =>{
         )
     }
 
+    if(error){
+        <div>sesso</div>
+    }
+
+    if (!Array.isArray(data?.data)) {
+        return (
+            <div className="flex flex-col justify-center items-center mt-5">
+                {data && data.message && (
+                    <p className="text-gray-500">{data.message}</p>
+                )}
+
+                {data && data.error && (
+                    <p className="text-gray-500">{data.error}</p>
+                )}
+            </div>
+        )
+    }
 
     return(
         <>
-            { data ? (
+            { data && data.data ? (
                 <div className="overflow-auto overflow-x-hidden h-full mr-auto ml-auto w-full">
-                    {data.map((item) => {
-                        const createdAtDate = new Date(item.createdAt)
+                    {data.data.map((item) => {
                         return (
-                            <DataListItem 
-                                key={item.id} 
-                                title={item.title} 
-                                link={item.webSiteLink} 
-                                email={item.username} 
-                                date={createdAtDate.toLocaleDateString('it-IT')} 
-                                onClick={() => handleClick(item)}
-                            />
+                            <div>
+                                {!item.isDeleted && ( 
+                                    <DataListItem 
+                                        key={item.id} 
+                                        title={item.title} 
+                                        link={item.webSiteLink} 
+                                        email={item.username} 
+                                        date={new Date(item.createdAt).toLocaleDateString('it-IT')} 
+                                        onClick={() => handleClick(item)}
+
+                                    />)}
+                            </div>
                         )
                     })}
+
                     <Modal isOpen={isModalOpen} onOpenChange={onOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
                         <ModalContent>
                         {(onClose) => (
@@ -71,7 +87,7 @@ const DataList = () =>{
                                                 <h2 className="text-2xl font-bold">{selectData.title}</h2>
                                                 <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
                                                 <p className="text-sm text-gray-500">
-                                                    Created on: {selectData.createdAt.toLocaleDateString('it-IT')}
+                                                    Created on: {new Date(selectData.createdAt).toLocaleDateString('it-IT')}
                                                 </p>
                                             </>
                                     )}
@@ -115,21 +131,7 @@ const DataList = () =>{
                 </div>
             ) : (
                 <div className="flex flex-col justify-center items-center">
-                    {noData ? (<></>) : (
-                        <>
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                    </>
-                    )}
+                    <div>No data found</div>    
                 </div>
             )} 
         </>
