@@ -5,14 +5,16 @@ import {Modal, ModalBody, ModalContent, ModalHeader, ModalFooter, Input, Textare
 import { insertNote } from "~/server/data/insertdata/insertNotes"
 import NotesList from "./NotesItemList/NotesList"
 import AlertEvent from "~/components/Events/Alerts/Alert"
+import axios from "axios"
 
 const DisplayNotes = ({handleMenu, isOpen}: DisplayNotesProps) =>{
 
     const { isOpen: isNoteModalOpen, onOpen: onNoteModalOpen, onOpenChange: onNoteModalOpenChange } = useDisclosure()
 
-    const [loading, setLoading] = useState(false)
-    const [success, setSuccess] = useState(false)
-    const [error, setError] = useState<string>("")
+    const [loading, setLoading] = useState<boolean>(false)
+    const [success, setSuccess] = useState<boolean>(false)
+    const [error, setError] = useState<boolean>(false)
+    const [message, setMessage] = useState<string>("")
 
     const [noteForm, setNoteForm] = useState<AddNoteProps>({
         title: "", 
@@ -20,20 +22,31 @@ const DisplayNotes = ({handleMenu, isOpen}: DisplayNotesProps) =>{
     })
 
     const handleNoteClick = async (onClose: ()=> void) => {
-        if(noteForm.title !== "" && noteForm.description !== ""){
-            setLoading(true)
-            try{
-                await insertNote(noteForm)
-                setSuccess(true)
-                setTimeout(()=>{
-                    onClose()
-                    setSuccess(false)
-                }, 2000)
-            }catch(err){
-                setError("There was an error while adding your note")
-            }finally{
+        if (!noteForm.title || !noteForm.description) {
+            setError(true)
+            setMessage("Fill all the fields")
+            setTimeout(() => {
+                setError(false)
+                setMessage("")
+            }, 2000)
+            return
+        }
+
+        setLoading(true)
+        const req = axios.post("/api/data/insertNotes", { 
+            title: noteForm.title,
+            description: noteForm.description
+        })
+
+        const response = (await req).data
+
+        if(response.success){
+            setSuccess(true)
+            setTimeout(() => {
+                onClose()
+                setSuccess(false)
                 setLoading(false)
-            }
+            }, 1000)
         }
     }
 
@@ -73,7 +86,7 @@ const DisplayNotes = ({handleMenu, isOpen}: DisplayNotesProps) =>{
                         
                             { error ? (
                             <div className="flex justify-center items-center">
-                                <AlertEvent type="error" description={error} className="w-2/4 mt-3"/>
+                                <AlertEvent type="error" description={message} className="w-2/4 mt-3"/>
                             </div>
                             ) : null}
                             

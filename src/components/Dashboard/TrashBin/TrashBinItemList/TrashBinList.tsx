@@ -9,6 +9,7 @@ import deleteNote from "~/server/data/manageData/delete/deleteNote"
 import restoreItem from "~/server/data/manageData/restore/restoreItem"
 import restoreNote from "~/server/data/manageData/restore/restoreNote"
 import { fetcher } from "~/server/fetcher"
+import axios from "axios"
 
 const TrashBinList = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -23,25 +24,70 @@ const TrashBinList = () => {
         onOpen()
     }
 
-    const handleDelete = async (item: AllItems) => {
+    const handleDelete = async (item: AllItems, onClose:() => void) => {
         setDeleteLoading(true)
         if (item.type === "data") {
-            await deleteItem(item.id)
-        } else if (item.type === "note") {
-            await deleteNote(item.id)
+            const body = {
+                id: item.id,
+                type: "data"
+            }
+            const req = axios.post("/api/data/manageData/deleteType", body)
+            const response = (await req).data
+            if(response.success){
+                setTimeout(() => {
+                    onClose()
+                    setDeleteLoading(false)
+                }, 1000)
+            }
         }
-        setDeleteLoading(false)
+
+        if (item.type === "note") {
+            const body = {
+                id: item.id,
+                type: "note"
+            }
+            const req = axios.post("/api/data/manageData/deleteType", body)
+            const response = (await req).data
+            if(response.success){
+                setTimeout(() => {
+                    onClose()
+                    setDeleteLoading(false)
+                }, 1000)
+            }
+        }
     }
 
-    // Function to handle restoring the selected item
-    const handleRestore = async (item: AllItems) => {
+    const handleRestore = async (item: AllItems, onClose:() => void) => {
         setRestoreLoading(true)
         if (item.type === "data") {
-            await restoreItem(item.id)
-        } else if (item.type === "note") {
-            await restoreNote(item.id)
+            const body = {
+                id: item.id,
+                type: "data"
+            }
+            const req = axios.post("/api/data/manageData/restoreType", body)
+            const response = (await req).data
+            if(response.success){
+                setTimeout(() => {
+                    onClose()
+                    setDeleteLoading(false)
+                }, 1000)
+            }
         }
-        setRestoreLoading(false)
+
+        if (item.type === "note") {
+            const body = {
+                id: item.id,
+                type: "note"
+            }
+            const req = axios.post("/api/data/manageData/restoreType", body)
+            const response = (await req).data
+            if(response.success){
+                setTimeout(() => {
+                    onClose()
+                    setDeleteLoading(false)
+                }, 1000)
+            }
+        }
     }
 
     if (isLoading) {
@@ -62,7 +108,7 @@ const TrashBinList = () => {
 
     return (
         <div>
-            {data?.data.length ? (
+            {data &&data?.data.length ? (
                 data.data.map((item) => (
                     <TrashBinListElement
                         key={item.id} 
@@ -93,7 +139,7 @@ const TrashBinList = () => {
                                         <Button 
                                             color="primary"
                                             variant="flat"
-                                            onClick={async () => { await handleRestore(selectedItem) }}
+                                            onClick={async () => { await handleRestore(selectedItem, onClose) }}
                                         >
                                             Restore
                                         </Button>
@@ -104,7 +150,7 @@ const TrashBinList = () => {
                                         <Button
                                             color="danger"
                                             variant="flat"
-                                            onClick={async () => { await handleDelete(selectedItem) }}
+                                            onClick={async () => { await handleDelete(selectedItem, onClose) }}
                                         >
                                             Delete
                                         </Button>

@@ -12,7 +12,7 @@ import { FaRegCircleUser } from "react-icons/fa6";
 import axios from "axios"
 
 const NavBar = ({name} : NavBarProps) =>{
-  
+
     const router = useRouter()
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -20,7 +20,7 @@ const NavBar = ({name} : NavBarProps) =>{
       const req = axios.get("/api/auth/signout")
       const response = (await req).data
       if(response.success){
-          router.push("/")
+        router.push("/")
       }
     }
    
@@ -65,9 +65,9 @@ const NavBar = ({name} : NavBarProps) =>{
               </NavbarMenuItem>
             ): (
                 <NavbarMenuItem className="flex flex-col">
-                <Link href={"/auth/login"}>Login</Link>
-                <Link href={"/dashboard"}>Dashboard</Link>
-                <Link href={"/info"}>Info</Link>
+                  <Link href={"/auth/login"}>Login</Link>
+                  <Link href={"/dashboard"}>Dashboard</Link>
+                  <Link href={"/info"}>Info</Link>
                 </NavbarMenuItem>
             )}
           </NavbarMenu>

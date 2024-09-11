@@ -9,6 +9,7 @@ import deleteNote from "~/server/data/moveToTrash/deleteNote"
 import useSWR from 'swr'
 import { fetcher } from "~/server/fetcher"
 import {type ApiResponse} from "../interfaces/NotesList.models"
+import axios from "axios"
 
 const NotesList = () => {
 
@@ -19,6 +20,9 @@ const NotesList = () => {
 
     const [selectNote, setSelectNote] = useState<Note | null>(null)
     const [loading, setLoading] = useState(false)
+    const [success, setSuccess] = useState<boolean>(false)
+    const [errorAlert, setError] = useState<boolean>(false)
+    const [message, setMessage] = useState<string>("")
 
     const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -27,10 +31,23 @@ const NotesList = () => {
         onOpen()
     }
 
-    const handleDelete = async(id: string) =>{
+    const handleDelete = async(id: string, onClose: ()=>void) =>{
         setLoading(true)
-        await deleteNote(id)
-        setLoading(false)
+
+        const req = {
+            id: id,
+            type: "note"
+        }
+        const request = axios.post("/api/data/moveToTrash", req)
+        const response = (await request).data
+
+        if(response.success){
+            setTimeout(() => {
+                onClose()
+                setLoading(false)
+            }, 1000)
+        }
+       
     }   
 
     if (isLoading) {
@@ -103,7 +120,7 @@ const NotesList = () => {
                                     
                                     {selectNote && (
                                         <ModalFooter>
-                                            {loading ? (<Button color="danger" isLoading>Deleting</Button>) : (<Button color="danger" variant="flat" onClick={async() => {handleDelete(selectNote.id)}}>Delete note</Button>)}                                        
+                                            {loading ? (<Button color="danger" isLoading>Deleting</Button>) : (<Button color="danger" variant="flat" onClick={async() => {handleDelete(selectNote.id, onClose)}}>Delete note</Button>)}                                        
                                             <Button color="primary" variant="flat" onPress={onClose}>Close</Button>
                                         </ModalFooter>
                                     )}

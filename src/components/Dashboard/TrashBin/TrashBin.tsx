@@ -5,6 +5,7 @@ import deleteAll from "~/server/data/manageData/delete/deleteAll"
 import restoreAll from "~/server/data/manageData/restore/restoreAll"
 import { useState } from "react"
 import AlertEvent from "~/components/Events/Alerts/Alert"
+import axios from "axios"
 
 const TrashBin = ({handleMenu, isOpen}: TrashBinProps) => {
     
@@ -20,33 +21,27 @@ const TrashBin = ({handleMenu, isOpen}: TrashBinProps) => {
 
     const handleDeleteAll = async(onClose: ()=>void) =>{
         setDeleteLoading(true)
-        try{
-            await deleteAll()
-            setSuccess(false)
+        const request = axios.post("/api/data/manageData/deleteAll")
+        const response = (await request).data
+
+        if(response.success){
             setTimeout(()=>{
                 onClose()
                 setSuccess(false)
-            }, 2000)
-        }catch(err){
-            setError("Error while deleting data")
-        }finally{
-            setDeleteLoading(false)
+            }, 1000)
         }
-    }
+    }        
 
     const handleRestoreAll = async(onClose: ()=>void) =>{
-        setDeleteLoading(true)
-        try{
-            await restoreAll()
-            setSuccess(false)
+        setRestoreLoading(true)
+        const request = axios.post("/api/data/manageData/restoreAll")
+        const response = (await request).data
+
+        if(response.success){
             setTimeout(()=>{
                 onClose()
                 setSuccess(false)
-            }, 2000)
-        }catch(err){
-            setError("Error while restoring all items")
-        }finally{
-            setRestoreLoading(false)
+            }, 1000)
         }
     }
 

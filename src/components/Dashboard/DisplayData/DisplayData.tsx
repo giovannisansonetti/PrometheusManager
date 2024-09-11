@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import DataList from "./DataItemList/DataList"
 import insertData from "~/server/data/insertdata/insertdata"
 import AlertEvent from "~/components/Events/Alerts/Alert"
+import axios from "axios"
 
 const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
     const { isOpen: isPasswordModalOpen, onOpen: onPasswordModalOpen, onOpenChange: onPasswordModalOpenChange } = useDisclosure()
@@ -15,7 +16,8 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
-    const [error, setError] = useState<string>("")
+    const [error, setError] = useState<boolean>(false)
+    const [message, setMessage] = useState<string>("")
 
     const [dataform, setDataForm] = useState<AddItemsProps>({
         title: "",
@@ -26,25 +28,37 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
     })
 
     const handlePasswordClick = async (onClose: ()=> void) => {
-        if(dataform.title !== "" && dataform.webSiteLink !== "" && dataform.password !== ""){
-            setLoading(true)
-            try{
-                await insertData(dataform)
-                setSuccess(true)
-                setTimeout(()=>{
-                    onClose() 
-                    setSuccess(false)
-                    router.refresh()
-                }, 2000)
-            }catch(error){
-                setError("There was an error while adding your item")
-            }finally{
+        if (!dataform.title || !dataform.webSiteLink || !dataform.username || !dataform.password) {
+            setError(true)
+            setMessage("Fill all the fields")
+            setTimeout(() => {
+                setError(false)
+                setMessage("")
+            }, 2000)
+            return
+        }
+
+        setLoading(true)
+        const req = axios.post("/api/data/insertData", { 
+            title: dataform.title,
+            webSiteLink: dataform.webSiteLink,
+            username: dataform.username,
+            password: dataform.password,
+            notes: dataform.notes
+        })
+        const response = (await req).data
+        if(response.success){
+            setSuccess(true)
+            setTimeout(() => {
+                onClose()
+                setSuccess(false)
                 setLoading(false)
-            }  
-        } else {
-            setError("Please fill in all required fields.")
+            }, 1000)
+            router.refresh()
         }
     }
+
+    
 
     return (
         <div className="flex flex-col bg-[#161616] text-white w-full h-full lg:rounded-lg overflow-hidden overflow-y-auto">
@@ -75,17 +89,18 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                        { success ? (
+                        { error && (
                             <div className="flex justify-center items-center">
-                                <AlertEvent type="success" description="Item added correctly" className="w-2/4 mt-3"/>
+                                <AlertEvent type="error" description={message} className="w-2/4 mt-3"/>
                             </div>
-                        ) : null}
+                        )}
                         
-                        { error ? (
-                        <div className="flex justify-center items-center">
-                            <AlertEvent type="error" description={error} className="w-2/4 mt-3"/>
-                        </div>
-                        ) : null}
+                        {success && (
+                            <div className="flex justify-center items-center">
+                            <AlertEvent type="success" description={"item correctly added"} className="w-2/4 mt-3"/>
+                            </div>
+                        )}
+
                             <ModalHeader className="flex flex-col gap-1 mt-2">Add an item</ModalHeader>
                             <ModalBody>
                                 <Input

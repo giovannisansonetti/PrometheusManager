@@ -25,7 +25,11 @@ export default async function deleteAll(){
             }
         })
 
-        return JSON.stringify({ message: "All items successfully deleted" })
+        return JSON.stringify({ 
+            status: 200,
+            success: true,
+            message: "All items successfully deleted"
+        })
     }
     return JSON.stringify({ error: "User not found" })
 }

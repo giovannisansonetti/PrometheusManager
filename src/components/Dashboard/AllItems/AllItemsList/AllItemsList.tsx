@@ -7,6 +7,7 @@ import deleteNote from "~/server/data/moveToTrash/deleteNote"
 import useSWR from "swr"
 import { fetcher } from "~/server/fetcher"
 import { AllItems, ApiResponse } from "~/server/data/showdata/allitems.models"
+import axios from "axios"
 
 const AllItemsList = () => {
   const { data, error, isLoading } = useSWR<ApiResponse>("/api/data/allitems", fetcher)
@@ -27,12 +28,37 @@ const AllItemsList = () => {
     }
   }
 
-  const handleDelete = async (type: string, id: string) => {
+  const handleDelete = async (type: string, id: string, onClose:() => void) => {
     setLoading(true)
+
     if (type === "data") {
-      await deleteData(id)
+        const req = { 
+          id: id,
+          type: "data"
+        }
+        const request = axios.post("/api/data/moveToTrash", req)
+        const response = (await request).data
+
+        if(response.success){
+            setTimeout(() => {
+                onClose()
+                setLoading(false)
+            }, 1000)
+        }
     } else if (type === "note") {
-      await deleteNote(id)
+        const req = { 
+          id: id,
+          type: "note"
+        }
+        const request = axios.post("/api/data/moveToTrash", req)
+        const response = (await request).data
+
+        if(response.success){
+            setTimeout(() => {
+                onClose()
+                setLoading(false)
+            }, 1000)
+        }
     }
     setLoading(false)
   }
@@ -83,7 +109,7 @@ const AllItemsList = () => {
 
         <Modal isOpen={isPasswordModalOpen} onOpenChange={onPasswordModalOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
             <ModalContent>
-            {() => (
+            {(onClose) => (
                 <>
                 {selectedItem && selectedItem.type === "data" && (
                     <>
@@ -110,7 +136,7 @@ const AllItemsList = () => {
                             {loading ? (
                             <Button color="danger" isLoading>Deleting</Button>
                             ) : (
-                            <Button color="danger" variant="flat" onClick={async () => handleDelete("data", selectedItem.id)}>Delete</Button>
+                            <Button color="danger" variant="flat" onClick={async () => handleDelete("data", selectedItem.id, onClose)}>Delete</Button>
                             )}
                     </ModalFooter>
                     </>
@@ -122,7 +148,7 @@ const AllItemsList = () => {
 
         <Modal isOpen={isNoteModalOpen} onOpenChange={onNoteModalOpenChange} className="w-[80%] bottom-[40%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
             <ModalContent>
-            {() => (
+            {(onClose) => (
                 <>
                 {selectedItem && selectedItem.type === "note" && (
                     <>
@@ -141,7 +167,7 @@ const AllItemsList = () => {
                         {loading ? (
                         <Button color="danger" isLoading>Deleting</Button>
                         ) : (
-                        <Button color="danger" variant="flat" onClick={async () => handleDelete("note", selectedItem.id)}>Delete</Button>
+                        <Button color="danger" variant="flat" onClick={async () => handleDelete("note", selectedItem.id, onClose)}>Delete</Button>
                         )}
                     </ModalFooter>
                     </>

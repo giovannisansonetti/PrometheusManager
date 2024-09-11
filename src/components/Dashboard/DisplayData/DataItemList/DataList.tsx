@@ -7,11 +7,12 @@ import deleteData from "~/server/data/moveToTrash/deleteData";
 import useSWR from 'swr'
 import { fetcher } from "~/server/fetcher";
 import { type ApiResponse } from "./interfaces/DataList.models";
+import axios from "axios";
 
 const DataList = () =>{
     const { data, error, isLoading } = useSWR<ApiResponse>('/api/data/showData', fetcher)
     console.log(data)
-
+    const [loading, setLoading] = useState(false)
     const [selectData, setSelectData] = useState<Data | null>(null)
     const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -19,6 +20,24 @@ const DataList = () =>{
         setSelectData(data)
         onOpen()
     }
+
+    const handleDelete = async(id: string, onClose: ()=>void) =>{
+        setLoading(true)
+
+        const req = {
+            id: id,
+            type: "data"
+        }
+        const request = axios.post("/api/data/moveToTrash", req)
+        const response = (await request).data
+
+        if(response.success){
+            setTimeout(() => {
+                onClose()
+                setLoading(false)
+            }, 1000)
+        }
+    } 
 
     if (isLoading) {
         return (
@@ -117,7 +136,7 @@ const DataList = () =>{
                                     </ModalBody>
                                     { selectData && (
                                         <ModalFooter>                                       
-                                            <Button color="danger" variant="flat" onClick={async() =>{deleteData(selectData.id)}}>Delete data</Button>
+                                            {loading ? (<Button isLoading color="danger" variant="flat" onClick={async() =>{deleteData(selectData.id)}}>Delete data</Button>) : (<Button color="danger" variant="flat" onClick={async() =>{handleDelete(selectData.id, onClose)}}>Delete data</Button>)}
                                             <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
                                         </ModalFooter>
                                     )}

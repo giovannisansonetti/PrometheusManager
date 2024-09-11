@@ -30,8 +30,8 @@ const fetchAllitems = async() => {
     if (!user) {
         return { error: true, message: "User not found" }
     }
-
-    if (user) {
+    
+    try{
         const [dataItems, noteItems] = await Promise.all([
             db.data.findMany({
                 where:{ 
@@ -63,10 +63,12 @@ const fetchAllitems = async() => {
                 noteDescription: item.noteDescription,
                 isDeleted: item.isDeleted,
             }))]
-    
+
         items.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
         return {status: 200, message: "Data found", data: items}
-    } 
 
-    return {status: 404, message: "Internal Server Error", error: true}
+    }catch(error){
+        return {status: 500, message: "Internal Server Error", error: true}
+    }
+
 }
