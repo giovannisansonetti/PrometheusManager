@@ -38,10 +38,11 @@ const fetchHealthCheck = async () => {
     }
 
     if(data.user){
-        const weakPasswords = await db.data.groupBy({
-            by: ['password'],
-            _count: {
-                password: true
+        const weakPasswords = await db.data.findMany({
+            select: {
+                id: true,
+                password: true,
+                passwordSecurity: true,
             },
             where: {
                 userId: data.user.id,
@@ -53,11 +54,12 @@ const fetchHealthCheck = async () => {
                 isDeleted: false
             }
         })
-
-        const oldPasswords = await db.data.groupBy({
-            by: ['password'],
-            _count: {
-                password: true
+        
+        const oldPasswords = await db.data.findMany({
+            select: {
+                id: true,
+                password: true,
+                createdAt: true,
             },
             where: {
                 userId: data.user.id,
@@ -67,11 +69,20 @@ const fetchHealthCheck = async () => {
                 isDeleted: false
             }
         })
+        
+        /*const reusedPasswords = await db.data.groupBy({
 
-        const reusedPasswords = await db.data.groupBy({
-            by: ['password'],
-            _count: {
-                password: true, 
+            select: {
+                id: true,
+                password: true,
+            },
+            where: {
+                userId: data.user.id,
+                isDeleted: false,
+                
+            },
+            orderBy: {
+                password: 'asc',
             },
             having: {
                 password: {
@@ -79,17 +90,14 @@ const fetchHealthCheck = async () => {
                         gt: 1 
                     }
                 }
-            },
-            where: {
-                userId: data.user.id, 
-                isDeleted: false 
-            },
-        })
+            }
+        })*/
+    
 
         const healthcheck = {
             weakPasswords: weakPasswords, 
             oldPasswords: oldPasswords, 
-            reusedPasswords: reusedPasswords
+            //reusedPasswords: reusedPasswords
         }
         
         return{

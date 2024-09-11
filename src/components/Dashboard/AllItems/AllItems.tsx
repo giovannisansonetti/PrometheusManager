@@ -76,7 +76,7 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
     }
 
     return (
-        <div className="flex flex-col bg-[#161616] text-white w-full h-full sm:rounded-lg overflow-hidden overflow-y-auto">
+        <div className="flex flex-col bg-[#161616] text-white w-full h-full lg:rounded-lg overflow-hidden overflow-y-auto">
             <div className="">
                 <div className="flex justify-end items-center mt-5 mr-7 ">
                     <div className="w-full block lg:hidden">

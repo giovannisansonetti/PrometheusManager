@@ -25,9 +25,12 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
     
     useEffect(() => {
         if (data) {
+          console.log('Data from API:', data)
           setHealthCheckItems(data.data)
+          console.log("data: " + healthCheckItems?.weakPassword)
         }
-    }, [data]);
+    }, [data])
+
 
 
     if(isLoading){
@@ -38,7 +41,6 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
         </div>
     }
     
-  
     const renderIssue = () => {
       if (currentView === "weakPasswords") {
         return (
@@ -50,7 +52,7 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
           )
         }
 
-      if (currentView === "reusedPasswords") {
+      /*if (currentView === "reusedPasswords") {
         return (
           <div className="w-full flex justify-center">
               {healthCheckItems?.reusedPasswords.map((item) => (
@@ -58,7 +60,7 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
               ))}
           </div>
         )
-      }
+      }*/
 
       if (currentView === "oldPasswords") {
         return (
@@ -72,7 +74,7 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
     }
   
     return (
-      <div className="flex flex-col bg-[#161616] text-white w-full h-full sm:rounded-lg overflow-hidden overflow-y-auto lg:items-center">
+      <div className="flex flex-col bg-[#161616] text-white w-full h-full lg:rounded-lg overflow-hidden overflow-y-auto lg:items-center">
         <div className="relative w-full">
             <div className="flex justify-end items-center mt-5 mr-7">
                 {currentView === "overview" ? (
@@ -145,7 +147,7 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
                         <Image width={"40"} height={"40"} src={arrow} alt="" className="cursor-pointer flex justify-end mr-2"></Image>
                     </div>
     
-                    <div className="w-[80%] h-[15%] sm:w-2/4 sm:h-1/4 border-1 border-[#27272a] rounded-lg flex justify-between items-center bg-[#131314] cursor-pointer" onClick={() => {setCurrentView("reusedPasswords")}}>
+                    {/*<div className="w-[80%] h-[15%] sm:w-2/4 sm:h-1/4 border-1 border-[#27272a] rounded-lg flex justify-between items-center bg-[#131314] cursor-pointer" onClick={() => {setCurrentView("reusedPasswords")}}>
                         {healthCheckItems.reusedPasswords && healthCheckItems.reusedPasswords.length > 0 ? (
                             <div className="justify-start ml-7">
                                 <div className="flex-col">
@@ -176,7 +178,7 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
                             alt=""
                             className="cursor-pointer flex justify-end mr-2"
                         />  
-                    </div>
+                    </div> */}
     
                     <div className="w-[80%] h-[15%] sm:w-2/4 sm:h-1/4 border-1 border-[#27272a] rounded-lg flex justify-between items-center bg-[#131314] cursor-pointer" onClick={() => {setCurrentView("oldPasswords")}}>
                     {healthCheckItems.oldPassword && healthCheckItems.oldPassword.length > 0 ? (

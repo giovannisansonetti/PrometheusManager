@@ -12,7 +12,6 @@ const DataList = () =>{
     const { data, error, isLoading } = useSWR<ApiResponse>('/api/data/showData', fetcher)
     console.log(data)
 
-    //const [data, setData] = useState<Data[] | null>(null)
     const [selectData, setSelectData] = useState<Data | null>(null)
     const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -70,7 +69,6 @@ const DataList = () =>{
                                         email={item.username} 
                                         date={new Date(item.createdAt).toLocaleDateString('it-IT')} 
                                         onClick={() => handleClick(item)}
-
                                     />)}
                             </div>
                         )

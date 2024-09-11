@@ -89,15 +89,20 @@ const AllItemsList = () => {
                     <>
                         <ModalHeader className="flex flex-col gap-1 mt-2">
                             <h2 className="text-2xl font-bold">{selectedItem.title}</h2>
+                            <div className="flex w-full border-1 border-[#27272a]"></div>
                             <div className="text-sm text-gray-500">Created on: {new Date(selectedItem.createdAt).toLocaleDateString('it-IT')}</div>
                         </ModalHeader>
                         <ModalBody>
                             <div className="flex flex-col gap-2">
                                 <div className="text-lg font-bold">Info</div>
                                 <div className="text-md font-medium">Website: <span className="font-normal">{selectedItem.webSiteLink}</span></div>
+                                <div className="flex w-full border-1 border-[#27272a]"></div>
                                 <div className="text-md font-medium">Username: <span className="font-normal">{selectedItem.username}</span></div>
+                                <div className="flex w-full border-1 border-[#27272a]"></div>
                                 <div className="text-md font-medium">Password: <span className="font-normal">{selectedItem.password}</span></div>
+                                <div className="flex w-full border-1 border-[#27272a]"></div>
                                 <div className="text-md font-medium">Password Security: <span className="font-normal">{selectedItem.passwordSecurity}</span></div>
+                                <div className="flex w-full border-1 border-[#27272a]"></div>
                             </div>
                         </ModalBody>
                         <ModalFooter>

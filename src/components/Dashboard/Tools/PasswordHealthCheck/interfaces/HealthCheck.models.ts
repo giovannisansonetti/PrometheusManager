@@ -4,9 +4,9 @@ export default interface PswHealthCheckProps{
 }
 
 export type HealthCheck = {
-    weakPassword: { id: string; password: string; _count: number }[]
-    oldPassword: { id: string; password: string; _count: number }[]
-    reusedPasswords: { id: string; password: string; _count: number }[]
+    weakPassword: { password: string; _count: number }[]
+    oldPassword: { password: string; _count: number }[]
+    //reusedPasswords: {password: string; _count: number }[]
 }
 
 export type ApiResponse = {
