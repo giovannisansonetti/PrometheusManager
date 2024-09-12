@@ -5,12 +5,11 @@ import { useState } from "react"
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react"
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react"
 import { AddNoteProps } from "../DisplayNotes/interfaces/AddNote.models"
-import { insertNote } from "~/server/data/insertdata/insertNotes"
 import AllItemsList from "./AllItemsList/AllItemsList"
-import insertData from "~/server/data/insertdata/insertdata"
 import { DisplayItemsProps } from "./interfaces/DisplayData.models"
 import AlertEvent from "~/components/Events/Alerts/Alert"
 import { useRouter } from "next/navigation"
+import axios from "axios"
 
 const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
     const { isOpen: isPasswordModalOpen, onOpen: onPasswordModalOpen, onOpenChange: onPasswordModalOpenChange } = useDisclosure()
@@ -19,7 +18,8 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
-    const [error, setError] = useState<string>("")
+    const [error, setError] = useState<boolean>(false)
+    const [message, setMessage] = useState<string>("")
 
     const [dataform, setDataForm] = useState<AddItemsProps>({
         title: "",
@@ -35,48 +35,67 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
     })
 
     const handlePasswordClick = async (onClose: ()=> void) => {
-        if(dataform.title !== "" && dataform.webSiteLink !== "" && dataform.password !== ""){
-            setLoading(true)
-            // add condition that checks if the call to the endpoint returns an error
-            try{
-                await insertData(dataform)
-                setSuccess(true)
-                setTimeout(()=>{
-                    onClose()
-                    setSuccess(false)
-                    router.refresh()
-                }, 2000)
-            }catch(error){
-                setError("There was an error while adding your item")
-            }finally{
-                setLoading(false)
-            }  
+        if (!dataform.title || !dataform.webSiteLink || !dataform.username || !dataform.password) {
+            setError(true)
+            setMessage("Fill all the fields")
+            setTimeout(() => {
+                setError(false)
+                setMessage("")
+            }, 2000)
+            return
         }
 
-        // display error message
+        setLoading(true)
+        const req = axios.post("/api/data/insertData", { 
+            title: dataform.title,
+            webSiteLink: dataform.webSiteLink,
+            username: dataform.username,
+            password: dataform.password,
+            notes: dataform.notes
+        })
+        const response = (await req).data
+        if(response.success){
+            setSuccess(true)
+            setTimeout(() => {
+                onClose()
+                setSuccess(false)
+                setLoading(false)
+            }, 1000)
+            router.refresh()
+        }
     }
 
     const handleNoteClick = async (onClose: ()=> void) => {
-        if(noteForm.title !== "" && noteForm.description !== ""){
-            setLoading(true)
-            try{
-                await insertNote(noteForm)
-                setSuccess(true)
-                setTimeout(()=>{
-                    setSuccess(false)
-                    onClose()
-                    router.refresh()
-                }, 2000)}
-            catch(error){
-                setError("There was an error while adding your secure note")
-            }finally{
+        if (!noteForm.title || !noteForm.description) {
+            setError(true)
+            setMessage("Fill all the fields")
+            setTimeout(() => {
+                setError(false)
+                setMessage("")
+            }, 2000)
+            return
+        }
+
+        setLoading(true)
+        const req = axios.post("/api/data/insertNotes", { 
+            title: noteForm.title,
+            description: noteForm.description
+        })
+
+        const response = (await req).data
+
+        if(response.success){
+            setSuccess(true)
+            setTimeout(() => {
+                onClose()
+                setSuccess(false)
                 setLoading(false)
-            }  
+            }, 1000)
         }
     }
 
     return (
-        <div className="flex flex-col bg-[#161616] text-white w-full h-full sm:rounded-lg overflow-hidden overflow-y-auto">
+        <div className="flex flex-col bg-[#161616] text-white w-full h-full lg:rounded-lg overflow-hidden overflow-y-auto">
             <div className="">
                 <div className="flex justify-end items-center mt-5 mr-7 ">
                     <div className="w-full block lg:hidden">
@@ -113,15 +132,17 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
                 <ModalContent>
                     {(onClose) => (
                         <>  
-                        { success ? (
+                        { error && (
                             <div className="flex justify-center items-center">
-                                <AlertEvent type="success" description="Item added correctly" className="w-2/4 mt-3"/>
-                            </div>) : null}
+                                <AlertEvent type="error" description={message} className="w-2/4 mt-3"/>
+                            </div>
+                        )}
                         
-                        { error ? (
-                        <div className="flex justify-center items-center">
-                            <AlertEvent type="error" description={error} className="w-2/4 mt-3"/>
-                        </div>) : null}
+                        {success && (
+                            <div className="flex justify-center items-center">
+                            <AlertEvent type="success" description={"item correctly added"} className="w-2/4 mt-3"/>
+                            </div>
+                        )}
 
                             <ModalHeader className="flex flex-col gap-1 mt-2">Add an item</ModalHeader>
                             <ModalBody>
@@ -184,13 +205,16 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
                         <>
                         { success ? (
                             <div className="flex justify-center items-center">
-                                <AlertEvent type="success" description="Note added correctly" className="w-2/4 mt-3"/>
-                            </div>) : (<></>)}
-
+                                <AlertEvent type="success" description="Item added correctly" className="w-2/4 mt-3"/>
+                            </div>
+                            ) : null}
+                        
                         { error ? (
-                            <div className="flex justify-center items-center">
-                                <AlertEvent type="error" description={error} className="w-2/4 mt-3"/>
-                            </div>) : (<></>)}
+                        <div className="flex justify-center items-center">
+                            <AlertEvent type="error" description={message} className="w-2/4 mt-3"/>
+                        </div>
+                        ) : null}
+
                             <ModalHeader className="flex flex-col gap-1 mt-2">Create a secure note</ModalHeader>
                             <ModalBody>
                                 <Input

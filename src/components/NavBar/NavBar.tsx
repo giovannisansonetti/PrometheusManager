@@ -1,5 +1,6 @@
 "use client"
 
+import {useRouter} from "next/navigation"
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/navbar"
 import { Button } from "@nextui-org/react"
 import Link from "next/link"
@@ -8,10 +9,20 @@ import { NavBarProps } from "./NavBar.models"
 import { signout } from "~/server/auth/signout"
 import { CiLogout } from "react-icons/ci";
 import { FaRegCircleUser } from "react-icons/fa6";
+import axios from "axios"
 
 const NavBar = ({name} : NavBarProps) =>{
-    
+
+    const router = useRouter()
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+    const handleSignOut = async() =>{
+      const req = axios.get("/api/auth/signout")
+      const response = (await req).data
+      if(response.success){
+        router.push("/")
+      }
+    }
    
     return (
         <Navbar onMenuOpenChange={setIsMenuOpen}>
@@ -50,13 +61,13 @@ const NavBar = ({name} : NavBarProps) =>{
             {name !== undefined ? (
               <NavbarMenuItem className="flex flex-col">
                 <Link href={"/dashboard"}>Dashboard</Link>
-                <div onClick={async()=>{await signout()}} className="flex flex-row"><CiLogout className="mt-1 mr-1"/>Log out</div>
+                <div onClick={async()=>{await handleSignOut()}} className="flex flex-row"><CiLogout className="mt-1 mr-1"/>Log out</div>
               </NavbarMenuItem>
             ): (
                 <NavbarMenuItem className="flex flex-col">
-                <Link href={"/auth/login"}>Login</Link>
-                <Link href={"/dashboard"}>Dashboard</Link>
-                <Link href={"/info"}>Info</Link>
+                  <Link href={"/auth/login"}>Login</Link>
+                  <Link href={"/dashboard"}>Dashboard</Link>
+                  <Link href={"/info"}>Info</Link>
                 </NavbarMenuItem>
             )}
           </NavbarMenu>

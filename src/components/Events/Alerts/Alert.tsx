@@ -8,7 +8,7 @@ interface AlertProps {
 
 const AlertEvent = ({ type, description, className}: AlertProps) => {
   return (
-    <div className={`${className} flex justify-center items-center w-full`}>
+    <div className={`${className} flex justify-center items-center`}>
       <Alert 
         variant="outlined" 
         severity={type} 

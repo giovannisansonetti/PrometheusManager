@@ -2,12 +2,14 @@
 
 import { useState } from "react"
 import { FormProps } from "./Form.models"
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { Input, Button } from "@nextui-org/react"
-import { signIn } from "~/server/auth/signin"
 import Alert from '@mui/material/Alert'
+import axios from "axios"
 
 const Login = () => {
+
+    const router = useRouter()
 
     const [form, setForm] = useState<FormProps>({
         email: "",
@@ -17,18 +19,23 @@ const Login = () => {
     const [error, setError] = useState<string | null>(null)
 
     const handleLogin = async () => {
-        if(form.email !== "" || form.masterPass !== ""){
-            const req = await signIn(form)
-            if(req){
-                const response = JSON.parse(req)
-                if (response.error) {
-                    setError(response.error);
-                } else {
-                    setError(null);
-                }
-            }
-        }else{
-            setError("Fill all the fields")
+        if (!form.email || !form.masterPass) {
+            setError("Both fields are required")
+            return
+        }
+        const req = axios.post("/api/auth/signin", { 
+            email: form.email,
+            masterPass: form.masterPass,
+        })
+
+        const response = (await req).data
+
+        if(response.error){
+            setError(response.message)
+        }
+        
+        if(response.success){
+            router.refresh()
         }
     }
 

@@ -4,7 +4,7 @@ export interface Data{
     webSiteLink: string,
     username: string,
     password: string,
-    notes?: string,
+    notes: string | null,
     passwordSecurity: string,
     createdAt: Date,
     updatedAt: Date

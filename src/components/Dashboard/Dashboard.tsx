@@ -24,7 +24,7 @@ const UserDashboard = () => {
             case "Notes":
                 return <DisplayNotes handleMenu={handleMenu} isOpen={isOpen} />
             case "CreditCards":
-                return
+                return 
             case "TrashBin":
                 return <TrashBin handleMenu={handleMenu} isOpen={isOpen} />
             case "PswGen":
@@ -41,7 +41,7 @@ const UserDashboard = () => {
     }
 
     return (
-        <div className="flex h-screen sm:p-3">
+        <div className="flex h-screen lg:p-3">
             <SideBar active={active} setActive={setActive} isOpen={isOpen} setIsOpen={setIsOpen} />
             <div className="flex-grow lg:p-3">
                 <MobileSideBar active={active} setActive={setActive} isOpen={isOpen} setIsOpen={setIsOpen}></MobileSideBar>

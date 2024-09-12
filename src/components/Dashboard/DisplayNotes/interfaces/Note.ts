@@ -4,4 +4,5 @@ export interface Note{
     noteDescription: string
     createdAt: Date
     updatedAt: Date
+    isDeleted: boolean
 }

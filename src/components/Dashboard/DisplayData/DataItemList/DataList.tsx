@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { type Data } from "./interfaces/Data";
-import { fetchData } from "~/server/data/showdata/showdata";
 import DataListItem from "./DataListItem";
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
-import deleteData from "~/server/data/moveToTrash/deleteData";
+import useSWR from 'swr'
+import { fetcher } from "~/server/fetcher";
+import { type ApiResponse } from "./interfaces/DataList.models";
+import axios from "axios";
 
 const DataList = () =>{
-
-    const [data, setData] = useState<Data[] | null>(null)
+    const { data, error, isLoading } = useSWR<ApiResponse>('/api/data/showData', fetcher)
+    console.log(data)
+    const [loading, setLoading] = useState(false)
     const [selectData, setSelectData] = useState<Data | null>(null)
-    const [noData, setNoData] = useState<string | null>(null)
     const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure()
 
     const handleClick = (data: Data) =>{
@@ -18,33 +20,78 @@ const DataList = () =>{
         onOpen()
     }
 
-    useEffect(() => {
-        const getData = async () => {
-            const responseString = await fetchData()
-            if (responseString) {
-                const response = JSON.parse(responseString)
-                if (Array.isArray(response)) {
-                    response.forEach((element: Data) => {
-                        element.createdAt = new Date(element.createdAt as unknown as string)
-                        element.updatedAt = new Date(element.updatedAt as unknown as string)
-                    })
-                    setData(response)
-                } else if (response.message === "No data found") {
-                    setNoData(response.message)
-                    setData(null)
-                }
-            }
+    const handleDelete = async(id: string, onClose: ()=>void) =>{
+        setLoading(true)
+
+        const req = {
+            id: id,
+            type: "data"
         }
-        getData()
-    }, [])
-    
+        const request = axios.post("/api/data/moveToTrash", req)
+        const response = (await request).data
+
+        if(response.success){
+            setTimeout(() => {
+                onClose()
+                setLoading(false)
+            }, 1000)
+        }
+    } 
+
+    if (isLoading) {
+        return (
+            <div className="flex flex-col justify-center items-center">
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+                <ListSkeleton />
+            </div>
+        )
+    }
+
+    if(error){
+        <div>sesso</div>
+    }
+
+    if (!Array.isArray(data?.data)) {
+        return (
+            <div className="flex flex-col justify-center items-center mt-5">
+                {data && data.message && (
+                    <p className="text-gray-500">{data.message}</p>
+                )}
+
+                {data && data.error && (
+                    <p className="text-gray-500">{data.error}</p>
+                )}
+            </div>
+        )
+    }
+
     return(
         <>
-            { data ? (
+            { data && data.data ? (
                 <div className="overflow-auto overflow-x-hidden h-full mr-auto ml-auto w-full">
-                    {data.map((item) => (
-                            <DataListItem title={item.title} link={item.webSiteLink} email={item.username} date={item.createdAt.toLocaleDateString('it-IT')} onClick={() =>{handleClick(item)}}></DataListItem>
-                    ))}
+                    {data.data.map((item) => {
+                        return (
+                            <div>
+                                {!item.isDeleted && ( 
+                                    <DataListItem 
+                                        key={item.id} 
+                                        title={item.title} 
+                                        link={item.webSiteLink} 
+                                        email={item.username} 
+                                        date={new Date(item.createdAt).toLocaleDateString('it-IT')} 
+                                        onClick={() => handleClick(item)}
+                                    />)}
+                            </div>
+                        )
+                    })}
+
                     <Modal isOpen={isModalOpen} onOpenChange={onOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
                         <ModalContent>
                         {(onClose) => (
@@ -56,7 +103,7 @@ const DataList = () =>{
                                                 <h2 className="text-2xl font-bold">{selectData.title}</h2>
                                                 <div className="flex w-full mt-1 border-1 border-[#27272a]"></div>
                                                 <p className="text-sm text-gray-500">
-                                                    Created on: {selectData.createdAt.toLocaleDateString('it-IT')}
+                                                    Created on: {new Date(selectData.createdAt).toLocaleDateString('it-IT')}
                                                 </p>
                                             </>
                                     )}
@@ -88,7 +135,7 @@ const DataList = () =>{
                                     </ModalBody>
                                     { selectData && (
                                         <ModalFooter>                                       
-                                            <Button color="danger" variant="flat" onClick={async() =>{deleteData(selectData.id)}}>Delete data</Button>
+                                            {loading ? (<Button isLoading color="danger" variant="flat" onClick={async() =>{handleDelete(selectData.id, onClose)}}>Delete data</Button>) : (<Button color="danger" variant="flat" onClick={async() =>{handleDelete(selectData.id, onClose)}}>Delete data</Button>)}
                                             <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
                                         </ModalFooter>
                                     )}
@@ -100,26 +147,11 @@ const DataList = () =>{
                 </div>
             ) : (
                 <div className="flex flex-col justify-center items-center">
-                    {noData ? (<></>) : (
-                        <>
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                        <ListSkeleton />
-                    </>
-                    )}
+                    <div>No data found</div>    
                 </div>
             )} 
         </>
     )
-
 }
 
 export default DataList

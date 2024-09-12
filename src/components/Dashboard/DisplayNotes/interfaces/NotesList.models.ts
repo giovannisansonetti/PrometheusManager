@@ -1,3 +1,5 @@
+import { type Note } from "../interfaces/Note"
+
 export interface NotesListProps{
     title: string
     date: string
@@ -5,4 +7,11 @@ export interface NotesListProps{
     onClick: () => void
     onDelete?: () => void
     onModify?: () => void
+}
+
+export type ApiResponse = {
+    status: number
+    message?: string
+    error?: boolean
+    data?: Note[]
 }
