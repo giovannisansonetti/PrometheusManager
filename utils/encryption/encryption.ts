@@ -14,10 +14,11 @@ export async function encryptWithKey(text: string, key: string) {
     };
 }
 
-export async function decryptWithKey(encryptedData: { iv: string; data: string }, key: string) {
-    const iv = Buffer.from(encryptedData.iv, 'hex');
-    const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
-    let decrypted = decipher.update(encryptedData.data, 'hex', 'utf8');
+export async function decryptWithKey(iv: string, data: string, key: string) {
+    const buffKey = Buffer.from(key, 'hex');
+    const buffIv = Buffer.from(iv, 'hex');
+    const decipher = crypto.createDecipheriv(ALGORITHM, buffKey, buffIv);
+    let decrypted = decipher.update(data, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
     return decrypted;
 }
