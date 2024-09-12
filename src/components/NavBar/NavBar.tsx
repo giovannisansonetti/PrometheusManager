@@ -6,7 +6,6 @@ import { Button } from "@nextui-org/react"
 import Link from "next/link"
 import { useState } from "react"
 import { NavBarProps } from "./NavBar.models"
-import { signout } from "~/server/auth/signout"
 import { CiLogout } from "react-icons/ci";
 import { FaRegCircleUser } from "react-icons/fa6";
 import axios from "axios"
