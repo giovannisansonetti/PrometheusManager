@@ -6,7 +6,6 @@ import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, But
 import { type AddItemsProps } from "./interfaces/AddItem.models"
 import { useRouter } from 'next/navigation'
 import DataList from "./DataItemList/DataList"
-import insertData from "~/server/data/insertdata/insertdata"
 import AlertEvent from "~/components/Events/Alerts/Alert"
 import axios from "axios"
 

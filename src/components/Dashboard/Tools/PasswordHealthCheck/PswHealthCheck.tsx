@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import fetchHealthCheck from "~/server/data/healthCheck/healthCheck"
 import Image from "next/image"
 import arrow from "~/../public/arrow-right-short.svg"
 import { IconBxXCircle } from "public/IconBxXCircle"

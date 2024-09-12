@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react"
 import { type Note } from "../interfaces/Note"
-import { fetchNotes } from "~/server/data/showdata/showNotes"
 import NotesListItem from "./NotesListElement"
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton"
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react"
 import NoteIcon from "~/../public/SideBar/Document.svg"
-import deleteNote from "~/server/data/moveToTrash/deleteNote"
 import useSWR from 'swr'
 import { fetcher } from "~/server/fetcher"
 import {type ApiResponse} from "../interfaces/NotesList.models"

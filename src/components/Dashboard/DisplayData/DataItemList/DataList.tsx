@@ -3,7 +3,6 @@ import { type Data } from "./interfaces/Data";
 import DataListItem from "./DataListItem";
 import { Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
-import deleteData from "~/server/data/moveToTrash/deleteData";
 import useSWR from 'swr'
 import { fetcher } from "~/server/fetcher";
 import { type ApiResponse } from "./interfaces/DataList.models";
@@ -136,7 +135,7 @@ const DataList = () =>{
                                     </ModalBody>
                                     { selectData && (
                                         <ModalFooter>                                       
-                                            {loading ? (<Button isLoading color="danger" variant="flat" onClick={async() =>{deleteData(selectData.id)}}>Delete data</Button>) : (<Button color="danger" variant="flat" onClick={async() =>{handleDelete(selectData.id, onClose)}}>Delete data</Button>)}
+                                            {loading ? (<Button isLoading color="danger" variant="flat" onClick={async() =>{handleDelete(selectData.id, onClose)}}>Delete data</Button>) : (<Button color="danger" variant="flat" onClick={async() =>{handleDelete(selectData.id, onClose)}}>Delete data</Button>)}
                                             <Button color="primary" variant="flat" onClick={onClose}>Close</Button>
                                         </ModalFooter>
                                     )}
