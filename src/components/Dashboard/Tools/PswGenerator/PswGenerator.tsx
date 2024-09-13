@@ -64,7 +64,8 @@ const PswGenerator = ({ handleMenu, isOpen }:PswGeneratorProps) => {
                     className="w-3/4 sm:max-w-sm justify-end"
                     onChange={(value) => {
                         if (typeof value === 'number') {
-                          setLength(value)
+                          setLength(value);
+                          generate();
                         }
                     }}
                 />
@@ -78,7 +79,10 @@ const PswGenerator = ({ handleMenu, isOpen }:PswGeneratorProps) => {
                 <Switch
                 className="justify-end"
                 isSelected={useCapital}
-                onValueChange={setCapital}
+                onValueChange={() => {
+                    setCapital(!useCapital)
+                    generate()
+                }}
                 />
             </div>
 
@@ -89,7 +93,10 @@ const PswGenerator = ({ handleMenu, isOpen }:PswGeneratorProps) => {
                 <Switch
                 className="justify-end"
                 isSelected={useDigits}
-                onValueChange={setDigits}
+                onValueChange={() => {
+                    setDigits(!useDigits)
+                    generate()
+                }}
                 />
             </div>
 
@@ -100,7 +107,10 @@ const PswGenerator = ({ handleMenu, isOpen }:PswGeneratorProps) => {
                 <Switch
                 className="justify-end"
                 isSelected={useSpecialChars}
-                onValueChange={setSpecialChars}
+                onValueChange={() => {
+                    setSpecialChars(!useSpecialChars)
+                    generate()
+                }}
                 />
             </div>
 
