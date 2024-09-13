@@ -79,7 +79,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
                     </Button>
                 </div>
                 
-                <div className="flex w-full mt-4 border-1 border-[#27272a]"></div>
+                <div className="flex w-full mt-5 border-1 border-[#27272a]"></div>
             </div>
 
             <DataList />

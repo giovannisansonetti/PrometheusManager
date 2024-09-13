@@ -45,7 +45,7 @@ const PswGenerator = ({ handleMenu, isOpen }:PswGeneratorProps) => {
             </div>                
         </div>   
 
-        <div className="flex w-full mt-4 border-1 border-[#27272a]"></div>
+        <div className="flex w-full mt-5 border-1 border-[#27272a]"></div>
 
         <div className="relative w-[90%] h-[80%] sm:w-[80%] sm:h-3/4 bg-[#0a0a0a] rounded-lg items-center mt-5">
             <div className="w-full rounded-lg h-1/4 bg-[#0f0f0f] flex items-center justify-center text-[20px] sm:text-[40px]">
