@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
 import React from "react";
 
-interface EyeFilledIconProps{
-    className: string
+interface EyeFilledIconProps {
+  className: string;
 }
 
-export const EyeFilledIcon = ({className}: EyeFilledIconProps) => (
+export const EyeFilledIcon = ({ className }: EyeFilledIconProps) => (
   <svg
     aria-hidden="true"
     fill="none"

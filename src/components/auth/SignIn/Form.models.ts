@@ -1,4 +1,4 @@
-export interface FormProps{
-    email: string,
-    masterPass: string,
+export interface FormProps {
+  email: string;
+  masterPass: string;
 }

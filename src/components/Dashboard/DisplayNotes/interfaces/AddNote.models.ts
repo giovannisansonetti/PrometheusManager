@@ -1,4 +1,4 @@
-export interface AddNoteProps{
-    title: string 
-    description: string
+export interface AddNoteProps {
+  title: string;
+  description: string;
 }

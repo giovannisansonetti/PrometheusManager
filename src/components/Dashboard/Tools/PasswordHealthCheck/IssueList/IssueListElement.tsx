@@ -1,7 +1,5 @@
-const IssueListElement = () =>{
-    return(
-        <></>
-    )
-}   
+const IssueListElement = () => {
+  return <></>;
+};
 
-export default IssueListElement
+export default IssueListElement;

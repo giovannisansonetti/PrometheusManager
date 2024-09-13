@@ -1,4 +1,4 @@
 export interface TrashBinProps {
-    handleMenu: () => void,
-    isOpen: boolean
+  handleMenu: () => void;
+  isOpen: boolean;
 }

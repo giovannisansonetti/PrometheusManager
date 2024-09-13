@@ -1,4 +1,4 @@
-export interface DisplayNotesProps{
-    handleMenu: () => void
-    isOpen: boolean
+export interface DisplayNotesProps {
+  handleMenu: () => void;
+  isOpen: boolean;
 }

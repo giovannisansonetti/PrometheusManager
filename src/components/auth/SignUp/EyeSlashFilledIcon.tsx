@@ -1,11 +1,11 @@
-"use client"
-import React from "react"
+"use client";
+import React from "react";
 
-interface EyeSlashFilledIconProps{
-  className: string
+interface EyeSlashFilledIconProps {
+  className: string;
 }
 
-export const EyeSlashFilledIcon = ({className}: EyeSlashFilledIconProps) => (
+export const EyeSlashFilledIcon = ({ className }: EyeSlashFilledIconProps) => (
   <svg
     aria-hidden="true"
     fill="none"

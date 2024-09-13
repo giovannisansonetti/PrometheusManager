@@ -36,7 +36,8 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.js",
-    ".next/types/**/*.ts"
-, "src/components/Dashboard/DisplayNotes/NotesItemList/NotesListElement.tsx"  ],
+    ".next/types/**/*.ts",
+    "src/components/Dashboard/DisplayNotes/NotesItemList/NotesListElement.tsx"
+  ],
   "exclude": ["node_modules"]
 }

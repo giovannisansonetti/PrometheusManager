@@ -1,17 +1,17 @@
-import { type Note } from "../interfaces/Note"
+import { type Note } from "../interfaces/Note";
 
-export interface NotesListProps{
-    title: string
-    date: string
-    image: string
-    onClick: () => void
-    onDelete?: () => void
-    onModify?: () => void
+export interface NotesListProps {
+  title: string;
+  date: string;
+  image: string;
+  onClick: () => void;
+  onDelete?: () => void;
+  onModify?: () => void;
 }
 
 export type ApiResponse = {
-    status: number
-    message?: string
-    error?: boolean
-    data?: Note[]
-}
+  status: number;
+  message?: string;
+  error?: boolean;
+  data?: Note[];
+};

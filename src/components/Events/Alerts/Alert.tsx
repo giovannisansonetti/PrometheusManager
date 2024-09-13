@@ -1,23 +1,19 @@
-import Alert from '@mui/material/Alert'
+import Alert from "@mui/material/Alert";
 
 interface AlertProps {
-  type: "error" | "success"
-  description: string
-  className?: string
+  type: "error" | "success";
+  description: string;
+  className?: string;
 }
 
-const AlertEvent = ({ type, description, className}: AlertProps) => {
+const AlertEvent = ({ type, description, className }: AlertProps) => {
   return (
-    <div className={`${className} flex justify-center items-center`}>
-      <Alert 
-        variant="outlined" 
-        severity={type} 
-        className="w-full text-center"
-      >
+    <div className={`${className} flex items-center justify-center`}>
+      <Alert variant="outlined" severity={type} className="w-full text-center">
         {description}
       </Alert>
     </div>
   );
-}
+};
 
-export default AlertEvent
+export default AlertEvent;

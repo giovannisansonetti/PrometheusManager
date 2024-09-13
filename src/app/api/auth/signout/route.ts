@@ -1,20 +1,20 @@
-import { createClient } from "utils/supabase/server"
-import { NextRequest, NextResponse } from "next/server"
+import { createClient } from "utils/supabase/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest){
-    const supabase = createClient()
+export async function GET(req: NextRequest) {
+  const supabase = createClient();
 
-    const { error } = await supabase.auth.signOut()
+  const { error } = await supabase.auth.signOut();
 
-    if (!error) {
-        return NextResponse.json({
-            status: 200,
-            success: true
-        })
-    }
-
+  if (!error) {
     return NextResponse.json({
-        status: 404,
-        message: "User not found"
-    })
+      status: 200,
+      success: true,
+    });
+  }
+
+  return NextResponse.json({
+    status: 404,
+    message: "User not found",
+  });
 }

@@ -1,4 +1,4 @@
 export interface DisplayItemsProps {
-    handleMenu: () => void,
-    isOpen: boolean
+  handleMenu: () => void;
+  isOpen: boolean;
 }
