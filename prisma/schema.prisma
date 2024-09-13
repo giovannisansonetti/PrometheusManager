@@ -36,8 +36,7 @@ model Data {
   webSiteLink      String
   username         String
   password         String //this is the encrypted data
-  iv               String?
-  salt             String?
+  iv               String
   notes            String?
   passwordSecurity String
   createdAt        DateTime @default(now())

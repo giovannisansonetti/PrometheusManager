@@ -2,6 +2,8 @@ import { AllItems } from "~/server/data/showdata/allitems.models"
 import { createClient } from "utils/supabase/server"
 import { db } from "~/server/db"
 import { NextRequest, NextResponse } from "next/server"
+import { decryptWithKey } from "utils/encryption/encryption"
+import { env } from "~/env"
 
 export async function GET(req: NextRequest) {
     const response = await fetchAllitems()
@@ -43,7 +45,10 @@ const fetchAllitems = async() => {
                 userId: user.id} 
             }),
         ])
-        
+        for (const data of dataItems) {
+            data.password = await decryptWithKey(data.iv, data.password, env.AES_KEY)
+            console.log(data.password)
+        }
         const items: AllItems[] = [
             ...dataItems.map(item => ({
                 ...item,
