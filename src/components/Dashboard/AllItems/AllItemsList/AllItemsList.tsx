@@ -102,7 +102,9 @@ const AllItemsList = () => {
             </div>
             ))
         ) : (
-            <p>No items found</p>
+          <div className="flex flex-col justify-center items-center mt-5">
+            <p className="text-gray-500">No items found</p>
+          </div>
         )}
 
         <Modal isOpen={isPasswordModalOpen} onOpenChange={onPasswordModalOpenChange} className="w-[80%] bottom-[25%] sm:bottom-0 sm:w-2/4 bg-[#0a0a0a]">
