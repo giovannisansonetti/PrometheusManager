@@ -117,7 +117,9 @@ const TrashBinList = () => {
                     />
                 ))
             ) : (
-                <p>No items found</p>
+                <div className="flex flex-col justify-center items-center mt-5">
+                    <p className="text-gray-500">No items found</p>
+                </div>
             )}
 
             {selectedItem && (
