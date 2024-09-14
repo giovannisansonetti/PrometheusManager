@@ -59,7 +59,7 @@ const NavBar = ({ name }: NavBarProps) => {
               color="danger"
               variant="flat"
               onClick={async () => {
-                await signout();
+                handleSignOut();
               }}
             >
               <CiLogout className="" />

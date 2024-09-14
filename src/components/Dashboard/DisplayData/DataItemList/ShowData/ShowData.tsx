@@ -41,6 +41,7 @@ const ShowData = ({
   });
 
   const saveEditedData = async () => {
+    setLoading(true);
     if (
       !editForm.title ||
       !editForm.webSiteLink ||
@@ -68,6 +69,7 @@ const ShowData = ({
   };
 
   const handleDelete = async (id: string) => {
+    setLoading(true);
     const req = {
       id: id,
       type: "data",
@@ -236,28 +238,51 @@ const ShowData = ({
             Cancel
           </Button>
         ) : (
-          <Button
-            color="danger"
-            variant="flat"
-            onClick={async () => {
-              handleDelete(id);
-            }}
-          >
-            <Image src={Trash} width={20} height={20} alt="trash" />
-            Move to trash
-          </Button>
+          <div>
+            {loading ? (
+              <Button
+                isLoading
+                color="danger"
+                variant="flat"
+                onClick={async () => {
+                  handleDelete(id);
+                }}
+              >
+                Deleting
+              </Button>
+            ) : (
+              <Button
+                color="danger"
+                variant="flat"
+                onClick={async () => {
+                  handleDelete(id);
+                }}
+              >
+                <Image src={Trash} width={20} height={20} alt="trash" />
+                Move to trash
+              </Button>
+            )}
+          </div>
         )}
 
         {editview ? (
-          <Button
-            color="primary"
-            variant="flat"
-            onClick={async () => {
-              saveEditedData();
-            }}
-          >
-            Save data
-          </Button>
+          <div>
+            {loading ? (
+              <Button color="primary" variant="flat" isLoading>
+                Save data
+              </Button>
+            ) : (
+              <Button
+                color="primary"
+                variant="flat"
+                onClick={async () => {
+                  saveEditedData();
+                }}
+              >
+                Save data
+              </Button>
+            )}
+          </div>
         ) : (
           <Button color="primary" variant="flat" onClick={toggleEdit}>
             <Image src={Edit} width={20} height={20} alt="trash" />
