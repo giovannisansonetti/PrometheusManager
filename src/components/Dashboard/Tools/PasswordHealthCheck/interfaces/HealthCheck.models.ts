@@ -4,8 +4,8 @@ export default interface PswHealthCheckProps {
 }
 
 export type HealthCheck = {
-  weakPassword: { password: string; _count: number }[];
-  oldPassword: { password: string; _count: number }[];
+  weakPasswords: { password: string; _count: number }[];
+  oldPasswords: { password: string; _count: number }[];
   //reusedPasswords: {password: string; _count: number }[]
 };
 
