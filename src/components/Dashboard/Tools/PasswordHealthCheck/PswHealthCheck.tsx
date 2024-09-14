@@ -48,13 +48,18 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
 
   const renderIssue = () => {
     if (currentView === "weakPasswords") {
-      return (
-        <div className="flex w-full justify-center">
-          {healthCheckItems?.weakPassword.map((item) => (
-            <IssueList type="weakPasswords" data={item} />
-          ))}
-        </div>
-      );
+      if (
+        healthCheckItems?.weakPassword &&
+        healthCheckItems.weakPassword.length !== 0
+      ) {
+        return (
+          <div className="flex w-full justify-center">
+            {healthCheckItems.weakPassword.map((item) => (
+              <IssueList type="weakPasswords" data={item} />
+            ))}
+          </div>
+        );
+      }
     }
 
     /*if (currentView === "reusedPasswords") {
