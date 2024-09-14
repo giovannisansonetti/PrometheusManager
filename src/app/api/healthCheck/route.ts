@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "utils/supabase/server";
 import { db } from "~/server/db";
+import { decryptWithKey } from "utils/encryption/encryption";
+import { env } from "~/env";
 
 export async function GET(req: NextRequest) {
   const response = await fetchHealthCheck();
@@ -46,6 +48,7 @@ const fetchHealthCheck = async () => {
         id: true,
         password: true,
         passwordSecurity: true,
+        iv: true,
       },
       where: {
         userId: data.user.id,
@@ -63,6 +66,7 @@ const fetchHealthCheck = async () => {
         id: true,
         password: true,
         createdAt: true,
+        iv: true,
       },
       where: {
         userId: data.user.id,
@@ -95,7 +99,20 @@ const fetchHealthCheck = async () => {
                 }
             }
         })*/
-
+    for (const weakPassword of weakPasswords) {
+      weakPassword.password = await decryptWithKey(
+        weakPassword.iv,
+        weakPassword.password,
+        env.AES_KEY,
+      );
+    }
+    for (const oldPassword of oldPasswords) {
+      oldPassword.password = await decryptWithKey(
+        oldPassword.iv,
+        oldPassword.password,
+        env.AES_KEY,
+      );
+    }
     const healthcheck = {
       weakPasswords: weakPasswords,
       oldPasswords: oldPasswords,

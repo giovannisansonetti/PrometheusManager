@@ -2,6 +2,8 @@ import { Data } from "@prisma/client";
 import { createClient } from "utils/supabase/server";
 import { db } from "~/server/db";
 import { NextRequest, NextResponse } from "next/server";
+import { decryptWithKey } from "utils/encryption/encryption";
+import { env } from "~/env";
 
 export async function GET(req: NextRequest) {
   const response = await fetchData();
@@ -40,6 +42,10 @@ const fetchData = async () => {
       userId: user.id,
     },
   });
+
+  for (const data of dataList) {
+    data.password = await decryptWithKey(data.iv, data.password, env.AES_KEY);
+  }
 
   if (dataList.length !== 0) {
     return { status: 200, message: "OK", data: dataList };

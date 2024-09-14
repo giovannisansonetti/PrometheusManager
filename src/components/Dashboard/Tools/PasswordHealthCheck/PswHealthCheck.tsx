@@ -31,37 +31,32 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
   const [currentView, setCurrentView] = useState<ViewState>("overview");
 
   useEffect(() => {
-    if (data) {
+    console.log("Data update:", data);
+    if (data && healthCheckItems == null) {
       console.log("Data from API:", data);
       setHealthCheckItems(data.data);
-      console.log("data: " + healthCheckItems?.weakPassword);
     }
   }, [data]);
-
-  if (isLoading) {
-    <div className="flex h-screen w-full flex-col items-center justify-center gap-5">
-      <PswHealthSkeleton />
-      <PswHealthSkeleton />
-      <PswHealthSkeleton />
-    </div>;
-  }
 
   const renderIssue = () => {
     if (currentView === "weakPasswords") {
       if (
-        healthCheckItems?.weakPassword &&
-        healthCheckItems.weakPassword.length !== 0
+        healthCheckItems?.weakPasswords &&
+        healthCheckItems.weakPasswords.length !== 0
       ) {
         return (
           <div className="flex w-full justify-center">
-            {healthCheckItems.weakPassword.map((item) => (
+            {healthCheckItems.weakPasswords.map((item) => (
               <IssueList type="weakPasswords" data={item} />
             ))}
           </div>
         );
+      } else {
+        return <div>No weak passwords found.</div>;
       }
     }
 
+    // not implemented yet
     /*if (currentView === "reusedPasswords") {
         return (
           <div className="w-full flex justify-center">
@@ -72,14 +67,22 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
         )
       }*/
 
+    // not implemented yet
     if (currentView === "oldPasswords") {
-      return (
-        <div className="flex w-full justify-center">
-          {healthCheckItems?.oldPassword.map((item) => (
-            <IssueList type="oldPasswords" data={item} />
-          ))}
-        </div>
-      );
+      if (
+        healthCheckItems?.oldPasswords &&
+        healthCheckItems.oldPasswords.length !== 0
+      ) {
+        return (
+          <div className="flex w-full justify-center">
+            {healthCheckItems.oldPasswords.map((item) => (
+              <IssueList type="oldPasswords" data={item} />
+            ))}
+          </div>
+        );
+      } else {
+        return <div>No old passwords found.</div>;
+      }
     }
   };
 
@@ -149,8 +152,8 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
                 className="bg flex h-[15%] w-[80%] cursor-pointer items-center justify-between rounded-lg border-1 border-[#27272a] bg-[#131314] sm:h-1/4 sm:w-2/4"
                 onClick={() => setCurrentView("weakPasswords")}
               >
-                {healthCheckItems.weakPassword &&
-                healthCheckItems.weakPassword.length > 0 ? (
+                {healthCheckItems.weakPasswords &&
+                healthCheckItems.weakPasswords.length > 0 ? (
                   <div className="ml-7 justify-start">
                     <div className="flex-col">
                       <div className="flex flex-row">
@@ -160,7 +163,7 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
                         </h1>
                       </div>
                       <div className="ml-2 flex flex-row text-[25px] sm:mt-5 lg:text-[35px]">
-                        {healthCheckItems.weakPassword.length}
+                        {healthCheckItems.weakPasswords.length}
                       </div>
                     </div>
                   </div>
@@ -227,8 +230,8 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
                   setCurrentView("oldPasswords");
                 }}
               >
-                {healthCheckItems.oldPassword &&
-                healthCheckItems.oldPassword.length > 0 ? (
+                {healthCheckItems.oldPasswords &&
+                healthCheckItems.oldPasswords.length > 0 ? (
                   <div className="ml-7 justify-start">
                     <div className="flex-col">
                       <div className="flex flex-row">
@@ -238,7 +241,7 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
                         </h1>
                       </div>
                       <div className="ml-2 mt-1 flex flex-row text-[25px] sm:mt-5 lg:text-[35px]">
-                        {healthCheckItems.oldPassword.length}
+                        {healthCheckItems.oldPasswords.length}
                       </div>
                     </div>
                   </div>
