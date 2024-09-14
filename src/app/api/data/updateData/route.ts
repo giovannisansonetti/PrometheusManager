@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   const supabase = createClient();
   const body = await req.json();
 
-  const { title, webSiteLink, username, password, notes } = body;
+  const { title, webSiteLink, username, password, notes, id } = body;
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) {
@@ -45,12 +45,22 @@ export async function POST(req: NextRequest) {
     password,
     encryptedPassword,
     notes,
+    id,
   };
 
   const passwordSecurity = checkSecurityPass(insertData.password);
   try {
     await db.data.update({
-      /* */
+      where: { id: insertData.id },
+      data: {
+        title: insertData.title,
+        webSiteLink: insertData.webSiteLink,
+        username: insertData.username,
+        password: insertData.encryptedPassword.data,
+        iv: insertData.encryptedPassword.iv,
+        notes: insertData.notes,
+        passwordSecurity: passwordSecurity,
+      },
     });
 
     return NextResponse.json({
