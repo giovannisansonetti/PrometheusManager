@@ -148,13 +148,19 @@ const ShowData = ({
                         <EyeFilledIcon className="pointer-events-none text-2xl text-default-400" />
                       )}
                     </button>
-                    <Image
-                      src={copy}
-                      width={20}
-                      height={20}
-                      alt={"copy"}
-                      className="mr-[20px] cursor-pointer"
-                    />
+                    <button
+                      className="focus:outline-none"
+                      type="button"
+                      onClick={() => navigator.clipboard.writeText(password)}
+                    >
+                      <Image
+                        src={copy}
+                        width={20}
+                        height={20}
+                        alt={"copy"}
+                        className="mr-[20px] cursor-pointer"
+                      />
+                    </button>
                   </div>
                 </div>
               )}
