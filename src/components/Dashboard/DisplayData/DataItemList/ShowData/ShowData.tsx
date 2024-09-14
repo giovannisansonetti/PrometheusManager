@@ -27,11 +27,11 @@ const ShowData = ({
   const toggleEdit = () => setEditView(!editview);
 
   const [editForm, setEditForm] = useState<EditItemProps>({
-    title: "",
-    webSiteLink: "",
-    username: "",
-    password: "",
-    notes: "",
+    title: title,
+    webSiteLink: webSiteLink,
+    username: username,
+    password: password,
+    notes: notes,
   });
 
   useEffect(() => {
@@ -40,7 +40,23 @@ const ShowData = ({
     }
   });
 
-  const saveEditedData = async () => {};
+  const saveEditedData = async () => {
+    const req = {
+      title: editForm.title,
+      webSiteLink: editForm.webSiteLink,
+      username: editForm.username,
+      password: editForm.password,
+      notes: editForm.notes,
+      id: id,
+    };
+    const request = axios.post("/api/data/updateData", req);
+    const response = (await request).data;
+    if (response.success) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  };
 
   const handleDelete = async (id: string) => {
     const req = {
