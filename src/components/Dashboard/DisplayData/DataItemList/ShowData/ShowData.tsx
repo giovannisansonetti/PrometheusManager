@@ -73,6 +73,7 @@ const ShowData = ({
                 onValueChange={(value) => {
                   setEditForm((props) => ({ ...props, title: value }));
                 }}
+                value={title}
               />
             ) : (
               <div className="mt-1">{title}</div>
@@ -91,6 +92,7 @@ const ShowData = ({
                 onValueChange={(value) => {
                   setEditForm((props) => ({ ...props, webSiteLink: value }));
                 }}
+                value={webSiteLink}
               />
             ) : (
               <div>{webSiteLink}</div>
@@ -109,6 +111,7 @@ const ShowData = ({
                 onValueChange={(value) => {
                   setEditForm((props) => ({ ...props, username: value }));
                 }}
+                value={username}
               />
             ) : (
               <div>{username}</div>
@@ -128,6 +131,7 @@ const ShowData = ({
                   onValueChange={(value) => {
                     setEditForm((props) => ({ ...props, password: value }));
                   }}
+                  value={password}
                 />
               ) : (
                 <div className="flex flex-row justify-end gap-1">
@@ -189,6 +193,7 @@ const ShowData = ({
             onValueChange={(value) => {
               setEditForm((props) => ({ ...props, notes: value }));
             }}
+            value={notes}
           />
         </div>
       ) : (
