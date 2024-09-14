@@ -41,6 +41,15 @@ const ShowData = ({
   });
 
   const saveEditedData = async () => {
+    if (
+      !editForm.title ||
+      !editForm.webSiteLink ||
+      !editForm.username ||
+      !editForm.password
+    ) {
+      //TODO display error
+      return;
+    }
     const req = {
       title: editForm.title,
       webSiteLink: editForm.webSiteLink,
