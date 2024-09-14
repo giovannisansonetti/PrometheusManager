@@ -201,7 +201,11 @@ const ShowData = ({
         </div>
       )}
       <div className="mt-4 flex w-3/4 justify-end gap-3">
-        {editview ? null : (
+        {editview ? (
+          <Button color="danger" variant="flat" onClick={toggleEdit}>
+            Cancel
+          </Button>
+        ) : (
           <Button
             color="danger"
             variant="flat"
