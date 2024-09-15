@@ -8,6 +8,7 @@ import AllItems from "./AllItems/AllItems";
 import TrashBin from "./TrashBin/TrashBin";
 import PswGenerator from "./Tools/PswGenerator/PswGenerator";
 import PswHealthCheck from "./Tools/PasswordHealthCheck/PswHealthCheck";
+import DisplayCards from "./DisplayCards/DisplayCards";
 
 const UserDashboard = () => {
   const [active, setActive] = useState("AllItems");
@@ -23,7 +24,7 @@ const UserDashboard = () => {
       case "Notes":
         return <DisplayNotes handleMenu={handleMenu} isOpen={isOpen} />;
       case "CreditCards":
-        return;
+        return <DisplayCards handleMenu={handleMenu} isOpen={isOpen} />;
       case "TrashBin":
         return <TrashBin handleMenu={handleMenu} isOpen={isOpen} />;
       case "PswGen":
