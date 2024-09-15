@@ -8,6 +8,7 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  user,
 } from "@nextui-org/react";
 import AllItemsListElement from "./AllItemsListElement";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
@@ -16,6 +17,7 @@ import { fetcher } from "~/server/fetcher";
 import { AllItems, ApiResponse } from "~/server/data/showdata/allitems.models";
 import axios from "axios";
 import ShowData from "../../DisplayData/DataItemList/ShowData/ShowData";
+import { useRouter } from "next/navigation";
 
 const AllItemsList = () => {
   type ViewData = "overview" | "password";
@@ -23,11 +25,7 @@ const AllItemsList = () => {
     "/api/data/allitems",
     fetcher,
   );
-  const {
-    isOpen: isPasswordModalOpen,
-    onOpen: onPasswordModalOpen,
-    onOpenChange: onPasswordModalOpenChange,
-  } = useDisclosure();
+  const router = useRouter();
   const {
     isOpen: isNoteModalOpen,
     onOpen: onNoteModalOpen,
@@ -41,6 +39,7 @@ const AllItemsList = () => {
   const handleClick = (item: AllItems) => {
     if (item.type === "data") {
       setSelectedItem(item);
+      console.log(selectedItem);
       setCurrentView("password");
     }
     if (item.type === "note") {
@@ -86,14 +85,14 @@ const AllItemsList = () => {
       }
     }
     setLoading(false);
+    router.refresh();
   };
 
   const render = () => {
     if (
       currentView === "password" &&
       selectedItem &&
-      selectedItem.type === "data" &&
-      selectedItem.notes
+      selectedItem.type === "data"
     ) {
       return (
         <ShowData
@@ -103,7 +102,7 @@ const AllItemsList = () => {
           username={selectedItem.username}
           password={selectedItem.password}
           passwordSecurity={selectedItem.passwordSecurity}
-          notes={selectedItem.notes}
+          notes={selectedItem.notes || undefined}
         />
       );
     }

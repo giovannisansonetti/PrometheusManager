@@ -69,7 +69,7 @@ const DataList = () => {
   }
 
   const renderData = () => {
-    if (currentView === "password" && selectData && selectData.notes) {
+    if (currentView === "password" && selectData) {
       return (
         <ShowData
           id={selectData.id}
@@ -78,7 +78,7 @@ const DataList = () => {
           username={selectData.username}
           password={selectData.password}
           passwordSecurity={selectData.passwordSecurity}
-          notes={selectData.notes}
+          notes={selectData.notes || undefined}
         />
       );
     }

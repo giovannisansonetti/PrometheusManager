@@ -9,6 +9,7 @@ import Trash from "~/../public/SideBar/Trash.svg";
 import Edit from "~/../public/pencil-square.svg";
 import axios from "axios";
 import EditItemProps from "./interfaces/EditData.models";
+import { useRouter } from "next/navigation";
 
 const ShowData = ({
   id,
@@ -25,6 +26,7 @@ const ShowData = ({
   const [loading, setLoading] = useState(false);
   const [editview, setEditView] = useState(false);
   const toggleEdit = () => setEditView(!editview);
+  const router = useRouter();
 
   const [editForm, setEditForm] = useState<EditItemProps>({
     title: title,
@@ -64,6 +66,7 @@ const ShowData = ({
     if (response.success) {
       setTimeout(() => {
         setLoading(false);
+        setEditView(false);
       }, 1000);
     }
   };
@@ -82,6 +85,7 @@ const ShowData = ({
         setLoading(false);
       }, 1000);
     }
+    router.refresh();
   };
 
   return (
