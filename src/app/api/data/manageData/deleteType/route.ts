@@ -73,5 +73,31 @@ export async function POST(req: NextRequest) {
         );
       }
     }
+
+    if (type === "card") {
+      try {
+        await db.paymentCard.delete({
+          where: {
+            userId: supabaseUserId,
+            id: id,
+          },
+        });
+        return NextResponse.json(
+          {
+            success: true,
+            message: "Card moved to trashbin",
+          },
+          { status: 200 },
+        );
+      } catch (error) {
+        return NextResponse.json(
+          {
+            error: true,
+            message: "Internal Server Error",
+          },
+          { status: 500 },
+        );
+      }
+    }
   }
 }
