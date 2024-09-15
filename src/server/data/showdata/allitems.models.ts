@@ -24,7 +24,20 @@ type NoteItem = {
   isDeleted: boolean;
 };
 
-export type AllItems = DataItem | NoteItem;
+type PaymentCardItem = {
+  type: "paymentCard";
+  id: string;
+  userId: string;
+  cardholder: string;
+  PAN: string;
+  expiry: Date;
+  CVV: number;
+  createdAt: Date;
+  updatedAt: Date;
+  isDeleted: boolean;
+};
+
+export type AllItems = DataItem | NoteItem | PaymentCardItem;
 
 export type ApiResponse = {
   status: number;
