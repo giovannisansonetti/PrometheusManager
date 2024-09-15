@@ -7,14 +7,19 @@ import { env } from "~/env";
 export async function GET(req: NextRequest) {
   const response = await fetchHealthCheck();
   if (response.error) {
-    return NextResponse.json({
-      status: 404,
-      message: response.message,
-      error: true,
-    });
+    return NextResponse.json(
+      {
+        message: response.message,
+        error: true,
+      },
+      { status: 404 },
+    );
   }
   if (response.status === 200) {
-    return NextResponse.json({ data: response.data, status: response.status });
+    return NextResponse.json(
+      { data: response.data },
+      { status: response.status },
+    );
   }
 }
 
@@ -24,7 +29,7 @@ const fetchHealthCheck = async () => {
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) {
-    return { error: true, message: "User authentication failed" };
+    return { error: true, message: "User authentication failed", status: 401 };
   }
 
   const user = await db.user.findUnique({
@@ -32,7 +37,7 @@ const fetchHealthCheck = async () => {
   });
 
   if (!user) {
-    return { error: true, message: "User not found" };
+    return { error: true, message: "User not found", status: 404 };
   }
 
   const sixtyDaysAgo = new Date();

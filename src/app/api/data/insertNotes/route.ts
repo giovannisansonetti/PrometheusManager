@@ -11,19 +11,23 @@ export async function POST(req: NextRequest) {
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) {
-    return NextResponse.json({
-      status: 401,
-      message: "Unauthorized user",
-      error: true,
-    });
+    return NextResponse.json(
+      {
+        message: "Unauthorized user",
+        error: true,
+      },
+      { status: 401 },
+    );
   }
 
   if (!title || !description) {
-    return NextResponse.json({
-      status: 400,
-      message: "Missing required fields",
-      error: true,
-    });
+    return NextResponse.json(
+      {
+        message: "Missing required fields",
+        error: true,
+      },
+      { status: 400 },
+    );
   }
 
   const supabaseUserId = data.user.id;
@@ -33,11 +37,13 @@ export async function POST(req: NextRequest) {
   });
 
   if (!user) {
-    return NextResponse.json({
-      status: 404,
-      message: "User not found",
-      error: true,
-    });
+    return (
+      NextResponse.json({
+        message: "User not found",
+        error: true,
+      }),
+      { status: 404 }
+    );
   }
 
   const insertNote = {
@@ -54,9 +60,11 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({
-    success: true,
-    status: 200,
-    message: "Item created successfully",
-  });
+  return NextResponse.json(
+    {
+      success: true,
+      message: "Item created successfully",
+    },
+    { status: 200 },
+  );
 }

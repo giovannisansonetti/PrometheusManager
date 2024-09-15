@@ -9,11 +9,13 @@ export async function POST(req: NextRequest) {
   const { email, masterPass, phoneNumber } = response;
 
   if (!email || !masterPass) {
-    return NextResponse.json({
-      status: 400,
-      message: "Email or password not received",
-      error: true,
-    });
+    return NextResponse.json(
+      {
+        message: "Email or password not received",
+        error: true,
+      },
+      { status: 400 },
+    );
   }
 
   const { data, error } = await supabase.auth.signUp({
@@ -39,34 +41,42 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({
-      success: true,
-      status: 200,
-      message: "User registered",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        message: "User registered",
+      },
+      { status: 200 },
+    );
   }
 
   if (error && error.code === "weak_password") {
-    return NextResponse.json({
-      status: 400,
-      error: true,
-      message: "Password is too short",
-    });
+    return NextResponse.json(
+      {
+        error: true,
+        message: "Password is too short",
+      },
+      { status: 400 },
+    );
   }
 
   if (error && error.code === "user_already_exists") {
-    return NextResponse.json({
-      status: 400,
-      error: true,
-      message: "Email already registered",
-    });
+    return NextResponse.json(
+      {
+        error: true,
+        message: "Email already registered",
+      },
+      { status: 400 },
+    );
   }
 
   if (error && error.code === "validation_failed") {
-    return NextResponse.json({
-      status: 400,
-      error: true,
-      message: "Invalid email format",
-    });
+    return NextResponse.json(
+      {
+        error: true,
+        message: "Invalid email format",
+      },
+      { status: 400 },
+    );
   }
 }

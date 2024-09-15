@@ -30,17 +30,21 @@ export async function POST(req: NextRequest) {
             id: id,
           },
         });
-        return NextResponse.json({
-          success: true,
-          status: 200,
-          message: "Item moved to trashbin",
-        });
+        return NextResponse.json(
+          {
+            success: true,
+            message: "Item moved to trashbin",
+          },
+          { status: 200 },
+        );
       } catch (error) {
-        return NextResponse.json({
-          status: 500,
-          error: true,
-          message: "Internal Server Error",
-        });
+        return NextResponse.json(
+          {
+            error: true,
+            message: "Internal Server Error",
+          },
+          { status: 500 },
+        );
       }
     }
 
@@ -52,17 +56,21 @@ export async function POST(req: NextRequest) {
             id: id,
           },
         });
-        return NextResponse.json({
-          success: true,
-          status: 200,
-          message: "Note moved to trashbin",
-        });
+        return NextResponse.json(
+          {
+            success: true,
+            message: "Note moved to trashbin",
+          },
+          { status: 200 },
+        );
       } catch (error) {
-        return NextResponse.json({
-          status: 500,
-          error: true,
-          message: "Internal Server Error",
-        });
+        return NextResponse.json(
+          {
+            error: true,
+            message: "Internal Server Error",
+          },
+          { status: 500 },
+        );
       }
     }
   }

@@ -8,14 +8,19 @@ import { env } from "~/env";
 export async function GET(req: NextRequest) {
   const response = await fetchAllitems();
   if (response.error) {
-    return NextResponse.json({
-      status: 404,
-      message: response.message,
-      error: true,
-    });
+    return NextResponse.json(
+      {
+        message: response.message,
+        error: true,
+      },
+      { status: 404 },
+    );
   }
   if (response.status === 200) {
-    return NextResponse.json({ data: response.data, status: response.status });
+    return NextResponse.json(
+      { data: response.data },
+      { status: response.status },
+    );
   }
 }
 
@@ -26,7 +31,7 @@ const fetchAllitems = async () => {
 
   if (error || !data.user) {
     console.error("Failed to get user:", error);
-    return { error: true, message: "User authentication failed" };
+    return { error: true, message: "User authentication failed", status: 401 };
   }
 
   const user = await db.user.findUnique({
@@ -34,7 +39,7 @@ const fetchAllitems = async () => {
   });
 
   if (!user) {
-    return { error: true, message: "User not found" };
+    return { error: true, message: "User not found", status: 404 };
   }
 
   try {
