@@ -62,8 +62,8 @@ model Note {
 model PaymentCard {
   id         String   @id @default(uuid())
   PAN        String
-  expiry     DateTime //should default to last day of month and 23:59
-  CVV        Int
+  expiry     String //follow format MM/YY
+  CVV        String
   cardholder String
   type       CardType
   userId     String

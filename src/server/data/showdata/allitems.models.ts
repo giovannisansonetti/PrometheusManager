@@ -33,8 +33,8 @@ type PaymentCardItem = {
   cardholder: string;
   cardType: CardType;
   PAN: string;
-  expiry: Date;
-  CVV: number;
+  expiry: string; //follow format MM/YY
+  CVV: string;
   createdAt: Date;
   updatedAt: Date;
   isDeleted: boolean;
