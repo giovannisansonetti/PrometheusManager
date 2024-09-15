@@ -31,6 +31,12 @@ export async function POST(req: NextRequest) {
           isDeleted: false,
         },
       });
+      await db.paymentCard.deleteMany({
+        where: {
+          userId: data.user.id,
+          isDeleted: false,
+        },
+      });
       return NextResponse.json(
         {
           success: true,
