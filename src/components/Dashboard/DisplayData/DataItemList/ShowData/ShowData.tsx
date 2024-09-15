@@ -85,7 +85,7 @@ const ShowData = ({
         setLoading(false);
       }, 1000);
     }
-    router.refresh();
+    location.reload();
   };
 
   return (

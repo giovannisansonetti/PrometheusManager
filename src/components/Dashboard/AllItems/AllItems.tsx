@@ -92,7 +92,7 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
         setSuccess(false);
         setLoading(false);
       }, 1000);
-      router.refresh();
+      location.reload();
     }
   };
 
