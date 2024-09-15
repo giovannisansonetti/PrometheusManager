@@ -85,7 +85,7 @@ const AllItemsList = () => {
       }
     }
     setLoading(false);
-    router.refresh();
+    location.reload();
   };
 
   const render = () => {

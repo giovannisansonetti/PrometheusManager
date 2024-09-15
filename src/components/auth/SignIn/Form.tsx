@@ -34,7 +34,7 @@ const Login = () => {
     }
 
     if (response.success) {
-      router.refresh();
+      location.reload();
     }
   };
 

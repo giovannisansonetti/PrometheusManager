@@ -72,7 +72,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
         setSuccess(false);
         setLoading(false);
       }, 1000);
-      router.refresh();
+      location.reload();
     }
   };
 
