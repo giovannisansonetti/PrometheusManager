@@ -1,3 +1,5 @@
+import { CardType } from "@prisma/client";
+
 type DataItem = {
   type: "data";
   id: string;
@@ -29,6 +31,7 @@ type PaymentCardItem = {
   id: string;
   userId: string;
   cardholder: string;
+  cardType: CardType;
   PAN: string;
   expiry: Date;
   CVV: number;

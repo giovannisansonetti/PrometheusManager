@@ -79,6 +79,7 @@ const fetchAllitems = async () => {
         type: "paymentCard" as const,
         PAN: item.PAN,
         cardholder: item.cardholder,
+        cardType: item.type,
         expiry: item.expiry,
         CVV: item.CVV,
         isDeleted: item.isDeleted,
