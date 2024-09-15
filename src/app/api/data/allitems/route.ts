@@ -38,7 +38,7 @@ const fetchAllitems = async () => {
   }
 
   try {
-    const [dataItems, noteItems] = await Promise.all([
+    const [dataItems, noteItems, paymentCardItems] = await Promise.all([
       db.data.findMany({
         where: {
           userId: user.id,
@@ -49,6 +49,7 @@ const fetchAllitems = async () => {
           userId: user.id,
         },
       }),
+      db.paymentCard.findMany({ where: { userId: user.id } }),
     ]);
     for (const data of dataItems) {
       data.password = await decryptWithKey(data.iv, data.password, env.AES_KEY);
@@ -72,6 +73,18 @@ const fetchAllitems = async () => {
         noteTitle: item.noteTitle,
         noteDescription: item.noteDescription,
         isDeleted: item.isDeleted,
+      })),
+      ...paymentCardItems.map((item) => ({
+        ...item,
+        type: "paymentCard" as const,
+        PAN: item.PAN,
+        cardholder: item.cardholder,
+        cardType: item.type,
+        expiry: item.expiry,
+        CVV: item.CVV,
+        isDeleted: item.isDeleted,
+        createdAt: item.createdAt,
+        updatedAt: item.updatedAt,
       })),
     ];
 

@@ -15,6 +15,7 @@ model User {
   updatedAt        DateTime           @updatedAt
   data             Data[]
   note             Note[]
+  paymentCards     PaymentCard[]
   userloginhistory UserLoginHistory[]
 }
 
@@ -56,4 +57,23 @@ model Note {
   isDeleted       Boolean
   deletedAt       DateTime? @default(now())
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PaymentCard {
+  id         String   @id @default(uuid())
+  PAN        String
+  expiry     String //follow format MM/YY
+  CVV        String
+  cardholder String
+  type       CardType
+  userId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  isDeleted  Boolean
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum CardType {
+  CREDIT
+  DEBIT
 }

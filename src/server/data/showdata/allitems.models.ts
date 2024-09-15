@@ -1,3 +1,5 @@
+import { CardType } from "@prisma/client";
+
 type DataItem = {
   type: "data";
   id: string;
@@ -24,7 +26,21 @@ type NoteItem = {
   isDeleted: boolean;
 };
 
-export type AllItems = DataItem | NoteItem;
+type PaymentCardItem = {
+  type: "paymentCard";
+  id: string;
+  userId: string;
+  cardholder: string;
+  cardType: CardType;
+  PAN: string;
+  expiry: string; //follow format MM/YY
+  CVV: string;
+  createdAt: Date;
+  updatedAt: Date;
+  isDeleted: boolean;
+};
+
+export type AllItems = DataItem | NoteItem | PaymentCardItem;
 
 export type ApiResponse = {
   status: number;
