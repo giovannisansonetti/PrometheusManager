@@ -10,11 +10,13 @@ export async function POST(req: NextRequest) {
   const ip = await getIp();
 
   if (!email || !masterPass) {
-    return NextResponse.json({
-      status: 400,
-      message: "Missing information",
-      error: true,
-    });
+    return NextResponse.json(
+      {
+        message: "Missing information",
+        error: true,
+      },
+      { status: 400 },
+    );
   }
 
   const signIndata = {
@@ -38,9 +40,11 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  return NextResponse.json({
-    status: 400,
-    message: "Invalid Credentials",
-    error: true,
-  });
+  return NextResponse.json(
+    {
+      message: "Invalid Credentials",
+      error: true,
+    },
+    { status: 400 },
+  );
 }

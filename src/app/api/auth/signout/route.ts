@@ -13,8 +13,10 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  return NextResponse.json({
-    status: 404,
-    message: "User not found",
-  });
+  return NextResponse.json(
+    {
+      message: "User not found",
+    },
+    { status: 404 },
+  );
 }
