@@ -6,14 +6,19 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const response = await fetchNotes();
   if (response.error) {
-    return NextResponse.json({
-      status: 404,
-      message: response.message,
-      error: true,
-    });
+    return NextResponse.json(
+      {
+        message: response.message,
+        error: true,
+      },
+      { status: 404 },
+    );
   }
   if (response.status === 200) {
-    return NextResponse.json({ data: response.data, status: response.status });
+    return NextResponse.json(
+      { data: response.data },
+      { status: response.status },
+    );
   }
 }
 
@@ -23,7 +28,7 @@ const fetchNotes = async () => {
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) {
-    return { error: true, message: "User authentication failed" };
+    return { error: true, message: "User authentication failed", status: 401 };
   }
 
   const user = await db.user.findUnique({
@@ -31,7 +36,7 @@ const fetchNotes = async () => {
   });
 
   if (!user) {
-    return { error: true, message: "User not found" };
+    return { error: true, message: "User not found", status: 404 };
   }
 
   const noteList: Note[] = await db.note.findMany({

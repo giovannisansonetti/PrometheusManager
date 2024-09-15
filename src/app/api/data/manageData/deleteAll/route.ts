@@ -31,23 +31,29 @@ export async function POST(req: NextRequest) {
           isDeleted: true,
         },
       });
-      return NextResponse.json({
-        status: 200,
-        success: true,
-        message: "Items deleted",
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          message: "Items deleted",
+        },
+        { status: 200 },
+      );
     } catch (error) {
-      return NextResponse.json({
-        status: 500,
-        message: "Internal Server Error",
-        error: true,
-      });
+      return NextResponse.json(
+        {
+          message: "Internal Server Error",
+          error: true,
+        },
+        { status: 500 },
+      );
     }
   }
 
-  return NextResponse.json({
-    status: 404,
-    message: "User not found",
-    error: true,
-  });
+  return NextResponse.json(
+    {
+      message: "User not found",
+      error: true,
+    },
+    { status: 404 },
+  );
 }
