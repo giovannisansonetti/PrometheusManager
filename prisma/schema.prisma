@@ -67,6 +67,7 @@ model PaymentCard {
   cardholder String?
   type       CardType
   userId     String
+  isDeleted  Boolean
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
