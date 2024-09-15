@@ -8,6 +8,7 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  user,
 } from "@nextui-org/react";
 import AllItemsListElement from "./AllItemsListElement";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
@@ -15,17 +16,16 @@ import useSWR from "swr";
 import { fetcher } from "~/server/fetcher";
 import { AllItems, ApiResponse } from "~/server/data/showdata/allitems.models";
 import axios from "axios";
+import ShowData from "../../DisplayData/DataItemList/ShowData/ShowData";
+import { useRouter } from "next/navigation";
 
 const AllItemsList = () => {
+  type ViewData = "overview" | "password";
   const { data, error, isLoading } = useSWR<ApiResponse>(
     "/api/data/allitems",
     fetcher,
   );
-  const {
-    isOpen: isPasswordModalOpen,
-    onOpen: onPasswordModalOpen,
-    onOpenChange: onPasswordModalOpenChange,
-  } = useDisclosure();
+  const router = useRouter();
   const {
     isOpen: isNoteModalOpen,
     onOpen: onNoteModalOpen,
@@ -34,11 +34,13 @@ const AllItemsList = () => {
 
   const [loading, setLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState<AllItems | null>(null);
+  const [currentView, setCurrentView] = useState<ViewData>("overview");
 
   const handleClick = (item: AllItems) => {
     if (item.type === "data") {
       setSelectedItem(item);
-      onPasswordModalOpen();
+      console.log(selectedItem);
+      setCurrentView("password");
     }
     if (item.type === "note") {
       setSelectedItem(item);
@@ -83,6 +85,27 @@ const AllItemsList = () => {
       }
     }
     setLoading(false);
+    router.refresh();
+  };
+
+  const render = () => {
+    if (
+      currentView === "password" &&
+      selectedItem &&
+      selectedItem.type === "data"
+    ) {
+      return (
+        <ShowData
+          id={selectedItem.id}
+          title={selectedItem.title}
+          webSiteLink={selectedItem.webSiteLink}
+          username={selectedItem.username}
+          password={selectedItem.password}
+          passwordSecurity={selectedItem.passwordSecurity}
+          notes={selectedItem.notes || undefined}
+        />
+      );
+    }
   };
 
   if (isLoading) {
@@ -115,103 +138,29 @@ const AllItemsList = () => {
 
   return (
     <div>
-      {data?.data.length ? (
-        data.data.map((item) => (
-          <div>
-            {!item.isDeleted && (
-              <AllItemsListElement
-                item={item}
-                date={new Date(item.createdAt).toLocaleString()}
-                onClick={() => handleClick(item)}
-              />
-            )}
-          </div>
-        ))
-      ) : (
-        <div className="mt-5 flex flex-col items-center justify-center">
-          <p className="text-gray-500">No items found</p>
-        </div>
-      )}
-
-      <Modal
-        isOpen={isPasswordModalOpen}
-        onOpenChange={onPasswordModalOpenChange}
-        className="bottom-[25%] w-[80%] bg-[#0a0a0a] sm:bottom-0 sm:w-2/4"
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              {selectedItem && selectedItem.type === "data" && (
-                <>
-                  <ModalHeader className="mt-2 flex flex-col gap-1">
-                    <h2 className="text-2xl font-bold">{selectedItem.title}</h2>
-                    <div className="flex w-full border-1 border-[#27272a]"></div>
-                    <div className="text-sm text-gray-500">
-                      Created on:{" "}
-                      {new Date(selectedItem.createdAt).toLocaleDateString(
-                        "it-IT",
-                      )}
-                    </div>
-                  </ModalHeader>
-                  <ModalBody>
-                    <div className="flex flex-col gap-2">
-                      <div className="text-lg font-bold">Info</div>
-                      <div className="text-md font-medium">
-                        Website:{" "}
-                        <span className="font-normal">
-                          {selectedItem.webSiteLink}
-                        </span>
-                      </div>
-                      <div className="flex w-full border-1 border-[#27272a]"></div>
-                      <div className="text-md font-medium">
-                        Username:{" "}
-                        <span className="font-normal">
-                          {selectedItem.username}
-                        </span>
-                      </div>
-                      <div className="flex w-full border-1 border-[#27272a]"></div>
-                      <div className="text-md font-medium">
-                        Password:{" "}
-                        <span className="font-normal">
-                          {selectedItem.password}
-                        </span>
-                      </div>
-                      <div className="flex w-full border-1 border-[#27272a]"></div>
-                      <div className="text-md font-medium">
-                        Password Security:{" "}
-                        <span className="font-normal">
-                          {selectedItem.passwordSecurity}
-                        </span>
-                      </div>
-                      <div className="flex w-full border-1 border-[#27272a]"></div>
-                    </div>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="primary" variant="flat">
-                      Edit
-                    </Button>
-                    {loading ? (
-                      <Button color="danger" isLoading>
-                        Deleting
-                      </Button>
-                    ) : (
-                      <Button
-                        color="danger"
-                        variant="flat"
-                        onClick={async () =>
-                          handleDelete("data", selectedItem.id, onClose)
-                        }
-                      >
-                        Delete
-                      </Button>
-                    )}
-                  </ModalFooter>
-                </>
-              )}
-            </>
+      {currentView === "overview" ? (
+        <div>
+          {data?.data.length ? (
+            data.data.map((item) => (
+              <div>
+                {!item.isDeleted && (
+                  <AllItemsListElement
+                    item={item}
+                    date={new Date(item.createdAt).toLocaleString()}
+                    onClick={() => handleClick(item)}
+                  />
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="mt-5 flex flex-col items-center justify-center">
+              <p className="text-gray-500">No items found</p>
+            </div>
           )}
-        </ModalContent>
-      </Modal>
+        </div>
+      ) : (
+        <div className="flex items-center justify-center">{render()}</div>
+      )}
 
       <Modal
         isOpen={isNoteModalOpen}
