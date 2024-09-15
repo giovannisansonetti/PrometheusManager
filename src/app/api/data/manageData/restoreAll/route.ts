@@ -19,24 +19,34 @@ export async function POST(req: NextRequest) {
 
   if (user) {
     try {
-      await db.data.deleteMany({
+      await db.data.updateMany({
         where: {
           userId: data.user.id,
+          isDeleted: true,
+        },
+        data: {
           isDeleted: false,
         },
       });
-      await db.note.deleteMany({
+      await db.note.updateMany({
         where: {
           userId: data.user.id,
+          isDeleted: true,
+        },
+        data: {
           isDeleted: false,
         },
       });
-      await db.paymentCard.deleteMany({
+      await db.paymentCard.updateMany({
         where: {
           userId: data.user.id,
+          isDeleted: true,
+        },
+        data: {
           isDeleted: false,
         },
       });
+
       return NextResponse.json(
         {
           success: true,
