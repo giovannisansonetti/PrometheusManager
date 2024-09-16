@@ -3,6 +3,7 @@ import { Button, Slider, Switch } from "@nextui-org/react";
 import pswgen from "utils/pswgen";
 import checkSecurityPass from "utils/pswsecuritychecker";
 import { PswGeneratorProps } from "./PswGeneratorProps.models";
+import BurgerMenu from "../../Burger/BurgerMenu";
 
 const PswGenerator = ({ handleMenu, isOpen }: PswGeneratorProps) => {
   const [security, setSecurity] = useState("");
@@ -34,20 +35,9 @@ const PswGenerator = ({ handleMenu, isOpen }: PswGeneratorProps) => {
     <div className="flex h-full w-full flex-col items-center overflow-hidden overflow-y-auto bg-[#161616] text-white lg:rounded-lg">
       <div className="relative w-full">
         <div className="mr-7 mt-5 flex items-center justify-end">
-          <div className="flex lg:hidden">
-            <button onClick={handleMenu} className="ml-5 rounded p-2">
-              <span
-                className={`block h-0.5 w-6 rounded-sm bg-white transition-all duration-300 ease-out ${isOpen ? "translate-y-1 rotate-45" : "-translate-y-0.5"}`}
-              ></span>
-              <span
-                className={`my-0.5 block h-0.5 w-6 rounded-sm bg-white transition-all duration-300 ease-out ${isOpen ? "opacity-0" : "opacity-100"}`}
-              ></span>
-              <span
-                className={`block h-0.5 w-6 rounded-sm bg-white transition-all duration-300 ease-out ${isOpen ? "-translate-y-1 -rotate-45" : "translate-y-0.5"}`}
-              ></span>
-            </button>
+          <div className="block w-full lg:hidden">
+            <BurgerMenu handleMenu={handleMenu} isOpen={isOpen} />
           </div>
-
           <h1 className="flex w-full justify-center lg:text-[30px]">
             Password Generator
           </h1>

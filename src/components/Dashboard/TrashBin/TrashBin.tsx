@@ -15,11 +15,10 @@ import {
 } from "@nextui-org/react";
 import { TrashBinProps } from "./interfaces/TrashBinProps.models";
 import TrashBinList from "./TrashBinItemList/TrashBinList";
-import deleteAll from "~/server/data/manageData/delete/deleteAll";
-import restoreAll from "~/server/data/manageData/restore/restoreAll";
 import { useState } from "react";
 import AlertEvent from "~/components/Events/Alerts/Alert";
 import axios from "axios";
+import BurgerMenu from "../Burger/BurgerMenu";
 
 const TrashBin = ({ handleMenu, isOpen }: TrashBinProps) => {
   const {
@@ -70,17 +69,9 @@ const TrashBin = ({ handleMenu, isOpen }: TrashBinProps) => {
       <div className="">
         <div className="mr-7 mt-5 flex items-center justify-end">
           <div className="block w-full sm:hidden">
-            <button onClick={handleMenu} className="ml-5 rounded p-2">
-              <span
-                className={`block h-0.5 w-6 rounded-sm bg-white transition-all duration-300 ease-out ${isOpen ? "translate-y-1 rotate-45" : "-translate-y-0.5"}`}
-              ></span>
-              <span
-                className={`my-0.5 block h-0.5 w-6 rounded-sm bg-white transition-all duration-300 ease-out ${isOpen ? "opacity-0" : "opacity-100"}`}
-              ></span>
-              <span
-                className={`block h-0.5 w-6 rounded-sm bg-white transition-all duration-300 ease-out ${isOpen ? "-translate-y-1 -rotate-45" : "translate-y-0.5"}`}
-              ></span>
-            </button>
+            <div className="block w-full lg:hidden">
+              <BurgerMenu handleMenu={handleMenu} isOpen={isOpen} />
+            </div>
           </div>
           <Dropdown className="bg-[#161616]">
             <DropdownTrigger>

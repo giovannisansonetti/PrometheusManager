@@ -10,6 +10,7 @@ import Edit from "~/../public/pencil-square.svg";
 import axios from "axios";
 import EditItemProps from "./interfaces/EditData.models";
 import { useRouter } from "next/navigation";
+import { fetchImage } from "~/server/fetchImg/fetchimg";
 
 const ShowData = ({
   id,
@@ -90,9 +91,15 @@ const ShowData = ({
 
   return (
     <div className="flex w-full flex-col items-center">
-      <h1 className="mt-3 text-[20px]">Data info</h1>
+      <Image
+        src={fetchImage(webSiteLink)}
+        width={40}
+        height={40}
+        alt=""
+        className="mt-10"
+      />
 
-      <div className="mt-3 w-3/4 items-center rounded-lg border-1 border-[#27272a] bg-[#131314] p-4">
+      <div className="mt-10 w-3/4 items-center rounded-lg border-1 border-[#27272a] bg-[#131314] p-4">
         <div className="ml-4 mt-3">
           <div>
             <div>Title</div>

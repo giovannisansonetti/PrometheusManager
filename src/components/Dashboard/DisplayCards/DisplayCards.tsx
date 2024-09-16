@@ -23,6 +23,7 @@ import Image from "next/image";
 import { CardType } from "./interfaces/AddCard.models";
 import validateCardNumber from "utils/cardValidator";
 import axios from "axios";
+import BurgerMenu from "../Burger/BurgerMenu";
 
 const DisplayCards = ({ handleMenu, isOpen }: DisplayCardsProps) => {
   const {
@@ -112,18 +113,8 @@ const DisplayCards = ({ handleMenu, isOpen }: DisplayCardsProps) => {
     <div className="flex h-full w-full flex-col overflow-hidden overflow-y-auto bg-[#161616] text-white lg:rounded-lg">
       <div className="">
         <div className="mr-7 mt-5 flex items-center justify-end">
-          <div className="block w-full sm:hidden">
-            <button onClick={handleMenu} className="ml-5 rounded p-2">
-              <span
-                className={`block h-0.5 w-6 rounded-sm bg-white transition-all duration-300 ease-out ${isOpen ? "translate-y-1 rotate-45" : "-translate-y-0.5"}`}
-              ></span>
-              <span
-                className={`my-0.5 block h-0.5 w-6 rounded-sm bg-white transition-all duration-300 ease-out ${isOpen ? "opacity-0" : "opacity-100"}`}
-              ></span>
-              <span
-                className={`block h-0.5 w-6 rounded-sm bg-white transition-all duration-300 ease-out ${isOpen ? "-translate-y-1 -rotate-45" : "translate-y-0.5"}`}
-              ></span>
-            </button>
+          <div className="block w-full lg:hidden">
+            <BurgerMenu handleMenu={handleMenu} isOpen={isOpen} />
           </div>
           <Button color="primary" variant="flat" onClick={onCardsModalOpen}>
             Add a card
