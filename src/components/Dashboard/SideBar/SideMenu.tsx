@@ -15,10 +15,13 @@ import Gen from "~/../public/SideBar/Gen.svg";
 import HealthCheck from "~/../public/SideBar/HealthCheck.svg";
 import Image from "next/image";
 import { SideMenuProps } from "./SideMenu.models";
+import useBackButtonStore from "../DynamicActionButton/DynamicActionButtonStore";
 
 const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
+  const { goBack, setGoBack } = useBackButtonStore();
   const handleClick = (component: string) => {
     setActive(component);
+    setGoBack(false);
   };
   return (
     <>
