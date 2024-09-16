@@ -18,6 +18,8 @@ import { useRouter } from "next/navigation";
 import DataList from "./DataItemList/DataList";
 import AlertEvent from "~/components/Events/Alerts/Alert";
 import axios from "axios";
+import DynamicActionButton from "../DynamicActionButton/DynamicActionButton";
+import { PageType } from "../DynamicActionButton/interfaces/DynamicActionButton.models";
 
 const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
   const {
@@ -93,9 +95,11 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
               ></span>
             </button>
           </div>
-          <Button color="primary" variant="flat" onClick={onPasswordModalOpen}>
-            Add data
-          </Button>
+          <DynamicActionButton
+            onButtonClick={onPasswordModalOpen}
+            buttonText="Add data"
+            pageType={PageType.PASSWORD}
+          ></DynamicActionButton>
         </div>
 
         <div className="mt-5 flex w-full border-1 border-[#27272a]"></div>

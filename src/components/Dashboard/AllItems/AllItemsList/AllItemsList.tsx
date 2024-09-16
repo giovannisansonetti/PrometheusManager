@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Textarea,
   Modal,
@@ -18,6 +18,7 @@ import { AllItems, ApiResponse } from "~/server/data/showdata/allitems.models";
 import axios from "axios";
 import ShowData from "../../DisplayData/DataItemList/ShowData/ShowData";
 import { useRouter } from "next/navigation";
+import useBackButtonStore from "../../DynamicActionButton/DynamicActionButtonStore";
 
 const AllItemsList = () => {
   type ViewData = "overview" | "password";
@@ -35,12 +36,20 @@ const AllItemsList = () => {
   const [loading, setLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState<AllItems | null>(null);
   const [currentView, setCurrentView] = useState<ViewData>("overview");
+  const { goBack, setGoBack } = useBackButtonStore();
+
+  useEffect(() => {
+    if (!goBack) {
+      setCurrentView("overview");
+    }
+  }, [goBack]);
 
   const handleClick = (item: AllItems) => {
     if (item.type === "data") {
       setSelectedItem(item);
       console.log(selectedItem);
       setCurrentView("password");
+      setGoBack(true);
     }
     if (item.type === "note") {
       setSelectedItem(item);

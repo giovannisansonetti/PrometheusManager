@@ -28,6 +28,8 @@ import { DisplayItemsProps } from "./interfaces/DisplayData.models";
 import AlertEvent from "~/components/Events/Alerts/Alert";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import DynamicActionButton from "../DynamicActionButton/DynamicActionButton";
+import { PageType } from "../DynamicActionButton/interfaces/DynamicActionButton.models";
 
 const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
   const {
@@ -143,22 +145,11 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
             </button>
           </div>
 
-          <Dropdown className="bg-[#161616]">
-            <DropdownTrigger>
-              <Button color="primary" variant="flat">
-                Add an item
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Static Actions">
-              <DropdownItem key="new" onClick={onPasswordModalOpen}>
-                Password
-              </DropdownItem>
-              <DropdownItem key="copy" onClick={onNoteModalOpen}>
-                Note
-              </DropdownItem>
-              <DropdownItem key="edit">Credit Card</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          <DynamicActionButton
+            onNoteModalOpen={onNoteModalOpen}
+            onPasswordModalOpen={onPasswordModalOpen}
+            pageType={PageType.ALLITEMS}
+          ></DynamicActionButton>
         </div>
         <div className="mt-5 flex w-full border-1 border-[#27272a]"></div>
       </div>

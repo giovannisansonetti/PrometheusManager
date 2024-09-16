@@ -59,6 +59,7 @@ const DisplayNotes = ({ handleMenu, isOpen }: DisplayNotesProps) => {
         setSuccess(false);
         setLoading(false);
       }, 1000);
+      location.reload();
     }
   };
 
