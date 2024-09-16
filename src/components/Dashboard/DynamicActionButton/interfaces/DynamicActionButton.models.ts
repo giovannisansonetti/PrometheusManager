@@ -8,7 +8,7 @@ export enum PageType {
 export interface DynamicActionButtonProps {
   onButtonClick?: () => void;
   buttonText?: string;
-  onNoteModalOpen: () => void;
-  onPasswordModalOpen: () => void;
+  onNoteModalOpen?: () => void;
+  onPasswordModalOpen?: () => void;
   pageType: PageType;
 }

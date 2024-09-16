@@ -18,6 +18,7 @@ import { fetcher } from "~/server/fetcher";
 import { type ApiResponse } from "./interfaces/DataList.models";
 import axios from "axios";
 import ShowData from "./ShowData/ShowData";
+import useBackButtonStore from "../../DynamicActionButton/DynamicActionButtonStore";
 
 const DataList = () => {
   type ViewState = "overview" | "password";
@@ -31,10 +32,18 @@ const DataList = () => {
   const [selectData, setSelectData] = useState<Data | null>(null);
   const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure();
   const [currentView, setCurrentView] = useState<ViewState>("overview");
+  const { goBack, setGoBack } = useBackButtonStore();
+
+  useEffect(() => {
+    if (!goBack) {
+      setCurrentView("overview");
+    }
+  }, [goBack]);
 
   const handleClick = (data: Data) => {
     setSelectData(data);
     setCurrentView("password");
+    setGoBack(true);
   };
 
   if (isLoading) {
