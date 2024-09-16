@@ -5,11 +5,14 @@ import {
   DynamicActionButtonProps,
   PageType,
 } from "./interfaces/DynamicActionButton.models";
+import NormalButton from "./NormalButton/NormalButton";
 
 const DynamicActionButton = ({
   onNoteModalOpen,
   onPasswordModalOpen,
   pageType,
+  onButtonClick,
+  buttonText,
 }: DynamicActionButtonProps) => {
   const { goBack, setGoBack } = useBackButtonStore();
   if (goBack) {
@@ -24,7 +27,12 @@ const DynamicActionButton = ({
       ></DropdownButton>
     );
   }
-  return null;
+  if (onButtonClick && buttonText) {
+    return (
+      <NormalButton onClick={onButtonClick} text={buttonText}></NormalButton>
+    );
+  }
+  throw new Error("Invalid page type");
 };
 
 export default DynamicActionButton;
