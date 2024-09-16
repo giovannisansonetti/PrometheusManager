@@ -1,9 +1,10 @@
 import { Button } from "@nextui-org/react";
-import { BackButtonProps } from "./interfaces/BackButton.models";
+import useBackButtonStore from "../DynamicActionButtonStore";
 
-const BackButton = ({ onClick }: BackButtonProps) => {
+const BackButton = () => {
+  const { goBack, setGoBack } = useBackButtonStore();
   return (
-    <Button color="primary" variant="flat" onClick={onClick}>
+    <Button color="primary" variant="flat" onClick={() => setGoBack(false)}>
       Go back
     </Button>
   );
