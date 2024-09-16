@@ -1,7 +1,10 @@
 import BackButton from "./BackButton/BackButton";
 import DropdownButton from "./DropdownButton/DropdownButton";
 import useBackButtonStore from "./DynamicActionButtonStore";
-import { DynamicActionButtonProps } from "./interfaces/DynamicActionButton.models";
+import {
+  DynamicActionButtonProps,
+  PageType,
+} from "./interfaces/DynamicActionButton.models";
 
 const DynamicActionButton = ({
   onNoteModalOpen,
@@ -13,12 +16,15 @@ const DynamicActionButton = ({
     return <BackButton></BackButton>;
   }
   //TODO: change the type of component based on page
-  return (
-    <DropdownButton
-      onNoteModalOpen={onNoteModalOpen}
-      onPasswordModalOpen={onPasswordModalOpen}
-    ></DropdownButton>
-  );
+  if (pageType === PageType.ALLITEMS) {
+    return (
+      <DropdownButton
+        onNoteModalOpen={onNoteModalOpen}
+        onPasswordModalOpen={onPasswordModalOpen}
+      ></DropdownButton>
+    );
+  }
+  return null;
 };
 
 export default DynamicActionButton;
