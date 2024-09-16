@@ -6,11 +6,13 @@ import { DynamicActionButtonProps } from "./interfaces/DynamicActionButton.model
 const DynamicActionButton = ({
   onNoteModalOpen,
   onPasswordModalOpen,
+  pageType,
 }: DynamicActionButtonProps) => {
   const { goBack, setGoBack } = useBackButtonStore();
   if (goBack) {
     return <BackButton></BackButton>;
   }
+  //TODO: change the type of component based on page
   return (
     <DropdownButton
       onNoteModalOpen={onNoteModalOpen}

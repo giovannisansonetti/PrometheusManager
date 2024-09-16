@@ -29,6 +29,7 @@ import AlertEvent from "~/components/Events/Alerts/Alert";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import DynamicActionButton from "../DynamicActionButton/DynamicActionButton";
+import { PageType } from "../DynamicActionButton/interfaces/DynamicActionButton.models";
 
 const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
   const {
@@ -147,9 +148,7 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
           <DynamicActionButton
             onNoteModalOpen={onNoteModalOpen}
             onPasswordModalOpen={onPasswordModalOpen}
-            backButtonClick={() => {
-              return null;
-            }}
+            pageType={PageType.ALLITEMS}
           ></DynamicActionButton>
         </div>
         <div className="mt-5 flex w-full border-1 border-[#27272a]"></div>

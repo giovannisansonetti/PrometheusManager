@@ -1,5 +1,12 @@
+export enum PageType {
+  ALLITEMS,
+  NOTE,
+  PASSWORD,
+  CREDITCARD,
+}
+
 export interface DynamicActionButtonProps {
-  backButtonClick: () => void;
   onNoteModalOpen: () => void;
   onPasswordModalOpen: () => void;
+  pageType: PageType;
 }
