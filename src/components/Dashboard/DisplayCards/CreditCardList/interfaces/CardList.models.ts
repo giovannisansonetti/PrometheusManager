@@ -1,16 +1,12 @@
 import { PaymentCard } from "@prisma/client";
 
 export interface CardListProps {
+  // props for the CardList element
   PAN: string;
   expiry: string;
-  CVV: string;
-  cardholder: string;
-  type: CardType;
-}
-
-enum CardType {
-  CREDIT,
-  DEBIT,
+  image: string;
+  type: string;
+  onClick: () => void;
 }
 
 export type ApiResponse = {

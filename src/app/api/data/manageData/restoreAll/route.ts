@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: true,
-          message: "Items deleted",
+          message: "Items restored",
         },
         { status: 200 },
       );

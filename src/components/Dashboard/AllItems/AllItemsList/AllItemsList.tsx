@@ -163,7 +163,7 @@ const AllItemsList = () => {
             ))
           ) : (
             <div className="mt-5 flex flex-col items-center justify-center">
-              <p className="text-gray-500">No items found</p>
+              {/*TODO: A small card that explains each feature when no data is found*/}
             </div>
           )}
         </div>

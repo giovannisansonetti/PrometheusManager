@@ -11,10 +11,6 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import useSWR from "swr";
-import deleteItem from "~/server/data/manageData/delete/deleteItem";
-import deleteNote from "~/server/data/manageData/delete/deleteNote";
-import restoreItem from "~/server/data/manageData/restore/restoreItem";
-import restoreNote from "~/server/data/manageData/restore/restoreNote";
 import { fetcher } from "~/server/fetcher";
 import axios from "axios";
 
@@ -48,6 +44,7 @@ const TrashBinList = () => {
           onClose();
           setDeleteLoading(false);
         }, 1000);
+        location.reload();
       }
     }
 
@@ -81,6 +78,7 @@ const TrashBinList = () => {
           onClose();
           setDeleteLoading(false);
         }, 1000);
+        location.reload();
       }
     }
 

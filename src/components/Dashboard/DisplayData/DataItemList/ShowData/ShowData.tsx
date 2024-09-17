@@ -68,6 +68,7 @@ const ShowData = ({
       setTimeout(() => {
         setLoading(false);
         setEditView(false);
+        location.reload();
       }, 1000);
     }
   };
@@ -279,12 +280,11 @@ const ShowData = ({
         {editview ? (
           <div>
             {loading ? (
-              <Button color="primary" variant="flat" isLoading>
+              <Button variant="flat" isLoading>
                 Save data
               </Button>
             ) : (
               <Button
-                color="primary"
                 variant="flat"
                 onClick={async () => {
                   saveEditedData();
@@ -295,7 +295,7 @@ const ShowData = ({
             )}
           </div>
         ) : (
-          <Button color="primary" variant="flat" onClick={toggleEdit}>
+          <Button color="default" variant="flat" onClick={toggleEdit}>
             <Image src={Edit} width={20} height={20} alt="trash" />
             Edit
           </Button>

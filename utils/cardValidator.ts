@@ -1,9 +1,6 @@
 import { env } from "~/env";
 
 const validateCardNumber = (cardNumber: string): boolean => {
-  if (env.NODE_ENV == "development") {
-    return true;
-  }
   const reversedDigits = cardNumber.split("").reverse().map(Number);
 
   const checkSum = reversedDigits.reduce((sum, digit, idx) => {

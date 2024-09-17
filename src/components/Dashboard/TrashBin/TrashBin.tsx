@@ -48,6 +48,7 @@ const TrashBin = ({ handleMenu, isOpen }: TrashBinProps) => {
         onClose();
         setSuccess(false);
       }, 1000);
+      location.reload();
     }
   };
 
@@ -61,6 +62,7 @@ const TrashBin = ({ handleMenu, isOpen }: TrashBinProps) => {
         onClose();
         setSuccess(false);
       }, 1000);
+      location.reload();
     }
   };
 

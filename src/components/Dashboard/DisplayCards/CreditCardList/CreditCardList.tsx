@@ -4,6 +4,9 @@ import { ApiResponse } from "./interfaces/CardList.models";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
 import { PaymentCard } from "@prisma/client";
 import { useState } from "react";
+import CreditCardListElement from "./CreditCardListElement";
+import CreditCard from "~/../public/SideBar/CreditCard.svg";
+import ShowCard from "../ShowCard/ShowCard";
 
 const CreditCardList = () => {
   type ViewState = "overview" | "creditcard";
@@ -12,6 +15,8 @@ const CreditCardList = () => {
     "/api/data/showCard",
     fetcher,
   );
+
+  console.log(data);
   const [selectedCard, setSelectedCard] = useState<PaymentCard | null>(null);
   const [currentView, setCurrentView] = useState<ViewState>("overview");
 
@@ -49,26 +54,46 @@ const CreditCardList = () => {
   }
 
   const renderCard = () => {
-    /*TODO: make a component that displays the selected card*/
+    if (selectedCard) {
+      return (
+        <ShowCard
+          provider={CreditCard}
+          id={selectedCard.id}
+          PAN={selectedCard.PAN}
+          expiry={selectedCard.expiry}
+          cvv={selectedCard.CVV}
+          cardholder={selectedCard.cardholder}
+          type={selectedCard.type}
+        />
+      );
+    }
   };
 
   return (
     <>
-      {/*currentView === "overview" && data && data.data ? (
-                <div className="ml-auto mr-auto h-full w-full overflow-auto overflow-x-hidden">
-                    {data.data.map((card) =>{
-                        return(
-                            <div>
-                                {!card.isDeleted && (
-                                    
-                                )}
-                            </div>
-                        )
-                    })}
-                </div>
-                ) : (
-                    <div className="flex items-center justify-center">{renderCard()}</div>
-                )*/}
+      {currentView === "overview" && data && data.data ? (
+        <div className="relative left-10 top-10 flex w-full flex-row gap-5">
+          {data.data.map((card) => {
+            return (
+              <div>
+                {!card.isDeleted && (
+                  <CreditCardListElement
+                    image={
+                      CreditCard
+                    } /* TODO: use the card provider function */
+                    PAN={card.PAN}
+                    expiry={card.expiry}
+                    type={card.type}
+                    onClick={() => handleClick(card)}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="flex items-center justify-center">{renderCard()}</div>
+      )}
     </>
   );
 };

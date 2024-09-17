@@ -24,6 +24,7 @@ import { CardType } from "./interfaces/AddCard.models";
 import validateCardNumber from "utils/cardValidator";
 import axios from "axios";
 import BurgerMenu from "../Burger/BurgerMenu";
+import CreditCardList from "./CreditCardList/CreditCardList";
 
 const DisplayCards = ({ handleMenu, isOpen }: DisplayCardsProps) => {
   const {
@@ -122,6 +123,8 @@ const DisplayCards = ({ handleMenu, isOpen }: DisplayCardsProps) => {
         </div>
         <div className="mt-5 flex w-full border-1 border-[#27272a]"></div>
       </div>
+
+      <CreditCardList />
 
       <Modal
         isOpen={isCardsModalOpen}

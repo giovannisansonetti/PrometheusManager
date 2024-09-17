@@ -124,6 +124,7 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
         onClose();
         setSuccess(false);
         setLoading(false);
+        location.reload();
       }, 1000);
     }
   };
