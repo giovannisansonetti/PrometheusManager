@@ -7,7 +7,6 @@ import {
 } from "./interfaces/DynamicActionButton.models";
 import NormalButton from "./NormalButton/NormalButton";
 
-//TODO make it so that when a button on the sidebar is clicked it also sets goback to false
 const DynamicActionButton = ({
   onNoteModalOpen,
   onPasswordModalOpen,
@@ -19,7 +18,6 @@ const DynamicActionButton = ({
   if (goBack) {
     return <BackButton></BackButton>;
   }
-  //TODO: change the type of component based on page
   if (
     pageType === PageType.ALLITEMS &&
     onNoteModalOpen &&
