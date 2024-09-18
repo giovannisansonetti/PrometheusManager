@@ -71,7 +71,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               src={Document}
               alt={"title"}
             />{" "}
-            Notes
+            Secure notes
           </div>
           <div className="mt-2 flex w-3/4 border-1 border-[#27272a]"></div>
 
