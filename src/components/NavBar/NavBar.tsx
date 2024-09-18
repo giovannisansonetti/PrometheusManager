@@ -26,7 +26,7 @@ const NavBar = ({ name }: NavBarProps) => {
     const req = axios.get("/api/auth/signout");
     const response = (await req).data;
     if (response.success) {
-      router.push("/");
+      location.reload();
     }
   };
 

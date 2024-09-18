@@ -25,6 +25,7 @@ import validateCardNumber from "utils/cardValidator";
 import axios from "axios";
 import BurgerMenu from "../Burger/BurgerMenu";
 import CreditCardList from "./CreditCardList/CreditCardList";
+import { checkCardProvider } from "utils/cardProvider";
 
 const DisplayCards = ({ handleMenu, isOpen }: DisplayCardsProps) => {
   const {
@@ -93,20 +94,20 @@ const DisplayCards = ({ handleMenu, isOpen }: DisplayCardsProps) => {
     }
   };
 
-  const checkCardProvider = (value: string) => {
-    if (!validateCardNumber(value)) {
-      setCardProvider(cardProv.UNKNOWN);
-      return;
-    }
+  const handleCardNumberChange = (value: string) => {
+    setCardProvider(checkCardProvider(value));
+  };
 
-    if (value[0] === "2" || value[0] === "5") {
-      setCardProvider(cardProv.MASTERCARD);
-    } else if (value[0] === "4") {
-      setCardProvider(cardProv.VISA);
-    } else if (value[0] === "3") {
-      setCardProvider(cardProv.AMERICANEXPRESS);
-    } else {
-      setCardProvider(cardProv.UNKNOWN);
+  const getImage = (cardProvider: cardProv) => {
+    switch (cardProvider) {
+      case cardProv.MASTERCARD:
+        return MasterCard;
+      case cardProv.VISA:
+        return Visa;
+      case cardProv.MASTERCARD:
+        return AmericanExpress;
+      default:
+        return CreditCard;
     }
   };
 
@@ -155,26 +156,12 @@ const DisplayCards = ({ handleMenu, isOpen }: DisplayCardsProps) => {
               ) : null}
 
               <ModalHeader className="mt-2 flex flex-col items-center gap-1">
-                {cardProvider === cardProv.MASTERCARD && (
-                  <Image src={MasterCard} width={60} height={60} alt={""} />
-                )}
-
-                {cardProvider === cardProv.VISA && (
-                  <Image src={Visa} width={60} height={60} alt={""} />
-                )}
-
-                {cardProvider === cardProv.AMERICANEXPRESS && (
-                  <Image
-                    src={AmericanExpress}
-                    width={60}
-                    height={60}
-                    alt={""}
-                  />
-                )}
-
-                {cardProvider === cardProv.UNKNOWN && (
-                  <Image src={CreditCard} width={60} height={60} alt={""} />
-                )}
+                <Image
+                  src={getImage(cardProvider)}
+                  width={60}
+                  height={60}
+                  alt={""}
+                />
               </ModalHeader>
               <ModalBody className="mt-3">
                 <Input
@@ -186,7 +173,7 @@ const DisplayCards = ({ handleMenu, isOpen }: DisplayCardsProps) => {
                   className="w-full"
                   onValueChange={(value) => {
                     setCardForm((props) => ({ ...props, PAN: value }));
-                    checkCardProvider(value);
+                    handleCardNumberChange(value);
                   }}
                 />
                 <Input

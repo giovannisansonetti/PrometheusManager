@@ -1,8 +1,8 @@
 import Image from "next/image";
 import ShowDataProps from "./interfaces/ShowData.models";
 import copy from "~/../public/copy.svg";
-import { EyeFilledIcon } from "./EyeFilledIcon";
-import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
+import { EyeFilledIcon } from "../../../../Eyes/EyeFilledIcon";
+import { EyeSlashFilledIcon } from "../../../../Eyes/EyeSlashFilledIcon";
 import { useEffect, useState } from "react";
 import { Button, Input } from "@nextui-org/react";
 import Trash from "~/../public/SideBar/Trash.svg";
@@ -44,7 +44,6 @@ const ShowData = ({
   });
 
   const saveEditedData = async () => {
-    setLoading(true);
     if (
       !editForm.title ||
       !editForm.webSiteLink ||
@@ -54,6 +53,9 @@ const ShowData = ({
       //TODO display error
       return;
     }
+
+    setLoading(true);
+
     const req = {
       title: editForm.title,
       webSiteLink: editForm.webSiteLink,

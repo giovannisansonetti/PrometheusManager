@@ -3,10 +3,15 @@ import { fetcher } from "~/server/fetcher";
 import { ApiResponse } from "./interfaces/CardList.models";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
 import { PaymentCard } from "@prisma/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreditCardListElement from "./CreditCardListElement";
 import CreditCard from "~/../public/SideBar/CreditCard.svg";
 import ShowCard from "../ShowCard/ShowCard";
+import Visa from "~/../public/128px-Visa_Inc._logo.svg.png";
+import MasterCard from "~/../public/mc_symbol.svg";
+import AmericanExpress from "~/../public/american-express.svg";
+import { cardProv } from "../interfaces/AddCard.models";
+import { checkCardProvider } from "utils/cardProvider";
 
 const CreditCardList = () => {
   type ViewState = "overview" | "creditcard";
@@ -19,6 +24,7 @@ const CreditCardList = () => {
   console.log(data);
   const [selectedCard, setSelectedCard] = useState<PaymentCard | null>(null);
   const [currentView, setCurrentView] = useState<ViewState>("overview");
+  const [provider, setProvider] = useState<cardProv>(cardProv.UNKNOWN);
 
   const handleClick = (card: PaymentCard) => {
     setSelectedCard(card);
@@ -53,11 +59,25 @@ const CreditCardList = () => {
     );
   }
 
+  const getCardImage = (PAN: string) => {
+    const provider = checkCardProvider(PAN);
+    switch (provider) {
+      case cardProv.VISA:
+        return Visa;
+      case cardProv.MASTERCARD:
+        return MasterCard;
+      case cardProv.AMERICANEXPRESS:
+        return AmericanExpress;
+      default:
+        return CreditCard;
+    }
+  };
+
   const renderCard = () => {
     if (selectedCard) {
       return (
         <ShowCard
-          provider={CreditCard}
+          provider={getCardImage(selectedCard.PAN)}
           id={selectedCard.id}
           PAN={selectedCard.PAN}
           expiry={selectedCard.expiry}
@@ -78,9 +98,7 @@ const CreditCardList = () => {
               <div>
                 {!card.isDeleted && (
                   <CreditCardListElement
-                    image={
-                      CreditCard
-                    } /* TODO: use the card provider function */
+                    image={getCardImage(card.PAN)}
                     PAN={card.PAN}
                     expiry={card.expiry}
                     type={card.type}
