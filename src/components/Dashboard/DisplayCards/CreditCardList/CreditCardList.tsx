@@ -11,7 +11,7 @@ import Visa from "~/../public/128px-Visa_Inc._logo.svg.png";
 import MasterCard from "~/../public/mc_symbol.svg";
 import AmericanExpress from "~/../public/american-express.svg";
 import { cardProv } from "../interfaces/AddCard.models";
-import { checkCardProvider } from "utils/cardProvider";
+import { checkCardProvider, getCardImage } from "utils/cardProvider";
 
 const CreditCardList = () => {
   type ViewState = "overview" | "creditcard";
@@ -58,20 +58,6 @@ const CreditCardList = () => {
       </div>
     );
   }
-
-  const getCardImage = (PAN: string) => {
-    const provider = checkCardProvider(PAN);
-    switch (provider) {
-      case cardProv.VISA:
-        return Visa;
-      case cardProv.MASTERCARD:
-        return MasterCard;
-      case cardProv.AMERICANEXPRESS:
-        return AmericanExpress;
-      default:
-        return CreditCard;
-    }
-  };
 
   const renderCard = () => {
     if (selectedCard) {

@@ -127,9 +127,21 @@ const TrashBin = ({ handleMenu, isOpen }: TrashBinProps) => {
                 Do you want to delete all the items?
               </ModalHeader>
               <ModalFooter>
-                <Button color="primary" variant="flat" onPress={onClose}>
-                  Undo
-                </Button>
+                {deleteLoading ? (
+                  <Button
+                    isDisabled
+                    color="primary"
+                    variant="flat"
+                    onPress={onClose}
+                  >
+                    Undo
+                  </Button>
+                ) : (
+                  <Button color="primary" variant="flat" onPress={onClose}>
+                    Undo
+                  </Button>
+                )}
+
                 {deleteLoading ? (
                   <Button color="danger" isLoading>
                     Deleting
@@ -183,16 +195,27 @@ const TrashBin = ({ handleMenu, isOpen }: TrashBinProps) => {
                 Do you want to restore all the items?
               </ModalHeader>
               <ModalFooter>
-                <Button color="primary" variant="flat" onPress={onClose}>
-                  Undo
-                </Button>
                 {restoreLoading ? (
-                  <Button color="danger" isLoading>
+                  <Button
+                    isDisabled
+                    color="danger"
+                    variant="flat"
+                    onPress={onClose}
+                  >
+                    Undo
+                  </Button>
+                ) : (
+                  <Button color="danger" variant="flat" onPress={onClose}>
+                    Undo
+                  </Button>
+                )}
+                {restoreLoading ? (
+                  <Button color="primary" isLoading>
                     Restoring
                   </Button>
                 ) : (
                   <Button
-                    color="danger"
+                    color="primary"
                     variant="flat"
                     onClick={async () => {
                       handleRestoreAll(onClose);
