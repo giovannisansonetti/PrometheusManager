@@ -12,8 +12,8 @@ import {
 import AlertEvent from "../../Events/Alerts/Alert";
 import { useState } from "react";
 import axios from "axios";
-import { AddItemsProps } from "./interfaces/AddItem.models";
-import { ModalProps } from "./interfaces/Modal.models";
+import { AddItemsProps } from "../interfaces/AddItem.models";
+import { ModalProps } from "../interfaces/Modal.models";
 
 const ModalData = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
   const [loading, setLoading] = useState(false);

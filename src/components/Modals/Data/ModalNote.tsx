@@ -12,8 +12,8 @@ import {
 import AlertEvent from "../../Events/Alerts/Alert";
 import { useState } from "react";
 import axios from "axios";
-import { AddNotesProps } from "./interfaces/AddItem.models";
-import { ModalProps } from "./interfaces/Modal.models";
+import { AddNotesProps } from "../interfaces/AddItem.models";
+import { ModalProps } from "../interfaces/Modal.models";
 
 const ModalNote = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
   const [loading, setLoading] = useState(false);

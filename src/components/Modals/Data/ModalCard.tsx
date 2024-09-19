@@ -15,8 +15,8 @@ import {
 import AlertEvent from "../../Events/Alerts/Alert";
 import { useState } from "react";
 import axios from "axios";
-import { AddCard, cardProv, CardType } from "./interfaces/AddItem.models";
-import { ModalProps } from "./interfaces/Modal.models";
+import { AddCard, cardProv, CardType } from "../interfaces/AddItem.models";
+import { ModalProps } from "../interfaces/Modal.models";
 import { checkCardProvider } from "utils/cardProvider";
 import CreditCard from "~/../public/SideBar/CreditCard.svg";
 import Visa from "~/../public/128px-Visa_Inc._logo.svg.png";

@@ -182,6 +182,7 @@ const AllItemsList = () => {
         <div className="flex items-center justify-center">{render()}</div>
       )}
 
+      {/*TODO: Perhaps turn this modal into a shownote component in the future*/}
       <Modal
         isOpen={isNoteModalOpen}
         onOpenChange={onNoteModalOpenChange}
