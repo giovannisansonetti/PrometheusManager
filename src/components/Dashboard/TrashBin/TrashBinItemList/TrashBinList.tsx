@@ -11,10 +11,6 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import useSWR from "swr";
-import deleteItem from "~/server/data/manageData/delete/deleteItem";
-import deleteNote from "~/server/data/manageData/delete/deleteNote";
-import restoreItem from "~/server/data/manageData/restore/restoreItem";
-import restoreNote from "~/server/data/manageData/restore/restoreNote";
 import { fetcher } from "~/server/fetcher";
 import axios from "axios";
 
@@ -48,6 +44,7 @@ const TrashBinList = () => {
           onClose();
           setDeleteLoading(false);
         }, 1000);
+        location.reload();
       }
     }
 
@@ -81,6 +78,7 @@ const TrashBinList = () => {
           onClose();
           setDeleteLoading(false);
         }, 1000);
+        location.reload();
       }
     }
 
@@ -88,6 +86,21 @@ const TrashBinList = () => {
       const body = {
         id: item.id,
         type: "note",
+      };
+      const req = axios.post("/api/data/manageData/restoreType", body);
+      const response = (await req).data;
+      if (response.success) {
+        setTimeout(() => {
+          onClose();
+          setDeleteLoading(false);
+        }, 1000);
+      }
+    }
+
+    if (item.type === "paymentCard") {
+      const body = {
+        id: item.id,
+        type: "card",
       };
       const req = axios.post("/api/data/manageData/restoreType", body);
       const response = (await req).data;
@@ -123,6 +136,7 @@ const TrashBinList = () => {
           <TrashBinListElement
             key={item.id}
             item={item}
+            creationDate={new Date(item.createdAt).toLocaleDateString("it-IT")}
             onClick={() => handleClick(item)}
           />
         ))
@@ -142,10 +156,10 @@ const TrashBinList = () => {
             {(onClose) => (
               <>
                 <ModalHeader className="mt-2 flex flex-col gap-1">
-                  {selectedItem.type === "data" ? (
-                    <>Delete or Restore Data</>
-                  ) : (
-                    <>Delete or Restore Note</>
+                  {selectedItem.type === "data" && <>Delete or restore item</>}
+                  {selectedItem.type === "note" && <>Delete or restore note</>}
+                  {selectedItem.type === "paymentCard" && (
+                    <>Delete or restore card</>
                   )}
                 </ModalHeader>
                 <ModalFooter>

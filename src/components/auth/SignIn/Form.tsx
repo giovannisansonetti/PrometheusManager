@@ -6,9 +6,14 @@ import { redirect, useRouter } from "next/navigation";
 import { Input, Button } from "@nextui-org/react";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
+import { EyeFilledIcon } from "~/components/Eyes/EyeFilledIcon";
+import { EyeSlashFilledIcon } from "~/components/Eyes/EyeSlashFilledIcon";
 
 const Login = () => {
-  const router = useRouter();
+  const [isVisible, setIsVisible] = useState(false);
+  const [isMPVisible, setIsMPVisible] = useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
+  const toggleMPVisibility = () => setIsMPVisible(!isMPVisible);
 
   const [form, setForm] = useState<FormProps>({
     email: "",
@@ -27,14 +32,18 @@ const Login = () => {
       masterPass: form.masterPass,
     });
 
-    const response = (await req).data;
+    try {
+      const response = (await req).data;
 
-    if (response.error) {
-      setError(response.message);
-    }
+      if (response.error) {
+        setError(response.message);
+      }
 
-    if (response.success) {
-      location.reload();
+      if (response.success) {
+        location.reload();
+      }
+    } catch (error) {
+      setError("Invalid credentials");
     }
   };
 
@@ -62,14 +71,27 @@ const Login = () => {
           onValueChange={(value) => setForm((f) => ({ ...f, email: value }))}
         />
         <Input
-          type="password"
-          isRequired
           label="Master Password"
           size="sm"
-          className="mt-4 w-full"
-          onValueChange={(value) =>
-            setForm((f) => ({ ...f, masterPass: value }))
+          endContent={
+            <button
+              className="focus:outline-none"
+              type="button"
+              onClick={toggleVisibility}
+            >
+              {isVisible ? (
+                <EyeSlashFilledIcon className="pointer-events-none text-2xl text-default-400" />
+              ) : (
+                <EyeFilledIcon className="pointer-events-none text-2xl text-default-400" />
+              )}
+            </button>
           }
+          type={isVisible ? "text" : "password"}
+          className="mt-4"
+          isRequired
+          onValueChange={(value) => {
+            setForm((f) => ({ ...f, masterPass: value }));
+          }}
         />
         <Button
           className="mt-4 w-full"

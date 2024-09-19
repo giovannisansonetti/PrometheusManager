@@ -1,5 +1,6 @@
 import NavBar from "~/components/NavBar/NavBar";
 import { createClient } from "utils/supabase/server";
+import Main from "~/components/HomePage/Home";
 
 export default async function HomePage() {
   const supabase = createClient();
@@ -11,6 +12,7 @@ export default async function HomePage() {
   return (
     <div>
       <NavBar name={data.user?.email} />
+      <Main />
     </div>
   );
 }

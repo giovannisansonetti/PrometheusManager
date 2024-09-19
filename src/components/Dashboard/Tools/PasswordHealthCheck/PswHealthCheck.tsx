@@ -11,6 +11,7 @@ import { type HealthCheck, ApiResponse } from "./interfaces/HealthCheck.models";
 import PswHealthSkeleton from "~/components/ListSkeleton/PswHealthSkeleton";
 import useSWR from "swr";
 import { fetcher } from "~/server/fetcher";
+import BurgerMenu from "../../Burger/BurgerMenu";
 
 type ViewState =
   | "overview"
@@ -91,18 +92,8 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
       <div className="relative w-full">
         <div className="mr-7 mt-5 flex items-center justify-end">
           {currentView === "overview" ? (
-            <div className="flex lg:hidden">
-              <button onClick={handleMenu} className="ml-5 rounded p-2">
-                <span
-                  className={`block h-0.5 w-6 rounded-sm bg-white transition-all duration-300 ease-out ${isOpen ? "translate-y-1 rotate-45" : "-translate-y-0.5"}`}
-                ></span>
-                <span
-                  className={`my-0.5 block h-0.5 w-6 rounded-sm bg-white transition-all duration-300 ease-out ${isOpen ? "opacity-0" : "opacity-100"}`}
-                ></span>
-                <span
-                  className={`block h-0.5 w-6 rounded-sm bg-white transition-all duration-300 ease-out ${isOpen ? "-translate-y-1 -rotate-45" : "translate-y-0.5"}`}
-                ></span>
-              </button>
+            <div className="block w-full lg:hidden">
+              <BurgerMenu handleMenu={handleMenu} isOpen={isOpen} />
             </div>
           ) : (
             <div className="flex">

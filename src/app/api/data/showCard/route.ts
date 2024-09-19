@@ -30,7 +30,7 @@ const fetchCards = async () => {
   }
 
   const user = await db.user.findUnique({
-    where: { email: data.user.id },
+    where: { id: data.user.id },
   });
 
   if (!user) {

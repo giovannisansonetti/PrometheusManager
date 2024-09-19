@@ -54,7 +54,7 @@ const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               onClick={() => {
                 handleClick("Notes");
               }}
-              name="Notes"
+              name="Secure Notes"
             />
             <SideMenuItem
               icon={CreditCard}

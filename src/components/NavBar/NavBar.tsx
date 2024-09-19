@@ -26,12 +26,12 @@ const NavBar = ({ name }: NavBarProps) => {
     const req = axios.get("/api/auth/signout");
     const response = (await req).data;
     if (response.success) {
-      router.push("/");
+      location.reload();
     }
   };
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen}>
+    <Navbar onMenuOpenChange={setIsMenuOpen} className="bg-[#0a0a0a]">
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}

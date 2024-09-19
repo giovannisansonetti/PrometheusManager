@@ -19,9 +19,11 @@ import axios from "axios";
 import ShowData from "../../DisplayData/DataItemList/ShowData/ShowData";
 import { useRouter } from "next/navigation";
 import useBackButtonStore from "../../DynamicActionButton/DynamicActionButtonStore";
+import ShowCard from "../../DisplayCards/ShowCard/ShowCard";
+import { getCardImage } from "utils/cardProvider";
 
 const AllItemsList = () => {
-  type ViewData = "overview" | "password";
+  type ViewData = "overview" | "password" | "card";
   const { data, error, isLoading } = useSWR<ApiResponse>(
     "/api/data/allitems",
     fetcher,
@@ -55,6 +57,12 @@ const AllItemsList = () => {
       setSelectedItem(item);
       onNoteModalOpen();
     }
+
+    if (item.type === "paymentCard") {
+      setSelectedItem(item);
+      setCurrentView("card");
+      setGoBack(true);
+    }
   };
 
   const handleDelete = async (
@@ -64,21 +72,7 @@ const AllItemsList = () => {
   ) => {
     setLoading(true);
 
-    if (type === "data") {
-      const req = {
-        id: id,
-        type: "data",
-      };
-      const request = axios.post("/api/data/moveToTrash", req);
-      const response = (await request).data;
-
-      if (response.success) {
-        setTimeout(() => {
-          onClose();
-          setLoading(false);
-        }, 1000);
-      }
-    } else if (type === "note") {
+    if (type === "note") {
       const req = {
         id: id,
         type: "note",
@@ -112,6 +106,23 @@ const AllItemsList = () => {
           password={selectedItem.password}
           passwordSecurity={selectedItem.passwordSecurity}
           notes={selectedItem.notes || undefined}
+        />
+      );
+    }
+    if (
+      currentView === "card" &&
+      selectedItem &&
+      selectedItem.type === "paymentCard"
+    ) {
+      return (
+        <ShowCard
+          provider={getCardImage(selectedItem.PAN)}
+          id={selectedItem.id}
+          PAN={selectedItem.PAN}
+          expiry={selectedItem.expiry}
+          cvv={selectedItem.CVV}
+          cardholder={selectedItem.cardholder}
+          type={selectedItem.cardType}
         />
       );
     }
@@ -155,7 +166,7 @@ const AllItemsList = () => {
                 {!item.isDeleted && (
                   <AllItemsListElement
                     item={item}
-                    date={new Date(item.createdAt).toLocaleString()}
+                    date={new Date(item.createdAt).toLocaleDateString("it-IT")}
                     onClick={() => handleClick(item)}
                   />
                 )}
@@ -163,7 +174,7 @@ const AllItemsList = () => {
             ))
           ) : (
             <div className="mt-5 flex flex-col items-center justify-center">
-              <p className="text-gray-500">No items found</p>
+              {/*TODO: A small card that explains each feature when no data is found*/}
             </div>
           )}
         </div>
@@ -171,6 +182,7 @@ const AllItemsList = () => {
         <div className="flex items-center justify-center">{render()}</div>
       )}
 
+      {/*TODO: Perhaps turn this modal into a shownote component in the future*/}
       <Modal
         isOpen={isNoteModalOpen}
         onOpenChange={onNoteModalOpenChange}

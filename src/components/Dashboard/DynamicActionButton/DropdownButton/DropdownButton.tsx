@@ -7,7 +7,6 @@ import {
 } from "@nextui-org/react";
 import { DropdownButtonProps } from "./interfaces/DropdownButton.models";
 
-// TODO: write this in a way that it can be used for the trash bit too
 const DropdownButton = ({
   onPasswordModalOpen,
   onNoteModalOpen,

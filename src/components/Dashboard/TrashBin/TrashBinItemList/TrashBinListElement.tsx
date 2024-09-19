@@ -3,12 +3,23 @@ import TrashBinListElementProps from "./interfaces/TrashBinListElement.models";
 import Image from "next/image";
 import { fetchImage } from "~/server/fetchImg/fetchimg";
 import NoteIcon from "~/../public/SideBar/Document.svg";
+import { useState, useEffect } from "react";
+import { getCardImage } from "utils/cardProvider";
 
 const TrashBinListElement = ({
   item,
-  deletionDate,
+  creationDate,
   onClick,
 }: TrashBinListElementProps) => {
+  const [maskedPan, setMaskedPan] = useState<string>();
+
+  useEffect(() => {
+    if (item.type === "paymentCard") {
+      const masked = "• ".repeat(item.PAN.length - 4) + item.PAN.slice(-4);
+      setMaskedPan(masked);
+    }
+  });
+
   return (
     <div>
       {item.isDeleted && (
@@ -29,6 +40,15 @@ const TrashBinListElement = ({
               {item.type === "note" && (
                 <Image src={NoteIcon} width={32} height={32} alt="icon" />
               )}
+
+              {item.type === "paymentCard" && (
+                <Image
+                  src={getCardImage(item.PAN)}
+                  width={32}
+                  height={32}
+                  alt="icon"
+                />
+              )}
             </div>
           </div>
           {item.type === "data" && (
@@ -42,8 +62,13 @@ const TrashBinListElement = ({
               <div className="font-bold">{item.noteTitle}</div>
             </div>
           )}
+          {item.type === "paymentCard" && (
+            <div className="ml-5 flex flex-col justify-center">
+              <div className="font-bold">{maskedPan}</div>
+            </div>
+          )}
           <div className="hidden sm:absolute sm:left-[50%] sm:flex sm:h-full sm:items-center">
-            {deletionDate}
+            {creationDate}
           </div>
         </div>
       )}

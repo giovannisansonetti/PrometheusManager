@@ -1,8 +1,8 @@
 import Image from "next/image";
 import ShowDataProps from "./interfaces/ShowData.models";
 import copy from "~/../public/copy.svg";
-import { EyeFilledIcon } from "./EyeFilledIcon";
-import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
+import { EyeFilledIcon } from "../../../../Eyes/EyeFilledIcon";
+import { EyeSlashFilledIcon } from "../../../../Eyes/EyeSlashFilledIcon";
 import { useEffect, useState } from "react";
 import { Button, Input } from "@nextui-org/react";
 import Trash from "~/../public/SideBar/Trash.svg";
@@ -10,6 +10,7 @@ import Edit from "~/../public/pencil-square.svg";
 import axios from "axios";
 import EditItemProps from "./interfaces/EditData.models";
 import { useRouter } from "next/navigation";
+import { fetchImage } from "~/server/fetchImg/fetchimg";
 
 const ShowData = ({
   id,
@@ -43,7 +44,6 @@ const ShowData = ({
   });
 
   const saveEditedData = async () => {
-    setLoading(true);
     if (
       !editForm.title ||
       !editForm.webSiteLink ||
@@ -53,6 +53,9 @@ const ShowData = ({
       //TODO display error
       return;
     }
+
+    setLoading(true);
+
     const req = {
       title: editForm.title,
       webSiteLink: editForm.webSiteLink,
@@ -67,6 +70,7 @@ const ShowData = ({
       setTimeout(() => {
         setLoading(false);
         setEditView(false);
+        location.reload();
       }, 1000);
     }
   };
@@ -90,9 +94,15 @@ const ShowData = ({
 
   return (
     <div className="flex w-full flex-col items-center">
-      <h1 className="mt-3 text-[20px]">Data info</h1>
+      <Image
+        src={fetchImage(webSiteLink)}
+        width={40}
+        height={40}
+        alt=""
+        className="mt-10"
+      />
 
-      <div className="mt-3 w-3/4 items-center rounded-lg border-1 border-[#27272a] bg-[#131314] p-4">
+      <div className="mt-10 w-3/4 items-center rounded-lg border-1 border-[#27272a] bg-[#131314] p-4">
         <div className="ml-4 mt-3">
           <div>
             <div>Title</div>
@@ -272,12 +282,11 @@ const ShowData = ({
         {editview ? (
           <div>
             {loading ? (
-              <Button color="primary" variant="flat" isLoading>
+              <Button variant="flat" isLoading>
                 Save data
               </Button>
             ) : (
               <Button
-                color="primary"
                 variant="flat"
                 onClick={async () => {
                   saveEditedData();
@@ -288,7 +297,7 @@ const ShowData = ({
             )}
           </div>
         ) : (
-          <Button color="primary" variant="flat" onClick={toggleEdit}>
+          <Button color="default" variant="flat" onClick={toggleEdit}>
             <Image src={Edit} width={20} height={20} alt="trash" />
             Edit
           </Button>

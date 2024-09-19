@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
           {
             success: true,
-            message: "Item moved to trashbin",
+            message: "Item deleted",
           },
           { status: 200 },
         );
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
           {
             success: true,
-            message: "Note moved to trashbin",
+            message: "Note deleted",
           },
           { status: 200 },
         );
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
           {
             success: true,
-            message: "Card moved to trashbin",
+            message: "Card deleted",
           },
           { status: 200 },
         );
