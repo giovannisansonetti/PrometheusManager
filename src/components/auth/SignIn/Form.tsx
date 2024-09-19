@@ -32,14 +32,18 @@ const Login = () => {
       masterPass: form.masterPass,
     });
 
-    const response = (await req).data;
+    try {
+      const response = (await req).data;
 
-    if (response.error) {
-      setError(response.message);
-    }
+      if (response.error) {
+        setError(response.message);
+      }
 
-    if (response.success) {
-      location.reload();
+      if (response.success) {
+        location.reload();
+      }
+    } catch (error) {
+      setError("Invalid credentials");
     }
   };
 
