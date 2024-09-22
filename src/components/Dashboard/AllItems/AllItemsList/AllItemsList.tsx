@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Textarea,
   Modal,
   ModalContent,
   ModalHeader,
@@ -8,7 +7,6 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-  user,
 } from "@nextui-org/react";
 import AllItemsListElement from "./AllItemsListElement";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
@@ -16,10 +14,9 @@ import useSWR from "swr";
 import { fetcher } from "~/server/fetcher";
 import { AllItems, ApiResponse } from "~/server/data/showdata/allitems.models";
 import axios from "axios";
-import ShowData from "../../DisplayData/DataItemList/ShowData/ShowData";
-import { useRouter } from "next/navigation";
+import ShowData from "../../Data/DataItemList/ShowData/ShowData";
 import useBackButtonStore from "../../DynamicActionButton/DynamicActionButtonStore";
-import ShowCard from "../../DisplayCards/ShowCard/ShowCard";
+import ShowCard from "../../CreditCards/ShowCard/ShowCard";
 import { getCardImage } from "utils/cardProvider";
 
 const AllItemsList = () => {
@@ -28,7 +25,6 @@ const AllItemsList = () => {
     "/api/data/allitems",
     fetcher,
   );
-  const router = useRouter();
   const {
     isOpen: isNoteModalOpen,
     onOpen: onNoteModalOpen,

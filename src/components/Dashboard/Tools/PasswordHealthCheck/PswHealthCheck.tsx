@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import arrow from "~/../public/arrow-right-short.svg";
 import { IconBxXCircle } from "public/IconBxXCircle";
-import { IconIonCopy } from "public/IconIonCopy";
 import { IconBxTime } from "public/IconBxTime";
 import IssueList from "./IssueList/IssueList";
 import back from "~/../public/back-svgrepo-com.svg";

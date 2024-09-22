@@ -1,10 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { useDisclosure } from "@nextui-org/react";
 import AllItemsList from "./AllItemsList/AllItemsList";
 import { DisplayItemsProps } from "./interfaces/DisplayData.models";
-import { useRouter } from "next/navigation";
 import DynamicActionButton from "../DynamicActionButton/DynamicActionButton";
 import { PageType } from "../DynamicActionButton/interfaces/DynamicActionButton.models";
 import BurgerMenu from "../Burger/BurgerMenu";

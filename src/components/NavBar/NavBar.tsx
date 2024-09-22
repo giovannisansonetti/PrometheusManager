@@ -31,7 +31,7 @@ const NavBar = ({ name }: NavBarProps) => {
   };
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} className="bg-[#0a0a0a]">
+    <Navbar onMenuOpenChange={setIsMenuOpen} className="">
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -44,10 +44,6 @@ const NavBar = ({ name }: NavBarProps) => {
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent
-        className="hidden gap-4 sm:flex"
-        justify="center"
-      ></NavbarContent>
       {name !== undefined ? (
         <NavbarContent justify="end">
           <div className="mr-3 flex cursor-pointer flex-row text-white hover:text-gray-300">

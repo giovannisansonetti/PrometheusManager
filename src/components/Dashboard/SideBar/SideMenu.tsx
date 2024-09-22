@@ -4,7 +4,7 @@ import { Sidebar } from "flowbite-react";
 import SideMenuItem from "./SideMenuItem";
 import AllItemsLogo from "~/../public/SideBar/allitems.svg";
 import { useState } from "react";
-import DisplayData from "../DisplayData/DisplayData";
+import DisplayData from "../Data/DisplayData";
 
 import CreditCard from "~/../public/SideBar/CreditCard.svg";
 import Document from "~/../public/SideBar/Document.svg";

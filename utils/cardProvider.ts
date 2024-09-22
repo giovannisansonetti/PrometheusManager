@@ -1,4 +1,4 @@
-import { cardProv } from "~/components/Dashboard/DisplayCards/interfaces/AddCard.models";
+import { cardProv } from "~/components/Dashboard/CreditCards/interfaces/AddCard.models";
 import validateCardNumber from "./cardValidator";
 import CreditCard from "~/../public/SideBar/CreditCard.svg";
 import Visa from "~/../public/128px-Visa_Inc._logo.svg.png";

@@ -3,15 +3,11 @@ import { fetcher } from "~/server/fetcher";
 import { ApiResponse } from "./interfaces/CardList.models";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
 import { PaymentCard } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CreditCardListElement from "./CreditCardListElement";
-import CreditCard from "~/../public/SideBar/CreditCard.svg";
 import ShowCard from "../ShowCard/ShowCard";
-import Visa from "~/../public/128px-Visa_Inc._logo.svg.png";
-import MasterCard from "~/../public/mc_symbol.svg";
-import AmericanExpress from "~/../public/american-express.svg";
 import { cardProv } from "../interfaces/AddCard.models";
-import { checkCardProvider, getCardImage } from "utils/cardProvider";
+import { getCardImage } from "utils/cardProvider";
 
 const CreditCardList = () => {
   type ViewState = "overview" | "creditcard";

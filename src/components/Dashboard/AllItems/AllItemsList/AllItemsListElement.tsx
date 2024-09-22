@@ -2,7 +2,7 @@ import Image from "next/image";
 import { AllItems } from "~/server/data/showdata/allitems.models";
 import { fetchImage } from "~/server/fetchImg/fetchimg";
 import NoteIcon from "~/../public/SideBar/Document.svg";
-import { checkCardProvider, getCardImage } from "utils/cardProvider";
+import { getCardImage } from "utils/cardProvider";
 import { useEffect, useState } from "react";
 
 interface AllItemsListElementProps {

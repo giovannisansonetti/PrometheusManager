@@ -1,14 +1,14 @@
 "use client";
 import { useState } from "react";
 import SideBar from "./SideBar/SideMenu";
-import DisplayData from "./DisplayData/DisplayData";
+import DisplayData from "./Data/DisplayData";
 import MobileSideBar from "./SideBar/MobileSideBar";
-import DisplayNotes from "./DisplayNotes/DisplayNotes";
+import DisplayNotes from "./Notes/DisplayNotes";
 import AllItems from "./AllItems/AllItems";
 import TrashBin from "./TrashBin/TrashBin";
 import PswGenerator from "./Tools/PswGenerator/PswGenerator";
 import PswHealthCheck from "./Tools/PasswordHealthCheck/PswHealthCheck";
-import DisplayCards from "./DisplayCards/DisplayCards";
+import DisplayCards from "./CreditCards/DisplayCards";
 
 const UserDashboard = () => {
   const [active, setActive] = useState("AllItems");
