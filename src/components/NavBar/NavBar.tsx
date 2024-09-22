@@ -31,7 +31,7 @@ const NavBar = ({ name }: NavBarProps) => {
   };
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} className="">
+    <Navbar onMenuOpenChange={setIsMenuOpen} className="bg-[#0a0a0a]">
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
