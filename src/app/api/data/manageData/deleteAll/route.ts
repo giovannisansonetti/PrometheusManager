@@ -11,29 +11,27 @@ export async function POST(req: NextRequest) {
     return;
   }
 
-  const supabaseUserId = data.user.id;
-
   const user = await db.user.findUnique({
-    where: { id: supabaseUserId },
+    where: { id: data.user.id },
   });
 
   if (user) {
     try {
       await db.data.deleteMany({
         where: {
-          userId: data.user.id,
+          userId: user.id,
           isDeleted: true,
         },
       });
       await db.note.deleteMany({
         where: {
-          userId: data.user.id,
+          userId: user.id,
           isDeleted: true,
         },
       });
       await db.paymentCard.deleteMany({
         where: {
-          userId: data.user.id,
+          userId: user.id,
           isDeleted: true,
         },
       });

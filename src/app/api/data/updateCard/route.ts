@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
 
   try {
     await db.paymentCard.update({
-      where: { id: insertCard.id },
+      where: { id: insertCard.id, userId: user.id },
       data: {
         PAN: insertCard.PAN,
         expiry: insertCard.expiry,

@@ -32,10 +32,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const supabaseUserId = data.user.id;
-
   const user = await db.user.findUnique({
-    where: { id: supabaseUserId },
+    where: { id: data.user.id },
   });
 
   if (!user) {

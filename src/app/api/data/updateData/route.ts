@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
   const passwordSecurity = checkSecurityPass(insertData.password);
   try {
     await db.data.update({
-      where: { id: insertData.id },
+      where: { id: insertData.id, userId: user.id },
       data: {
         title: insertData.title,
         webSiteLink: insertData.webSiteLink,

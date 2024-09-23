@@ -15,10 +15,8 @@ export async function POST(req: NextRequest) {
     return;
   }
 
-  const supabaseUserId = data.user.id;
-
   const user = await db.user.findUnique({
-    where: { id: supabaseUserId },
+    where: { id: data.user.id },
   });
 
   if (user) {
@@ -26,7 +24,7 @@ export async function POST(req: NextRequest) {
       try {
         await db.data.update({
           where: {
-            userId: supabaseUserId,
+            userId: user.id,
             id: id,
           },
           data: {
@@ -55,7 +53,7 @@ export async function POST(req: NextRequest) {
       try {
         await db.note.update({
           where: {
-            userId: supabaseUserId,
+            userId: user.id,
             id: id,
           },
           data: {
@@ -84,7 +82,7 @@ export async function POST(req: NextRequest) {
       try {
         await db.paymentCard.update({
           where: {
-            userId: supabaseUserId,
+            userId: user.id,
             id: id,
           },
           data: {

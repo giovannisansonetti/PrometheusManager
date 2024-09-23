@@ -16,6 +16,7 @@ import HealthCheck from "~/../public/SideBar/HealthCheck.svg";
 import Image from "next/image";
 import { SideMenuProps } from "./SideMenu.models";
 import useBackButtonStore from "../DynamicActionButton/DynamicActionButtonStore";
+import User from "~/../public/SideBar/person-circle.svg";
 
 const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
   const { goBack, setGoBack } = useBackButtonStore();
@@ -27,7 +28,7 @@ const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
     <>
       <Sidebar
         aria-label="Default sidebar example"
-        className="hidden flex-col overflow-x-hidden rounded-lg bg-[#161616] sm:p-4 lg:block lg:w-1/6 lg:p-1"
+        className="hidden flex-col overflow-x-hidden text-ellipsis rounded-lg bg-[#161616] sm:p-4 lg:block lg:w-1/6 lg:overflow-hidden lg:whitespace-nowrap lg:p-3 lg:text-center"
       >
         <div className="flex w-full border-1 border-[#27272a] lg:mt-[26%]" />
         <Sidebar.Items className="p-3">
@@ -88,6 +89,19 @@ const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               }}
               name="Health Check"
             />
+            <Sidebar.Item className="absolute bottom-3 flex items-center rounded-lg border-1 p-3">
+              <div className="flex-row">
+                sesso anomalo
+                <Image
+                  src={User}
+                  width={40}
+                  height={35}
+                  alt="Userprof"
+                  className=""
+                />
+                <Image src={User} width={40} height={35} alt="" />
+              </div>
+            </Sidebar.Item>
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>

@@ -1,7 +1,7 @@
 import Image from "next/image";
-import PasswordOverview from "~/../public/password overview.png";
-import NotesOverview from "~/../public/notesoverview.png";
-import CreditCardsOverview from "~/../public/creditcardsoverview.png";
+import PasswordOverview from "~/../public/Homepage/password overview.png";
+import NotesOverview from "~/../public/Homepage/notesoverview.png";
+import CreditCardsOverview from "~/../public/Homepage/creditcardsoverview.png";
 
 const Features = () => {
   return (

@@ -56,7 +56,7 @@ const fetchHealthCheck = async () => {
         iv: true,
       },
       where: {
-        userId: data.user.id,
+        userId: user.id,
         OR: [
           { passwordSecurity: "Very Weak" },
           { passwordSecurity: "Weak" },
