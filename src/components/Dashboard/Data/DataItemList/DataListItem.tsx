@@ -19,7 +19,13 @@ const DataListItem = ({
     >
       <div className="ml-4 flex items-center">
         <div className="w-8">
-          <Image src={fetchImage(link)} width={32} height={32} alt={"icon"} />
+          <Image
+            src={fetchImage(link)}
+            width={32}
+            height={32}
+            alt={"icon"}
+            unoptimized={true}
+          />
         </div>
       </div>
       <div className="ml-5 flex flex-col justify-center">

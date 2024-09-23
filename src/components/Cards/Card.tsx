@@ -1,6 +1,6 @@
 import { CardProps } from "./interfaces/Card.models";
 
-const CardComponent = ({ header, content, image }: CardProps) => {
+const Card = ({ header, content, image }: CardProps) => {
   return (
     <>
       <div className="w-2/3 rounded-lg bg-[#131314] p-6 sm:w-full">
@@ -11,4 +11,4 @@ const CardComponent = ({ header, content, image }: CardProps) => {
   );
 };
 
-export default CardComponent;
+export default Card;

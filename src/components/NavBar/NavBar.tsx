@@ -10,7 +10,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
 } from "@nextui-org/navbar";
-import { Button } from "@nextui-org/react";
+import { Button, Divider, divider } from "@nextui-org/react";
 import Link from "next/link";
 import { useState } from "react";
 import { NavBarProps } from "./NavBar.models";

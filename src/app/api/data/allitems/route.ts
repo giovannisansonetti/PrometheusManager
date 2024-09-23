@@ -93,7 +93,7 @@ const fetchAllitems = async () => {
       })),
     ];
 
-    items.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+    items.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
     return { status: 200, message: "Data found", data: items };
   } catch (error) {
     return { status: 500, message: "Internal Server Error", error: true };

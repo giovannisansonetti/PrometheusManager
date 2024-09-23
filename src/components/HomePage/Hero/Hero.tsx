@@ -1,9 +1,9 @@
 import { Button } from "@nextui-org/react";
-import CardComponent from "~/components/Cards/Card";
+import Card from "~/components/Cards/Card";
 
 const Hero = () => {
   return (
-    <div className="py-20 text-center text-white sm:py-32">
+    <div className="py-20 text-center text-white sm:py-24">
       <h1 className="mb-6 text-3xl font-extrabold sm:text-5xl">
         Welcome to Prometheus Manager
       </h1>
@@ -27,19 +27,20 @@ const Hero = () => {
       </div>
 
       <div className="mt-16 grid w-full max-w-6xl grid-cols-1 justify-items-center gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <CardComponent
+        <Card
           header="Password manager"
-          content="Generate, save and retrieve your passwords securely"
+          content="Generate, save and retrieve your passwords securely."
         />
-        <CardComponent
+        <Card
           header="Secure notes"
-          content="Encrypt and store private and important notes safely, accessible only by you"
+          content="Encrypt and store private and important notes safely, accessible only by you."
         />
-        <CardComponent
+        <Card
           header="Credit Card"
           content="Securely store your credit card details with encryption for fast and safe access."
         />
       </div>
+      <div className="mt-16 flex w-full border-1 border-[#27272a]"></div>
     </div>
   );
 };

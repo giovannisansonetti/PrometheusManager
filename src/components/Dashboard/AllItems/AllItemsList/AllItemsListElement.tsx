@@ -40,6 +40,7 @@ const AllItemsListElement = ({
                   width={32}
                   height={32}
                   alt="icon"
+                  unoptimized={true}
                 />
               )}
               {item.type === "note" && (
