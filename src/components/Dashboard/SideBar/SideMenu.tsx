@@ -3,20 +3,16 @@
 import { Sidebar } from "flowbite-react";
 import SideMenuItem from "./SideMenuItem";
 import AllItemsLogo from "~/../public/SideBar/allitems.svg";
-import { useState } from "react";
-import DisplayData from "../Data/DisplayData";
 
 import CreditCard from "~/../public/SideBar/CreditCard.svg";
 import Document from "~/../public/SideBar/Document.svg";
 import Password from "~/../public/SideBar/Password.svg";
-import Settings from "~/../public/SideBar/Settings.svg";
 import Trash from "~/../public/SideBar/Trash.svg";
 import Gen from "~/../public/SideBar/Gen.svg";
 import HealthCheck from "~/../public/SideBar/HealthCheck.svg";
-import Image from "next/image";
 import { SideMenuProps } from "./SideMenu.models";
 import useBackButtonStore from "../DynamicActionButton/DynamicActionButtonStore";
-import User from "~/../public/SideBar/person-circle.svg";
+import UserMenu from "./UserMenu";
 
 const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
   const { goBack, setGoBack } = useBackButtonStore();
@@ -89,19 +85,7 @@ const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               }}
               name="Health Check"
             />
-            <Sidebar.Item className="absolute bottom-3 flex items-center rounded-lg border-1 p-3">
-              <div className="flex-row">
-                sesso anomalo
-                <Image
-                  src={User}
-                  width={40}
-                  height={35}
-                  alt="Userprof"
-                  className=""
-                />
-                <Image src={User} width={40} height={35} alt="" />
-              </div>
-            </Sidebar.Item>
+            <UserMenu />
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>

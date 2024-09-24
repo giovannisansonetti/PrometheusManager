@@ -15,7 +15,7 @@ const SideMenuItem = ({ name, isActive, icon, onClick }: SideMenuItemProps) => {
       onClick={onClick}
     >
       <Image width={20} height={20} src={icon} alt={"title"} className="" />
-      <Sidebar.Item className="hidden text-ellipsis whitespace-normal leading-tight lg:block lg:text-[16px]">
+      <Sidebar.Item className="hidden lg:block lg:text-ellipsis lg:whitespace-normal lg:text-[16px] lg:leading-tight">
         {name}
       </Sidebar.Item>
     </div>
