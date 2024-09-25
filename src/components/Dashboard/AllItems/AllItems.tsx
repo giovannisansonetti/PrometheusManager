@@ -39,6 +39,7 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
           <DynamicActionButton
             onNoteModalOpen={onNoteModalOpen}
             onPasswordModalOpen={onPasswordModalOpen}
+            onCreditCardOpen={onCardModalOpenChange}
             pageType={PageType.ALLITEMS}
           ></DynamicActionButton>
         </div>

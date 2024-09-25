@@ -40,6 +40,9 @@ const ModalCard = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
   });
 
   const handleCard = async (onClose: () => void) => {
+    const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    const today = new Date(); //TODO: validate the date
+
     if (
       !cardForm.PAN ||
       !cardForm.expiry ||
@@ -51,9 +54,21 @@ const ModalCard = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
       return;
     }
 
-    if (cardForm.PAN.length < 15 && cardProvider === cardProv.UNKNOWN) {
+    if (
+      cardForm.PAN.length < 15 ||
+      (cardForm.PAN.length > 16 && cardProvider === cardProv.UNKNOWN)
+    ) {
       setError(true);
       setMessage("Insert a valid card number");
+      setTimeout(() => {
+        setError(false);
+      }, 2000);
+      return;
+    }
+
+    if (!expiryRegex.test(cardForm.expiry)) {
+      setError(true);
+      setMessage("Insert a valid expiry date");
       setTimeout(() => {
         setError(false);
       }, 2000);
@@ -141,7 +156,6 @@ const ModalCard = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
             </ModalHeader>
             <ModalBody className="mt-3">
               <Input
-                maxLength={16}
                 type="number"
                 isRequired
                 label="Card's number"

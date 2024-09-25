@@ -21,7 +21,6 @@ const ModalData = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
-  const [generatedPassword, setGeneratedPassword] = useState<string>("");
 
   const [dataform, setDataForm] = useState<AddItemsProps>({
     title: "",
@@ -67,15 +66,17 @@ const ModalData = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
   };
 
   const handleGenerate = () => {
-    const password = pswgen(32, true, true, true);
-    setGeneratedPassword(password);
-    setDataForm((props) => ({ ...props, password }));
+    setDataForm((props) => ({
+      ...props,
+      password: pswgen(32, true, true, true),
+    }));
   };
 
   useEffect(() => {
-    const password = pswgen(32, true, true, true);
-    setGeneratedPassword(password);
-    setDataForm((props) => ({ ...props, password }));
+    setDataForm((props) => ({
+      ...props,
+      password: pswgen(32, true, true, true),
+    }));
   }, []);
 
   return (
@@ -131,7 +132,7 @@ const ModalData = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
               />
               <Input
                 isRequired
-                label="Email"
+                label="Email or Username"
                 size="sm"
                 className="w-full"
                 onValueChange={(value) => {

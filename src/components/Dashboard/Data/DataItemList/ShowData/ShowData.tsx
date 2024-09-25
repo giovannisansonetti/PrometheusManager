@@ -10,6 +10,7 @@ import Edit from "~/../public/pencil-square.svg";
 import axios from "axios";
 import EditItemProps from "./interfaces/EditData.models";
 import { fetchImage } from "~/server/fetchImg/fetchimg";
+import AlertEvent from "~/components/Events/Alerts/Alert";
 
 const ShowData = ({
   id,
@@ -26,6 +27,9 @@ const ShowData = ({
   const [loading, setLoading] = useState(false);
   const [editview, setEditView] = useState(false);
   const toggleEdit = () => setEditView(!editview);
+
+  const [error, setError] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
 
   const [editForm, setEditForm] = useState<EditItemProps>({
     title: title,
@@ -48,7 +52,12 @@ const ShowData = ({
       !editForm.username ||
       !editForm.password
     ) {
-      //TODO display error
+      setError(true);
+      setMessage("Fill all the fields");
+      setTimeout(() => {
+        setError(false);
+        setMessage("");
+      }, 2000);
       return;
     }
 
@@ -92,6 +101,14 @@ const ShowData = ({
 
   return (
     <div className="flex w-full flex-col items-center">
+      {error ? (
+        <AlertEvent
+          type="error"
+          description={message}
+          className="mt-10 w-2/4"
+        />
+      ) : null}
+
       <Image
         src={fetchImage(webSiteLink)}
         width={40}
@@ -108,7 +125,7 @@ const ShowData = ({
               <Input
                 placeholder="New title"
                 size="sm"
-                className="mt-2 w-1/4"
+                className="mt-2 w-3/4 lg:w-1/4"
                 onValueChange={(value) => {
                   setEditForm((props) => ({ ...props, title: value }));
                 }}
@@ -127,7 +144,7 @@ const ShowData = ({
               <Input
                 placeholder="New website link"
                 size="sm"
-                className="mt-2 w-1/4"
+                className="mt-2 w-3/4 lg:w-1/4"
                 onValueChange={(value) => {
                   setEditForm((props) => ({ ...props, webSiteLink: value }));
                 }}
@@ -146,14 +163,29 @@ const ShowData = ({
               <Input
                 placeholder="New username"
                 size="sm"
-                className="mt-2 w-1/4"
+                className="mt-2 w-3/4 lg:w-1/4"
                 onValueChange={(value) => {
                   setEditForm((props) => ({ ...props, username: value }));
                 }}
                 defaultValue={username}
               />
             ) : (
-              <div>{username}</div>
+              <div className="flex w-full flex-row justify-between">
+                <div className="justify-start">{username}</div>
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => navigator.clipboard.writeText(username)}
+                >
+                  <Image
+                    src={copy}
+                    width={20}
+                    height={20}
+                    alt={"copy"}
+                    className="mr-[20px] cursor-pointer"
+                  />
+                </button>
+              </div>
             )}
           </div>
 
@@ -166,20 +198,22 @@ const ShowData = ({
                 <Input
                   placeholder="New password"
                   size="sm"
-                  className="mt-2 w-1/4"
+                  className="mt-2 w-3/4 lg:w-1/4"
                   onValueChange={(value) => {
                     setEditForm((props) => ({ ...props, password: value }));
                   }}
                   defaultValue={password}
                 />
               ) : (
-                <div className="flex flex-row justify-end gap-1">
+                <div className="flex flex-row justify-between lg:w-full">
                   {isVisible ? (
-                    <div className="justify-start">{password}</div>
+                    <div className="max-w-[25%] justify-start lg:w-full">
+                      {password}
+                    </div>
                   ) : (
-                    <div>{passwordLen}</div>
+                    <div className="w-1/4 lg:w-full">{passwordLen}</div>
                   )}
-                  <div className="flex flex-row justify-end gap-1">
+                  <div className="flex flex-row justify-end">
                     <button
                       className="focus:outline-none"
                       type="button"
@@ -228,7 +262,7 @@ const ShowData = ({
           <Input
             placeholder="New note"
             size="sm"
-            className="ml-3 w-1/4 p-3"
+            className="ml-3 w-3/4 p-3 lg:w-1/4"
             onValueChange={(value) => {
               setEditForm((props) => ({ ...props, notes: value }));
             }}

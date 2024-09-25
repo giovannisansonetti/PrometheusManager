@@ -74,7 +74,9 @@ const CreditCardList = () => {
   return (
     <>
       {currentView === "overview" && data && data.data ? (
-        <div className="relative left-10 top-10 flex w-full flex-row gap-5">
+        <div className="relative left-10 top-10 flex flex-col items-center lg:flex lg:flex-row lg:flex-wrap lg:justify-normal lg:gap-5">
+          {" "}
+          {/* TODO: FIX THE SECOND ROW BEING TOO ATTACHED AT THE START*/}
           {data.data.map((card) => {
             return (
               <div>

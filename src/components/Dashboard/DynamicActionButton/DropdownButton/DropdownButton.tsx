@@ -10,6 +10,7 @@ import { DropdownButtonProps } from "./interfaces/DropdownButton.models";
 const DropdownButton = ({
   onPasswordModalOpen,
   onNoteModalOpen,
+  onCreditCardOpen,
 }: DropdownButtonProps) => {
   return (
     <Dropdown className="bg-[#161616]">
@@ -25,7 +26,9 @@ const DropdownButton = ({
         <DropdownItem key="copy" onClick={onNoteModalOpen}>
           Note
         </DropdownItem>
-        <DropdownItem key="edit">Credit Card</DropdownItem>
+        <DropdownItem key="edit" onClick={onCreditCardOpen}>
+          Credit Card
+        </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );

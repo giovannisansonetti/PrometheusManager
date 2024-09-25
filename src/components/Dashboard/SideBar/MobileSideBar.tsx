@@ -25,7 +25,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
       {isOpen && (
         <div className="bg-[#161616] p-5 lg:hidden">
           <div
-            className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white"
+            className="mt-2 flex cursor-pointer flex-row text-[#c7c7c7] hover:text-white"
             onClick={() => {
               handleClick("AllItems");
             }}
@@ -42,7 +42,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
           <div className="mt-2 flex w-3/4 border-1 border-[#27272a]"></div>
 
           <div
-            className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white"
+            className="mt-2 flex cursor-pointer flex-row text-[#c7c7c7] hover:text-white"
             onClick={() => {
               handleClick("Passwords");
             }}
@@ -59,7 +59,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
           <div className="mt-2 flex w-3/4 border-1 border-[#27272a]"></div>
 
           <div
-            className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white"
+            className="mt-2 flex cursor-pointer flex-row text-[#c7c7c7] hover:text-white"
             onClick={() => {
               handleClick("Notes");
             }}
@@ -76,7 +76,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
           <div className="mt-2 flex w-3/4 border-1 border-[#27272a]"></div>
 
           <div
-            className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white"
+            className="mt-2 flex cursor-pointer flex-row text-[#c7c7c7] hover:text-white"
             onClick={() => {
               handleClick("CreditCards");
             }}
@@ -93,7 +93,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
           <div className="mt-2 flex w-3/4 border-1 border-[#27272a]"></div>
 
           <div
-            className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white"
+            className="mt-2 flex cursor-pointer flex-row text-[#c7c7c7] hover:text-white"
             onClick={() => {
               handleClick("TrashBin");
             }}
@@ -110,7 +110,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
           <div className="mt-2 flex w-3/4 border-1 border-[#27272a]"></div>
 
           <div
-            className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white"
+            className="mt-2 flex cursor-pointer flex-row text-[#c7c7c7] hover:text-white"
             onClick={() => {
               handleClick("PswGen");
             }}
@@ -127,7 +127,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
           <div className="mt-2 flex w-3/4 border-1 border-[#27272a]"></div>
 
           <div
-            className="mt-2 flex flex-row text-[#c7c7c7] hover:text-white"
+            className="mt-2 flex cursor-pointer flex-row text-[#c7c7c7] hover:text-white"
             onClick={() => {
               handleClick("PswHealthCheck");
             }}

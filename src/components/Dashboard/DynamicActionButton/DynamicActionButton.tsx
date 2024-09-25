@@ -10,6 +10,7 @@ import NormalButton from "./NormalButton/NormalButton";
 const DynamicActionButton = ({
   onNoteModalOpen,
   onPasswordModalOpen,
+  onCreditCardOpen,
   pageType,
   onButtonClick,
   buttonText,
@@ -27,6 +28,7 @@ const DynamicActionButton = ({
       <DropdownButton
         onNoteModalOpen={onNoteModalOpen}
         onPasswordModalOpen={onPasswordModalOpen}
+        onCreditCardOpen={onCreditCardOpen}
       ></DropdownButton>
     );
   }

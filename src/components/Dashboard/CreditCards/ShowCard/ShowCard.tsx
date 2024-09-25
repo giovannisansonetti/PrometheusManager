@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ShowCardProps } from "./interface/ShowCard.models";
 import Image from "next/image";
 import { Button, card, Input } from "@nextui-org/react";
@@ -6,6 +6,9 @@ import { EditCard } from "./interface/EditCard.models";
 import Trash from "~/../public/SideBar/Trash.svg";
 import Edit from "~/../public/pencil-square.svg";
 import axios from "axios";
+import { EyeFilledIcon } from "~/components/Eyes/EyeFilledIcon";
+import { EyeSlashFilledIcon } from "~/components/Eyes/EyeSlashFilledIcon";
+import copy from "~/../public/copy.svg";
 
 const ShowCard = ({
   id,
@@ -19,6 +22,15 @@ const ShowCard = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [editview, setEditView] = useState<boolean>(false);
   const toggleEdit = () => setEditView(!editview);
+
+  const [maskedPan, setMaskedPAN] = useState<string>("");
+  const [IsPANVisible, setIsPANVisible] = useState<boolean>(false);
+
+  const [maskedCVV, setmaskedCVV] = useState<string>("");
+  const [isCVVvisible, setCVVvisible] = useState<boolean>(false);
+
+  const togglePANVisibility = () => setIsPANVisible(!IsPANVisible);
+  const toggleCVVvisibility = () => setCVVvisible(!isCVVvisible);
 
   const [editCardForm, setEditCardForm] = useState<EditCard>({
     PAN: PAN,
@@ -73,6 +85,19 @@ const ShowCard = ({
     }
   };
 
+  useEffect(() => {
+    if (PAN) {
+      const maskedPAN = "• ".repeat(PAN.length - 4) + PAN.slice(-4);
+      setMaskedPAN(maskedPAN);
+      return;
+    }
+    if (cvv) {
+      const maskeddcvv = "• ".repeat(cvv.length);
+      setmaskedCVV(maskeddcvv);
+      return;
+    }
+  }, [PAN, cvv]);
+
   return (
     <div className="flex w-full flex-col items-center">
       {<Image src={provider} width={70} height={70} alt="" className="mt-10" />}
@@ -92,7 +117,39 @@ const ShowCard = ({
                 defaultValue={PAN}
               />
             ) : (
-              <div className="mt-1">{PAN}</div>
+              <div className="flex w-full flex-row justify-between gap-1">
+                {IsPANVisible ? (
+                  <div className="justify-start">{PAN}</div>
+                ) : (
+                  <div>{maskedPan}</div>
+                )}
+                <div className="flex flex-row justify-end gap-1">
+                  <button
+                    className="focus:outline-none"
+                    type="button"
+                    onClick={togglePANVisibility}
+                  >
+                    {IsPANVisible ? (
+                      <EyeSlashFilledIcon className="pointer-events-none text-2xl text-default-400" />
+                    ) : (
+                      <EyeFilledIcon className="pointer-events-none text-2xl text-default-400" />
+                    )}
+                  </button>
+                  <button
+                    className="focus:outline-none"
+                    type="button"
+                    onClick={() => navigator.clipboard.writeText(PAN)}
+                  >
+                    <Image
+                      src={copy}
+                      width={20}
+                      height={20}
+                      alt={"copy"}
+                      className="mr-[20px] cursor-pointer"
+                    />
+                  </button>
+                </div>
+              </div>
             )}
           </div>
 
@@ -111,7 +168,22 @@ const ShowCard = ({
                 defaultValue={expiry}
               />
             ) : (
-              <div>{expiry}</div>
+              <div className="flex w-full flex-row justify-between">
+                {expiry}
+                <button
+                  className="justify-end focus:outline-none"
+                  type="button"
+                  onClick={() => navigator.clipboard.writeText(expiry)}
+                >
+                  <Image
+                    src={copy}
+                    width={20}
+                    height={20}
+                    alt={"copy"}
+                    className="mr-[20px] cursor-pointer"
+                  />
+                </button>
+              </div>
             )}
           </div>
 
@@ -130,7 +202,39 @@ const ShowCard = ({
                 defaultValue={cvv}
               />
             ) : (
-              <div>{cvv}</div>
+              <div className="flex w-full flex-row justify-between gap-1">
+                {isCVVvisible ? (
+                  <div className="justify-start">{cvv}</div>
+                ) : (
+                  <div>{maskedCVV}</div>
+                )}
+                <div className="flex flex-row justify-end gap-1">
+                  <button
+                    className="focus:outline-none"
+                    type="button"
+                    onClick={toggleCVVvisibility}
+                  >
+                    {isCVVvisible ? (
+                      <EyeSlashFilledIcon className="pointer-events-none text-2xl text-default-400" />
+                    ) : (
+                      <EyeFilledIcon className="pointer-events-none text-2xl text-default-400" />
+                    )}
+                  </button>
+                  <button
+                    className="focus:outline-none"
+                    type="button"
+                    onClick={() => navigator.clipboard.writeText(cvv)}
+                  >
+                    <Image
+                      src={copy}
+                      width={20}
+                      height={20}
+                      alt={"copy"}
+                      className="mr-[20px] cursor-pointer"
+                    />
+                  </button>
+                </div>
+              </div>
             )}
           </div>
 
@@ -153,7 +257,22 @@ const ShowCard = ({
                   defaultValue={cardholder}
                 />
               ) : (
-                <div>{cardholder}</div>
+                <div className="flex w-full flex-row justify-between">
+                  {cardholder}
+                  <button
+                    className="justify-end focus:outline-none"
+                    type="button"
+                    onClick={() => navigator.clipboard.writeText(cardholder)}
+                  >
+                    <Image
+                      src={copy}
+                      width={20}
+                      height={20}
+                      alt={"copy"}
+                      className="mr-[20px] cursor-pointer"
+                    />
+                  </button>
+                </div>
               )}
             </div>
           </div>

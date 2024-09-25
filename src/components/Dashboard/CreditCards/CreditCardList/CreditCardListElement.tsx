@@ -20,7 +20,7 @@ const CreditCardListElement = ({
 
   return (
     <div
-      className="mb-6 ml-[10%] mt-5 flex h-[160px] w-[240px] cursor-pointer flex-col rounded-lg border border-[#27272a] bg-[#0e0e0f] p-4 text-white transition-all"
+      className="mb-6 mt-5 flex h-[160px] w-[240px] cursor-pointer flex-col rounded-lg border border-[#27272a] bg-[#0e0e0f] p-4 text-white transition-all"
       onClick={onClick}
     >
       <div className="flex items-center justify-between">
