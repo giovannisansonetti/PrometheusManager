@@ -14,7 +14,7 @@ const DataListItem = ({
 }: DataListProps) => {
   return (
     <div
-      className="relative top-5 mb-4 ml-[12%] flex h-20 w-[80%] cursor-pointer flex-row rounded-md border-1 border-[#27272a] text-white"
+      className="relative top-7 mb-4 ml-[12%] flex h-20 w-[80%] cursor-pointer flex-row rounded-md border-1 border-[#27272a] text-white"
       onClick={onClick}
     >
       <div className="ml-4 flex items-center">

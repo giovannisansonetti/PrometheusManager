@@ -9,7 +9,6 @@ import Trash from "~/../public/SideBar/Trash.svg";
 import Edit from "~/../public/pencil-square.svg";
 import axios from "axios";
 import EditItemProps from "./interfaces/EditData.models";
-import { useRouter } from "next/navigation";
 import { fetchImage } from "~/server/fetchImg/fetchimg";
 
 const ShowData = ({
@@ -27,7 +26,6 @@ const ShowData = ({
   const [loading, setLoading] = useState(false);
   const [editview, setEditView] = useState(false);
   const toggleEdit = () => setEditView(!editview);
-  const router = useRouter();
 
   const [editForm, setEditForm] = useState<EditItemProps>({
     title: title,
@@ -248,9 +246,22 @@ const ShowData = ({
       )}
       <div className="mt-4 flex w-3/4 justify-end gap-3">
         {editview ? (
-          <Button color="danger" variant="flat" onClick={toggleEdit}>
-            Cancel
-          </Button>
+          <div>
+            {loading ? (
+              <Button
+                isDisabled
+                color="danger"
+                variant="flat"
+                onClick={toggleEdit}
+              >
+                Cancel
+              </Button>
+            ) : (
+              <Button color="danger" variant="flat" onClick={toggleEdit}>
+                Cancel
+              </Button>
+            )}
+          </div>
         ) : (
           <div>
             {loading ? (
@@ -283,7 +294,7 @@ const ShowData = ({
           <div>
             {loading ? (
               <Button variant="flat" isLoading>
-                Save data
+                Saving data
               </Button>
             ) : (
               <Button
@@ -297,10 +308,24 @@ const ShowData = ({
             )}
           </div>
         ) : (
-          <Button color="default" variant="flat" onClick={toggleEdit}>
-            <Image src={Edit} width={20} height={20} alt="trash" />
-            Edit
-          </Button>
+          <div>
+            {loading ? (
+              <Button
+                isDisabled
+                color="default"
+                variant="flat"
+                onClick={toggleEdit}
+              >
+                <Image src={Edit} width={20} height={20} alt="trash" />
+                Edit
+              </Button>
+            ) : (
+              <Button color="default" variant="flat" onClick={toggleEdit}>
+                <Image src={Edit} width={20} height={20} alt="trash" />
+                Edit
+              </Button>
+            )}
+          </div>
         )}
       </div>
     </div>

@@ -67,12 +67,16 @@ const ModalData = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
   };
 
   const handleGenerate = () => {
-    setGeneratedPassword("");
     const password = pswgen(32, true, true, true);
     setGeneratedPassword(password);
-    console.log(generatedPassword);
-    return;
+    setDataForm((props) => ({ ...props, password }));
   };
+
+  useEffect(() => {
+    const password = pswgen(32, true, true, true);
+    setGeneratedPassword(password);
+    setDataForm((props) => ({ ...props, password }));
+  }, []);
 
   return (
     <Modal
@@ -143,7 +147,7 @@ const ModalData = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
                   onValueChange={(value) => {
                     setDataForm((props) => ({ ...props, password: value }));
                   }}
-                  value={generatedPassword}
+                  value={dataform.password}
                 />
                 <Button
                   color="primary"
