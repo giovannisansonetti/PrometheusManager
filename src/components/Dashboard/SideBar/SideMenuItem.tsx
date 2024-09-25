@@ -11,11 +11,11 @@ interface SideMenuItemProps {
 const SideMenuItem = ({ name, isActive, icon, onClick }: SideMenuItemProps) => {
   return (
     <div
-      className={`mt-2.5 flex cursor-pointer items-center rounded-lg p-2 ${isActive ? "bg-[#383737] text-white" : "hover:bg-[#292828] hover:text-white"} `}
+      className={`mt-2.5 flex cursor-pointer items-center rounded-lg p-1.5 ${isActive ? "bg-[#383737] text-white" : "hover:bg-[#292828] hover:text-white"} `}
       onClick={onClick}
     >
       <Image width={20} height={20} src={icon} alt={"title"} className="" />
-      <Sidebar.Item className="hidden lg:block lg:text-ellipsis lg:whitespace-normal lg:text-[16px] lg:leading-tight">
+      <Sidebar.Item className="hidden leading-tight lg:flex lg:text-ellipsis lg:whitespace-normal lg:text-[16px]">
         {name}
       </Sidebar.Item>
     </div>

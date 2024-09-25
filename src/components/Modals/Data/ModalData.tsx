@@ -10,16 +10,18 @@ import {
   Input,
 } from "@nextui-org/react";
 import AlertEvent from "../../Events/Alerts/Alert";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { AddItemsProps } from "../interfaces/AddItem.models";
 import { ModalProps } from "../interfaces/Modal.models";
+import pswgen from "utils/pswgen";
 
 const ModalData = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const [generatedPassword, setGeneratedPassword] = useState<string>("");
 
   const [dataform, setDataForm] = useState<AddItemsProps>({
     title: "",
@@ -62,6 +64,14 @@ const ModalData = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
       }, 1000);
       location.reload();
     }
+  };
+
+  const handleGenerate = () => {
+    setGeneratedPassword("");
+    const password = pswgen(32, true, true, true);
+    setGeneratedPassword(password);
+    console.log(generatedPassword);
+    return;
   };
 
   return (
@@ -124,15 +134,28 @@ const ModalData = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
                   setDataForm((props) => ({ ...props, username: value }));
                 }}
               />
-              <Input
-                isRequired
-                label="Password"
-                size="sm"
-                className="w-full"
-                onValueChange={(value) => {
-                  setDataForm((props) => ({ ...props, password: value }));
-                }}
-              />
+              <div className="flex flex-row items-center justify-center gap-2">
+                <Input
+                  isRequired
+                  label="Password"
+                  size="sm"
+                  className="w-full"
+                  onValueChange={(value) => {
+                    setDataForm((props) => ({ ...props, password: value }));
+                  }}
+                  value={generatedPassword}
+                />
+                <Button
+                  color="primary"
+                  variant="flat"
+                  className=""
+                  onPress={() => {
+                    handleGenerate();
+                  }}
+                >
+                  Generate
+                </Button>
+              </div>
               <Textarea
                 label="Notes"
                 size="sm"
