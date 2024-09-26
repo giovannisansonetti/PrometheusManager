@@ -205,9 +205,9 @@ const ShowData = ({
                   defaultValue={password}
                 />
               ) : (
-                <div className="flex flex-row justify-between lg:w-full">
+                <div className="flex w-full flex-row justify-between lg:w-full">
                   {isVisible ? (
-                    <div className="max-w-[25%] justify-start lg:w-full">
+                    <div className="justify-start truncate lg:w-full">
                       {password}
                     </div>
                   ) : (
