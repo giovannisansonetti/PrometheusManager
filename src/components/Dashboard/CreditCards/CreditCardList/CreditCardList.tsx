@@ -3,11 +3,12 @@ import { fetcher } from "~/server/fetcher";
 import { ApiResponse } from "./interfaces/CardList.models";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
 import { PaymentCard } from "@prisma/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreditCardListElement from "./CreditCardListElement";
 import ShowCard from "../ShowCard/ShowCard";
 import { cardProv } from "../interfaces/AddCard.models";
 import { getCardImage } from "utils/cardProvider";
+import useBackButtonStore from "../../DynamicActionButton/DynamicActionButtonStore";
 
 const CreditCardList = () => {
   type ViewState = "overview" | "creditcard";
@@ -21,11 +22,19 @@ const CreditCardList = () => {
   const [selectedCard, setSelectedCard] = useState<PaymentCard | null>(null);
   const [currentView, setCurrentView] = useState<ViewState>("overview");
   const [provider, setProvider] = useState<cardProv>(cardProv.UNKNOWN);
+  const { goBack, setGoBack } = useBackButtonStore();
 
   const handleClick = (card: PaymentCard) => {
     setSelectedCard(card);
     setCurrentView("creditcard");
+    setGoBack(true);
   };
+
+  useEffect(() => {
+    if (!goBack) {
+      setCurrentView("overview");
+    }
+  }, [goBack]);
 
   if (isLoading) {
     return (

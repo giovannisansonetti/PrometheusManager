@@ -3,6 +3,8 @@ import { Button, useDisclosure } from "@nextui-org/react";
 import BurgerMenu from "../Burger/BurgerMenu";
 import CreditCardList from "./CreditCardList/CreditCardList";
 import ModalCard from "~/components/Modals/Data/ModalCard";
+import DynamicActionButton from "../DynamicActionButton/DynamicActionButton";
+import { PageType } from "../DynamicActionButton/interfaces/DynamicActionButton.models";
 
 const DisplayCards = ({ handleMenu, isOpen }: DisplayCardsProps) => {
   const {
@@ -18,9 +20,11 @@ const DisplayCards = ({ handleMenu, isOpen }: DisplayCardsProps) => {
           <div className="block w-full lg:hidden">
             <BurgerMenu handleMenu={handleMenu} isOpen={isOpen} />
           </div>
-          <Button color="primary" variant="flat" onClick={onCardsModalOpen}>
-            Add a card
-          </Button>
+          <DynamicActionButton
+            pageType={PageType.CREDITCARD}
+            buttonText="Add a card"
+            onButtonClick={onCardsModalOpen}
+          />
         </div>
         <div className="mt-5 flex w-full border-1 border-[#27272a]"></div>
       </div>

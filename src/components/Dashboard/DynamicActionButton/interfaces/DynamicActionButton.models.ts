@@ -9,7 +9,7 @@ export interface DynamicActionButtonProps {
   onButtonClick?: () => void;
   buttonText?: string;
   onNoteModalOpen?: () => void;
-  onCreditCardOpen: () => void;
+  onCreditCardOpen?: () => void;
   onPasswordModalOpen?: () => void;
   pageType: PageType;
 }

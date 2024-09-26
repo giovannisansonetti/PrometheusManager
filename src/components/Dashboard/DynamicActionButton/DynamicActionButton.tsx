@@ -22,7 +22,8 @@ const DynamicActionButton = ({
   if (
     pageType === PageType.ALLITEMS &&
     onNoteModalOpen &&
-    onPasswordModalOpen
+    onPasswordModalOpen &&
+    onCreditCardOpen
   ) {
     return (
       <DropdownButton
