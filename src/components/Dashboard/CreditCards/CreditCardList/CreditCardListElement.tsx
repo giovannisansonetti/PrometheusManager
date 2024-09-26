@@ -24,7 +24,9 @@ const CreditCardListElement = ({
       onClick={onClick}
     >
       <div className="flex items-center justify-between">
-        <Image src={image} width={40} height={40} alt="card icon" />
+        <div className="flex h-10 items-center">
+          <Image src={image} width={40} height={40} alt="card icon" />
+        </div>
         <div className="text-xs text-gray-400">{expiry}</div>
       </div>
       <div className="mt-8 flex flex-col gap-1">
