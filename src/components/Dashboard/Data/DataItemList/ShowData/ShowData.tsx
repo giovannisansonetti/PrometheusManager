@@ -118,7 +118,7 @@ const ShowData = ({
       />
 
       <div className="mt-10 w-3/4 items-center rounded-lg border-1 border-[#27272a] bg-[#131314] p-4">
-        <div className="ml-4 mt-3">
+        <div className="m-3">
           <div>
             <div>Title</div>
             {editview ? (
