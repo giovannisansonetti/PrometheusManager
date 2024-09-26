@@ -1,2 +1,1 @@
-npm run commit
-git add .
+npx lint-staged
