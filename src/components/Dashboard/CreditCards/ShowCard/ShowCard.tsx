@@ -89,12 +89,10 @@ const ShowCard = ({
     if (PAN) {
       const maskedPAN = "• ".repeat(PAN.length - 4) + PAN.slice(-4);
       setMaskedPAN(maskedPAN);
-      return;
     }
     if (cvv) {
       const maskeddcvv = "• ".repeat(cvv.length);
       setmaskedCVV(maskeddcvv);
-      return;
     }
   }, [PAN, cvv]);
 
