@@ -1,14 +1,21 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createClient } from "utils/supabase/server";
+import { type RestoreAllResponse } from "~/interfaces/api.models";
 import { db } from "~/server/db";
 
-export async function POST(req: NextRequest) {
+export async function POST(): Promise<NextResponse<RestoreAllResponse>> {
   const supabase = createClient();
   const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data.user) {
+  if (error ?? !data.user) {
     console.error("Failed to get user:", error);
-    return;
+    return NextResponse.json(
+      {
+        message: "Unauthorized user",
+        success: false,
+      },
+      { status: 401 },
+    );
   }
 
   const user = await db.user.findUnique({
@@ -56,7 +63,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           message: "Internal Server Error",
-          error: true,
+          success: false,
         },
         { status: 500 },
       );
@@ -66,7 +73,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(
     {
       message: "User not found",
-      error: true,
+      success: false,
     },
     { status: 404 },
   );

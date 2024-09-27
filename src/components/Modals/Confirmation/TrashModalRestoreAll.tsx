@@ -1,33 +1,26 @@
 import axios from "axios";
 import { useState } from "react";
 import {
-  Textarea,
   Modal,
   ModalContent,
   ModalHeader,
-  ModalBody,
   ModalFooter,
   Button,
-  useDisclosure,
-  Input,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
 } from "@nextui-org/react";
-import { ModalProps } from "../interfaces/Modal.models";
+import { type ModalProps } from "../interfaces/Modal.models";
 import AlertEvent from "~/components/Events/Alerts/Alert";
+import { type RestoreAllResponse } from "~/interfaces/api.models";
 
-const TrashModalRestoreAll = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
+const TrashModalRestoreAll = ({ isOpen, onOpenChange }: ModalProps) => {
   const [restoreLoading, setRestoreLoading] = useState(false);
 
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState<string>("");
+  const [error] = useState<string>("");
 
   const handleRestoreAll = async (onClose: () => void) => {
     setRestoreLoading(true);
     const request = axios.post("/api/data/manageData/restoreAll");
-    const response = (await request).data;
+    const response = (await request).data as RestoreAllResponse;
 
     if (response.success) {
       setTimeout(() => {
@@ -94,7 +87,7 @@ const TrashModalRestoreAll = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
                   color="primary"
                   variant="flat"
                   onClick={async () => {
-                    handleRestoreAll(onClose);
+                    await handleRestoreAll(onClose);
                   }}
                 >
                   Restore all items

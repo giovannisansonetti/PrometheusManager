@@ -35,6 +35,7 @@ export interface InsertDataResponse {
 }
 //TODO make the api response a single type
 
+//api/data/insertCard
 export interface InsertCardRequest {
   PAN: string;
   expiry: string;
@@ -46,4 +47,10 @@ export interface InsertCardRequest {
 export interface InsertCardResponse {
   message: string;
   error: boolean;
+}
+
+//api/data/manageData/restoreAll
+export interface RestoreAllResponse {
+  success: boolean;
+  message: string;
 }
