@@ -49,3 +49,13 @@ export interface MoveToTrashRequest {
   id: string;
   type: string;
 }
+
+//api/data/updateData
+export interface UpdateDataRequest {
+  title: string;
+  webSiteLink: string;
+  username: string;
+  password: string;
+  notes: string;
+  id: string;
+}

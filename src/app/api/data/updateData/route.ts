@@ -1,22 +1,28 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { encryptWithKey } from "utils/encryption/encryption";
 import checkSecurityPass from "utils/pswsecuritychecker";
 import { createClient } from "utils/supabase/server";
 import { env } from "~/env";
+import {
+  type GenericApiResponse,
+  type UpdateDataRequest,
+} from "~/interfaces/api.models";
 import { db } from "~/server/db";
 
-export async function POST(req: NextRequest) {
+export async function POST(
+  req: NextRequest,
+): Promise<NextResponse<GenericApiResponse>> {
   const supabase = createClient();
-  const body = await req.json();
+  const body = (await req.json()) as UpdateDataRequest;
 
   const { title, webSiteLink, username, password, notes, id } = body;
   const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data.user) {
+  if (error ?? !data.user) {
     return NextResponse.json(
       {
         message: "Unauthorized user",
-        error: true,
+        success: false,
       },
       { status: 401 },
     );
@@ -32,16 +38,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         message: "User not found",
-        error: true,
+        success: false,
       },
       { status: 404 },
     );
   }
 
-  const encryptedPassword = await encryptWithKey(
-    password as string,
-    env.AES_KEY,
-  );
+  const encryptedPassword = await encryptWithKey(password, env.AES_KEY);
   const insertData = {
     title,
     webSiteLink,
@@ -78,7 +81,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         message: "Internal Server Error",
-        error: true,
+        success: false,
       },
       { status: 500 },
     );

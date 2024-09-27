@@ -1,5 +1,5 @@
 import Image from "next/image";
-import ShowDataProps from "./interfaces/ShowData.models";
+import type ShowDataProps from "./interfaces/ShowData.models";
 import copy from "~/../public/copy.svg";
 import { EyeFilledIcon } from "../../../../Eyes/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../../../../Eyes/EyeSlashFilledIcon";
@@ -8,9 +8,14 @@ import { Button, Input } from "@nextui-org/react";
 import Trash from "~/../public/SideBar/Trash.svg";
 import Edit from "~/../public/pencil-square.svg";
 import axios from "axios";
-import EditItemProps from "./interfaces/EditData.models";
+import type EditItemProps from "./interfaces/EditData.models";
 import { fetchImage } from "~/server/fetchImg/fetchimg";
 import AlertEvent from "~/components/Events/Alerts/Alert";
+import {
+  type UpdateDataRequest,
+  type GenericApiResponse,
+  type MoveToTrashRequest,
+} from "~/interfaces/api.models";
 
 const ShowData = ({
   id,
@@ -43,7 +48,7 @@ const ShowData = ({
     if (password) {
       setPasswordLen("•".repeat(password.length));
     }
-  });
+  }, [password]);
 
   const saveEditedData = async () => {
     if (
@@ -63,15 +68,15 @@ const ShowData = ({
 
     setLoading(true);
 
-    const req = {
+    const req: UpdateDataRequest = {
       title: editForm.title,
       webSiteLink: editForm.webSiteLink,
       username: editForm.username,
       password: editForm.password,
-      notes: editForm.notes,
+      notes: editForm.notes ?? "",
       id: id,
     };
-    const request = axios.post("/api/data/updateData", req);
+    const request = axios.post<GenericApiResponse>("/api/data/updateData", req);
     const response = (await request).data;
     if (response.success) {
       setTimeout(() => {
@@ -84,11 +89,14 @@ const ShowData = ({
 
   const handleDelete = async (id: string) => {
     setLoading(true);
-    const req = {
+    const req: MoveToTrashRequest = {
       id: id,
       type: "data",
     };
-    const request = axios.post("/api/data/moveToTrash", req);
+    const request = axios.post<GenericApiResponse>(
+      "/api/data/moveToTrash",
+      req,
+    );
     const response = (await request).data;
 
     if (response.success) {
@@ -178,7 +186,7 @@ const ShowData = ({
                   onClick={() => navigator.clipboard.writeText(username)}
                 >
                   <Image
-                    src={copy}
+                    src={copy as string}
                     width={20}
                     height={20}
                     alt={"copy"}
@@ -231,7 +239,7 @@ const ShowData = ({
                       onClick={() => navigator.clipboard.writeText(password)}
                     >
                       <Image
-                        src={copy}
+                        src={copy as string}
                         width={20}
                         height={20}
                         alt={"copy"}
@@ -304,7 +312,7 @@ const ShowData = ({
                 color="danger"
                 variant="flat"
                 onClick={async () => {
-                  handleDelete(id);
+                  await handleDelete(id);
                 }}
               >
                 Deleting
@@ -314,10 +322,15 @@ const ShowData = ({
                 color="danger"
                 variant="flat"
                 onClick={async () => {
-                  handleDelete(id);
+                  await handleDelete(id);
                 }}
               >
-                <Image src={Trash} width={20} height={20} alt="trash" />
+                <Image
+                  src={Trash as string}
+                  width={20}
+                  height={20}
+                  alt="trash"
+                />
                 Move to trash
               </Button>
             )}
@@ -334,7 +347,7 @@ const ShowData = ({
               <Button
                 variant="flat"
                 onClick={async () => {
-                  saveEditedData();
+                  await saveEditedData();
                 }}
               >
                 Save data
@@ -350,12 +363,22 @@ const ShowData = ({
                 variant="flat"
                 onClick={toggleEdit}
               >
-                <Image src={Edit} width={20} height={20} alt="trash" />
+                <Image
+                  src={Edit as string}
+                  width={20}
+                  height={20}
+                  alt="trash"
+                />
                 Edit
               </Button>
             ) : (
               <Button color="default" variant="flat" onClick={toggleEdit}>
-                <Image src={Edit} width={20} height={20} alt="trash" />
+                <Image
+                  src={Edit as string}
+                  width={20}
+                  height={20}
+                  alt="trash"
+                />
                 Edit
               </Button>
             )}
