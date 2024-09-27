@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import {
   Navbar,
   NavbarBrand,
@@ -10,21 +9,20 @@ import {
   NavbarMenu,
   NavbarMenuItem,
 } from "@nextui-org/navbar";
-import { Button, Divider, divider } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import { useState } from "react";
-import { NavBarProps } from "./NavBar.models";
+import { type SignOutResponse, type NavBarProps } from "./NavBar.models";
 import { CiLogout } from "react-icons/ci";
 import { FaRegCircleUser } from "react-icons/fa6";
 import axios from "axios";
 
 const NavBar = ({ name }: NavBarProps) => {
-  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
     const req = axios.get("/api/auth/signout");
-    const response = (await req).data;
+    const response = (await req).data as SignOutResponse;
     if (response.success) {
       location.reload();
     }
@@ -55,7 +53,7 @@ const NavBar = ({ name }: NavBarProps) => {
               color="danger"
               variant="flat"
               onClick={async () => {
-                handleSignOut();
+                await handleSignOut();
               }}
             >
               <CiLogout className="" />
