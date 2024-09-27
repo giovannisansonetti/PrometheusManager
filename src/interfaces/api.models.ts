@@ -54,3 +54,8 @@ export interface RestoreAllResponse {
   success: boolean;
   message: string;
 }
+
+export interface GenericApiResponse {
+  success: boolean;
+  message: string;
+}

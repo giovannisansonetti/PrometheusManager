@@ -1,32 +1,27 @@
 import axios from "axios";
 import { useState } from "react";
 import {
-  Textarea,
   Modal,
   ModalContent,
   ModalHeader,
-  ModalBody,
   ModalFooter,
   Button,
-  useDisclosure,
-  Input,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
 } from "@nextui-org/react";
-import { ModalProps } from "../interfaces/Modal.models";
+import { type ModalProps } from "../interfaces/Modal.models";
 import AlertEvent from "~/components/Events/Alerts/Alert";
+import { type GenericApiResponse } from "~/interfaces/api.models";
 
-const TrashModalDeleteAll = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
+const TrashModalDeleteAll = ({ isOpen, onOpenChange }: ModalProps) => {
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState<string>("");
+  const [error] = useState<string>("");
 
   const handleDeleteAll = async (onClose: () => void) => {
     setDeleteLoading(true);
-    const request = axios.post("/api/data/manageData/deleteAll");
+    const request = axios.post<GenericApiResponse>(
+      "/api/data/manageData/deleteAll",
+    );
     const response = (await request).data;
 
     if (response.success) {
@@ -94,7 +89,7 @@ const TrashModalDeleteAll = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
                   color="danger"
                   variant="flat"
                   onClick={async () => {
-                    handleDeleteAll(onClose);
+                    await handleDeleteAll(onClose);
                   }}
                 >
                   Delete
