@@ -1,4 +1,4 @@
-import Data from "~/components/Dashboard/AllItems/AllItemsList/interfaces/Data.models";
+import type Data from "~/components/Dashboard/AllItems/AllItemsList/interfaces/Data.models";
 
 export interface DataListProps {
   title?: string;

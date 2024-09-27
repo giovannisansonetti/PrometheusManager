@@ -1,17 +1,9 @@
 import { fetchImage } from "~/server/fetchImg/fetchimg";
-import { DataListProps } from "./interfaces/DataList.models";
+import { type DataListProps } from "./interfaces/DataList.models";
 import Image from "next/image";
 import React from "react";
 
-const DataListItem = ({
-  title,
-  link,
-  email,
-  date,
-  onClick,
-  onDelete,
-  onModify,
-}: DataListProps) => {
+const DataListItem = ({ title, link, email, date, onClick }: DataListProps) => {
   return (
     <div
       className="relative top-7 mb-4 ml-[12%] flex h-20 w-[80%] cursor-pointer flex-row rounded-md border-1 border-[#27272a] text-white"

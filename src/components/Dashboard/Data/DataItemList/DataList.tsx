@@ -1,36 +1,23 @@
 import { useEffect, useState } from "react";
 import { type Data } from "./interfaces/Data";
 import DataListItem from "./DataListItem";
-import {
-  Textarea,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-  Input,
-} from "@nextui-org/react";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
 import useSWR from "swr";
 import { fetcher } from "~/server/fetcher";
 import { type ApiResponse } from "./interfaces/DataList.models";
-import axios from "axios";
 import ShowData from "./ShowData/ShowData";
 import useBackButtonStore from "../../DynamicActionButton/DynamicActionButtonStore";
 
 const DataList = () => {
   type ViewState = "overview" | "password";
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { data, error, isLoading } = useSWR<ApiResponse>(
     "/api/data/showData",
     fetcher,
   );
   console.log(data);
-  const [loading, setLoading] = useState(false);
   const [selectData, setSelectData] = useState<Data | null>(null);
-  const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure();
   const [currentView, setCurrentView] = useState<ViewState>("overview");
   const { goBack, setGoBack } = useBackButtonStore();
 
@@ -69,9 +56,7 @@ const DataList = () => {
   if (!Array.isArray(data?.data)) {
     return (
       <div className="mt-5 flex flex-col items-center justify-center">
-        {data && data.message && (
-          <p className="text-gray-500">{data.message}</p>
-        )}
+        {data?.message && <p className="text-gray-500">{data.message}</p>}
         {data && data.error && <p className="text-gray-500">{data.error}</p>}
       </div>
     );
@@ -87,7 +72,7 @@ const DataList = () => {
           username={selectData.username}
           password={selectData.password}
           passwordSecurity={selectData.passwordSecurity}
-          notes={selectData.notes || undefined}
+          notes={selectData.notes ?? undefined}
         />
       );
     }
@@ -95,7 +80,7 @@ const DataList = () => {
 
   return (
     <>
-      {currentView === "overview" && data && data.data ? (
+      {currentView === "overview" && data?.data ? (
         <div className="ml-auto mr-auto h-full w-full overflow-auto overflow-x-hidden">
           {data.data.map((item) => {
             return (
