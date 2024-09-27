@@ -12,16 +12,23 @@ import AllItemsListElement from "./AllItemsListElement";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
 import useSWR from "swr";
 import { fetcher } from "~/server/fetcher";
-import { AllItems, ApiResponse } from "~/server/data/showdata/allitems.models";
+import {
+  type AllItems,
+  type ApiResponse,
+} from "~/server/data/showdata/allitems.models";
 import axios from "axios";
 import ShowData from "../../Data/DataItemList/ShowData/ShowData";
 import useBackButtonStore from "../../DynamicActionButton/DynamicActionButtonStore";
 import ShowCard from "../../CreditCards/ShowCard/ShowCard";
 import { getCardImage } from "utils/cardProvider";
+import {
+  type GenericApiResponse,
+  type MoveToTrashRequest,
+} from "~/interfaces/api.models";
 
 const AllItemsList = () => {
   type ViewData = "overview" | "password" | "card";
-  const { data, error, isLoading } = useSWR<ApiResponse>(
+  const { data, isLoading } = useSWR<ApiResponse>(
     "/api/data/allitems",
     fetcher,
   );
@@ -69,11 +76,14 @@ const AllItemsList = () => {
     setLoading(true);
 
     if (type === "note") {
-      const req = {
+      const req: MoveToTrashRequest = {
         id: id,
         type: "note",
       };
-      const request = axios.post("/api/data/moveToTrash", req);
+      const request = axios.post<GenericApiResponse>(
+        "/api/data/moveToTrash",
+        req,
+      );
       const response = (await request).data;
 
       if (response.success) {
@@ -101,7 +111,7 @@ const AllItemsList = () => {
           username={selectedItem.username}
           password={selectedItem.password}
           passwordSecurity={selectedItem.passwordSecurity}
-          notes={selectedItem.notes || undefined}
+          notes={selectedItem.notes ?? undefined}
         />
       );
     }
@@ -143,9 +153,7 @@ const AllItemsList = () => {
   if (!Array.isArray(data?.data)) {
     return (
       <div className="mt-5 flex flex-col items-center justify-center">
-        {data && data.message && (
-          <p className="text-gray-500">{data.message}</p>
-        )}
+        {data?.message && <p className="text-gray-500">{data.message}</p>}
 
         {data && data.error && <p className="text-gray-500">{data.error}</p>}
       </div>
@@ -158,7 +166,7 @@ const AllItemsList = () => {
         <div>
           {data?.data.length ? (
             data.data.map((item) => (
-              <div>
+              <div key={item.createdAt.toISOString()}>
                 {!item.isDeleted && (
                   <AllItemsListElement
                     item={item}
