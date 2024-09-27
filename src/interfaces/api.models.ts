@@ -68,3 +68,10 @@ export interface UpdateCardRequest {
   cardholder: string;
   id: string;
 }
+
+//api/auth/signup
+export interface SignUpRequest {
+  email: string;
+  masterPass: string;
+  phoneNumber: string;
+}

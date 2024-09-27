@@ -1,18 +1,24 @@
 import { createClient } from "utils/supabase/server";
 import { db } from "~/server/db";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import getIp from "utils/retrieveInfo/info";
+import {
+  type GenericApiResponse,
+  type SignUpRequest,
+} from "~/interfaces/api.models";
 
-export async function POST(req: NextRequest) {
+export async function POST(
+  req: NextRequest,
+): Promise<NextResponse<GenericApiResponse>> {
   const supabase = createClient();
-  const response = await req.json();
+  const response = (await req.json()) as SignUpRequest;
   const { email, masterPass, phoneNumber } = response;
 
   if (!email || !masterPass) {
     return NextResponse.json(
       {
         message: "Email or password not received",
-        error: true,
+        success: false,
       },
       { status: 400 },
     );
@@ -53,7 +59,7 @@ export async function POST(req: NextRequest) {
   if (error && error.code === "weak_password") {
     return NextResponse.json(
       {
-        error: true,
+        success: false,
         message: "Password is too short",
       },
       { status: 400 },
@@ -63,7 +69,7 @@ export async function POST(req: NextRequest) {
   if (error && error.code === "user_already_exists") {
     return NextResponse.json(
       {
-        error: true,
+        success: false,
         message: "Email already registered",
       },
       { status: 400 },
@@ -73,10 +79,17 @@ export async function POST(req: NextRequest) {
   if (error && error.code === "validation_failed") {
     return NextResponse.json(
       {
-        error: true,
+        success: false,
         message: "Invalid email format",
       },
       { status: 400 },
     );
   }
+  return NextResponse.json(
+    {
+      success: false,
+      message: "An error occurred",
+    },
+    { status: 500 },
+  );
 }

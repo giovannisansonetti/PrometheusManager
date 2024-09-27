@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FormProps } from "./Form.models";
+import { type FormProps } from "./Form.models";
 import { useRouter } from "next/navigation";
 import { Input, Button } from "@nextui-org/react";
 import { EyeFilledIcon } from "../../Eyes/EyeFilledIcon";
@@ -9,6 +9,10 @@ import { EyeSlashFilledIcon } from "../../Eyes/EyeSlashFilledIcon";
 import Link from "next/link";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
+import {
+  type GenericApiResponse,
+  type SignUpRequest,
+} from "~/interfaces/api.models";
 
 const SignUp = () => {
   const router = useRouter();
@@ -29,15 +33,17 @@ const SignUp = () => {
       return;
     }
 
-    const req = axios.post("/api/auth/signup", {
+    const request: SignUpRequest = {
       email: form.email,
       masterPass: form.masterPass,
       phoneNumber: form.phoneNumber,
-    });
+    };
+
+    const req = axios.post<GenericApiResponse>("/api/auth/signup", request);
 
     const response = (await req).data;
 
-    if (response.error) {
+    if (!response.success) {
       setError(response.message);
     }
     if (response.success) {
@@ -138,7 +144,7 @@ const SignUp = () => {
           href="/signup"
           variant="flat"
           onClick={async () => {
-            handleSignUp();
+            await handleSignUp();
           }}
         >
           Sign Up
