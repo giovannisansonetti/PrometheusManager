@@ -1,18 +1,18 @@
 import useSWR from "swr";
 import { fetcher } from "~/server/fetcher";
-import { ApiResponse } from "./interfaces/CardList.models";
+import { type ApiResponse } from "./interfaces/CardList.models";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
-import { PaymentCard } from "@prisma/client";
+import { type PaymentCard } from "@prisma/client";
 import { useEffect, useState } from "react";
 import CreditCardListElement from "./CreditCardListElement";
 import ShowCard from "../ShowCard/ShowCard";
-import { cardProv } from "../interfaces/AddCard.models";
 import { getCardImage } from "utils/cardProvider";
 import useBackButtonStore from "../../DynamicActionButton/DynamicActionButtonStore";
 
 const CreditCardList = () => {
   type ViewState = "overview" | "creditcard";
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { data, error, isLoading } = useSWR<ApiResponse>(
     "/api/data/showCard",
     fetcher,
@@ -21,7 +21,6 @@ const CreditCardList = () => {
   console.log(data);
   const [selectedCard, setSelectedCard] = useState<PaymentCard | null>(null);
   const [currentView, setCurrentView] = useState<ViewState>("overview");
-  const [provider, setProvider] = useState<cardProv>(cardProv.UNKNOWN);
   const { goBack, setGoBack } = useBackButtonStore();
 
   const handleClick = (card: PaymentCard) => {
@@ -56,9 +55,7 @@ const CreditCardList = () => {
   if (!Array.isArray(data?.data)) {
     return (
       <div className="mt-5 flex flex-col items-center justify-center">
-        {data && data.message && (
-          <p className="text-gray-500">{data.message}</p>
-        )}
+        {data?.message && <p className="text-gray-500">{data.message}</p>}
         {data && data.error && <p className="text-gray-500">{data.error}</p>}
       </div>
     );
@@ -82,13 +79,13 @@ const CreditCardList = () => {
 
   return (
     <>
-      {currentView === "overview" && data && data.data ? (
+      {currentView === "overview" && data?.data ? (
         <div className="relative left-10 top-10 flex flex-col items-center lg:flex lg:flex-row lg:flex-wrap lg:justify-normal lg:gap-5">
           {" "}
           {/* TODO: FIX THE SECOND ROW BEING TOO ATTACHED AT THE START*/}
           {data.data.map((card) => {
             return (
-              <div>
+              <div key={card.PAN}>
                 {!card.isDeleted && (
                   <CreditCardListElement
                     image={getCardImage(card.PAN)}
