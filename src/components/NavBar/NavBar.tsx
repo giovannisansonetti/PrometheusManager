@@ -12,17 +12,18 @@ import {
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import { useState } from "react";
-import { type SignOutResponse, type NavBarProps } from "./NavBar.models";
+import { type NavBarProps } from "./NavBar.models";
 import { CiLogout } from "react-icons/ci";
 import { FaRegCircleUser } from "react-icons/fa6";
 import axios from "axios";
+import { type SuccessfulSignOutResponse } from "~/interfaces/api.models";
 
 const NavBar = ({ name }: NavBarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
     const req = axios.get("/api/auth/signout");
-    const response = (await req).data as SignOutResponse;
+    const response = (await req).data as SuccessfulSignOutResponse;
     if (response.success) {
       location.reload();
     }

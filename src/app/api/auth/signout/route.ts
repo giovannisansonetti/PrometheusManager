@@ -1,7 +1,13 @@
 import { createClient } from "utils/supabase/server";
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import {
+  type FailedSignOutResponse,
+  type SuccessfulSignOutResponse,
+} from "~/interfaces/api.models";
 
-export async function GET(req: NextRequest) {
+export async function GET(): Promise<
+  NextResponse<SuccessfulSignOutResponse> | NextResponse<FailedSignOutResponse>
+> {
   const supabase = createClient();
 
   const { error } = await supabase.auth.signOut();
