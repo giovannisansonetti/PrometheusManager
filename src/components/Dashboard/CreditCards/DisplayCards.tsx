@@ -1,5 +1,5 @@
-import { DisplayCardsProps } from "./interfaces/DisplayCards.models";
-import { Button, useDisclosure } from "@nextui-org/react";
+import { type DisplayCardsProps } from "./interfaces/DisplayCards.models";
+import { useDisclosure } from "@nextui-org/react";
 import BurgerMenu from "../Burger/BurgerMenu";
 import CreditCardList from "./CreditCardList/CreditCardList";
 import ModalCard from "~/components/Modals/Data/ModalCard";
@@ -33,7 +33,6 @@ const DisplayCards = ({ handleMenu, isOpen }: DisplayCardsProps) => {
 
       <ModalCard
         isOpen={isCardsModalOpen}
-        onOpen={onCardsModalOpen}
         onOpenChange={onCardsModalOpenChange}
       />
     </div>

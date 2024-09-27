@@ -1,4 +1,4 @@
-import { PaymentCard } from "@prisma/client";
+import { type PaymentCard } from "@prisma/client";
 
 export interface CardListProps {
   // props for the CardList element

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { CardListProps } from "./interfaces/CardList.models";
+import { type CardListProps } from "./interfaces/CardList.models";
 import { useState, useEffect } from "react";
 
 const CreditCardListElement = ({
@@ -16,7 +16,7 @@ const CreditCardListElement = ({
       const masked = "• ".repeat(PAN.length - 4) + PAN.slice(-4);
       setMaskedPAN(masked);
     }
-  });
+  }, [PAN]);
 
   return (
     <div
