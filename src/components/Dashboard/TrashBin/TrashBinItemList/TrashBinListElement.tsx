@@ -1,9 +1,8 @@
-import { AllItems } from "~/server/data/showdata/allitems.models";
-import TrashBinListElementProps from "./interfaces/TrashBinListElement.models";
+import type TrashBinListElementProps from "./interfaces/TrashBinListElement.models";
 import Image from "next/image";
 import { fetchImage } from "~/server/fetchImg/fetchimg";
 import NoteIcon from "~/../public/SideBar/Document.svg";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getCardImage } from "utils/cardProvider";
 
 const TrashBinListElement = ({
@@ -11,13 +10,12 @@ const TrashBinListElement = ({
   creationDate,
   onClick,
 }: TrashBinListElementProps) => {
-  const [maskedPan, setMaskedPan] = useState<string>();
-
-  useEffect(() => {
+  const [maskedPan] = useState<string>(() => {
     if (item.type === "paymentCard") {
       const masked = "• ".repeat(item.PAN.length - 4) + item.PAN.slice(-4);
-      setMaskedPan(masked);
+      return masked;
     }
+    return "";
   });
 
   return (
@@ -38,7 +36,12 @@ const TrashBinListElement = ({
                 />
               )}
               {item.type === "note" && (
-                <Image src={NoteIcon} width={32} height={32} alt="icon" />
+                <Image
+                  src={NoteIcon as string}
+                  width={32}
+                  height={32}
+                  alt="icon"
+                />
               )}
 
               {item.type === "paymentCard" && (

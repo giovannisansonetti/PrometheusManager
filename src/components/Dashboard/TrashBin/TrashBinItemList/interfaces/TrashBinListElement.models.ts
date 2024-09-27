@@ -1,4 +1,4 @@
-import { AllItems } from "~/server/data/showdata/allitems.models";
+import { type AllItems } from "~/server/data/showdata/allitems.models";
 
 export default interface TrashBinListElementProps {
   item: AllItems;
