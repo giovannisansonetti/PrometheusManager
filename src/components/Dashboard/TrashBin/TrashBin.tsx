@@ -6,7 +6,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { TrashBinProps } from "./interfaces/TrashBinProps.models";
+import { type TrashBinProps } from "./interfaces/TrashBinProps.models";
 import TrashBinList from "./TrashBinItemList/TrashBinList";
 import BurgerMenu from "../Burger/BurgerMenu";
 import TrashModalDeleteAll from "~/components/Modals/Confirmation/TrashModalDeleteAll";
@@ -56,13 +56,11 @@ const TrashBin = ({ handleMenu, isOpen }: TrashBinProps) => {
 
       <TrashModalDeleteAll
         isOpen={isDeleteAllModalOpen}
-        onOpen={onDeleteAllModalOpen}
         onOpenChange={onDeleteAllOpenChange}
       />
 
       <TrashModalRestoreAll
         isOpen={isRestoreAllModalOpen}
-        onOpen={onRestoreAllModalOpen}
         onOpenChange={onRestoreAllModalOpenChange}
       />
     </div>
