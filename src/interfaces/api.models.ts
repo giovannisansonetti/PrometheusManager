@@ -24,12 +24,6 @@ export interface InsertDataRequest {
   notes: string;
 }
 
-export interface InsertDataResponse {
-  success: boolean;
-  message: string;
-}
-//TODO make the api response a single type
-
 //api/data/insertCard
 export interface InsertCardRequest {
   PAN: string;

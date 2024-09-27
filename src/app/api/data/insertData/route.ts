@@ -4,14 +4,14 @@ import checkSecurityPass from "utils/pswsecuritychecker";
 import { createClient } from "utils/supabase/server";
 import { env } from "~/env";
 import {
+  type GenericApiResponse,
   type InsertDataRequest,
-  type InsertDataResponse,
 } from "~/interfaces/api.models";
 import { db } from "~/server/db";
 
 export async function POST(
   req: NextRequest,
-): Promise<NextResponse<InsertDataResponse>> {
+): Promise<NextResponse<GenericApiResponse>> {
   const supabase = createClient();
   const body = (await req.json()) as InsertDataRequest;
 

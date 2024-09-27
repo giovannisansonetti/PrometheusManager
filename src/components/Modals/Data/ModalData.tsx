@@ -16,7 +16,7 @@ import { type ModalProps } from "../interfaces/Modal.models";
 import pswgen from "utils/pswgen";
 import {
   type InsertDataRequest,
-  type InsertDataResponse,
+  type GenericApiResponse,
 } from "~/interfaces/api.models";
 
 const ModalData = ({ isOpen, onOpenChange }: ModalProps) => {
@@ -57,8 +57,8 @@ const ModalData = ({ isOpen, onOpenChange }: ModalProps) => {
       password: dataform.password,
       notes: dataform.notes,
     };
-    const req = axios.post("/api/data/insertData", request);
-    const response = (await req).data as InsertDataResponse;
+    const req = axios.post<GenericApiResponse>("/api/data/insertData", request);
+    const response = (await req).data;
     if (response.success) {
       setSuccess(true);
       setTimeout(() => {
