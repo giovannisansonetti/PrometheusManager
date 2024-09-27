@@ -10,27 +10,27 @@ export const checkCardProvider = (value: string) => {
     return cardProv.UNKNOWN;
   }
 
-  if (value[0] === "2" || value[0] === "5") {
+  if (value.startsWith("2") || value.startsWith("5")) {
     return cardProv.MASTERCARD;
-  } else if (value[0] === "4") {
+  } else if (value.startsWith("4")) {
     return cardProv.VISA;
-  } else if (value[0] === "3") {
+  } else if (value.startsWith("3")) {
     return cardProv.AMERICANEXPRESS;
   } else {
     return cardProv.UNKNOWN;
   }
 };
 
-export const getCardImage = (PAN: string) => {
+export const getCardImage = (PAN: string): string => {
   const provider = checkCardProvider(PAN);
   switch (provider) {
     case cardProv.VISA:
-      return Visa;
+      return Visa.src;
     case cardProv.MASTERCARD:
-      return MasterCard;
+      return MasterCard as string;
     case cardProv.AMERICANEXPRESS:
-      return AmericanExpress;
+      return AmericanExpress as string;
     default:
-      return CreditCard;
+      return CreditCard as string;
   }
 };
