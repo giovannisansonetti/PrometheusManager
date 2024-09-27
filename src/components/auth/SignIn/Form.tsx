@@ -1,19 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { FormProps } from "./Form.models";
-import { redirect, useRouter } from "next/navigation";
+import { type FormProps } from "./Form.models";
 import { Input, Button } from "@nextui-org/react";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
 import { EyeFilledIcon } from "~/components/Eyes/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "~/components/Eyes/EyeSlashFilledIcon";
+import {
+  type GenericApiResponse,
+  type SignInRequest,
+} from "~/interfaces/api.models";
 
 const Login = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [isMPVisible, setIsMPVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
-  const toggleMPVisibility = () => setIsMPVisible(!isMPVisible);
 
   const [form, setForm] = useState<FormProps>({
     email: "",
@@ -27,15 +28,17 @@ const Login = () => {
       setError("Both fields are required");
       return;
     }
-    const req = axios.post("/api/auth/signin", {
+
+    const request: SignInRequest = {
       email: form.email,
       masterPass: form.masterPass,
-    });
+    };
+    const req = axios.post<GenericApiResponse>("/api/auth/signin", request);
 
     try {
       const response = (await req).data;
 
-      if (response.error) {
+      if (!response.success) {
         setError(response.message);
       }
 
@@ -99,13 +102,13 @@ const Login = () => {
           href=""
           variant="flat"
           onClick={async () => {
-            handleLogin();
+            await handleLogin();
           }}
         >
           Login
         </Button>
         <div className="mt-5 flex justify-center gap-1 text-[#71717a]">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <a className="" href={"/auth/signup"}>
             Sign up
           </a>

@@ -75,3 +75,9 @@ export interface SignUpRequest {
   masterPass: string;
   phoneNumber: string;
 }
+
+//api/auth/signin
+export interface SignInRequest {
+  email: string;
+  masterPass: string;
+}

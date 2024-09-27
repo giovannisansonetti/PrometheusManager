@@ -1,11 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import getIp from "utils/retrieveInfo/info";
 import { createClient } from "utils/supabase/server";
+import {
+  type GenericApiResponse,
+  type SignInRequest,
+} from "~/interfaces/api.models";
 import { db } from "~/server/db";
 
-export async function POST(req: NextRequest) {
+export async function POST(
+  req: NextRequest,
+): Promise<NextResponse<GenericApiResponse>> {
   const supabase = createClient();
-  const response = await req.json();
+  const response = (await req.json()) as SignInRequest;
   const { email, masterPass } = response;
   const ip = await getIp();
 
@@ -13,7 +19,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         message: "Missing information",
-        error: true,
+        success: false,
       },
       { status: 400 },
     );
@@ -43,7 +49,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(
     {
       message: "Invalid Credentials",
-      error: true,
+      success: false,
     },
     { status: 400 },
   );
