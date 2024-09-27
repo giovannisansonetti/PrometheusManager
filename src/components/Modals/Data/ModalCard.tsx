@@ -98,6 +98,7 @@ const ModalCard = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
       setMessage(response.message);
       return;
     }
+    location.reload();
   };
 
   const handleCardNumberChange = (value: string) => {
