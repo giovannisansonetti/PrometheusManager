@@ -6,17 +6,20 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useDisclosure,
   Input,
 } from "@nextui-org/react";
 import AlertEvent from "../../Events/Alerts/Alert";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { AddItemsProps } from "../interfaces/AddItem.models";
-import { ModalProps } from "../interfaces/Modal.models";
+import { type AddItemsProps } from "../interfaces/AddItem.models";
+import { type ModalProps } from "../interfaces/Modal.models";
 import pswgen from "utils/pswgen";
+import {
+  type InsertDataRequest,
+  type InsertDataResponse,
+} from "~/interfaces/api.models";
 
-const ModalData = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
+const ModalData = ({ isOpen, onOpenChange }: ModalProps) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<boolean>(false);
@@ -47,14 +50,15 @@ const ModalData = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
     }
 
     setLoading(true);
-    const req = axios.post("/api/data/insertData", {
+    const request: InsertDataRequest = {
       title: dataform.title,
       webSiteLink: dataform.webSiteLink,
       username: dataform.username,
       password: dataform.password,
       notes: dataform.notes,
-    });
-    const response = (await req).data;
+    };
+    const req = axios.post("/api/data/insertData", request);
+    const response = (await req).data as InsertDataResponse;
     if (response.success) {
       setSuccess(true);
       setTimeout(() => {
@@ -86,7 +90,7 @@ const ModalData = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
       className="bottom-[25%] w-[80%] bg-[#0a0a0a] sm:bottom-0 sm:w-2/4"
     >
       <ModalContent>
-        {(onClose) => (
+        {() => (
           <>
             {error && (
               <div className="flex items-center justify-center">

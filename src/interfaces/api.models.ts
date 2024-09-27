@@ -17,3 +17,18 @@ export interface InsertNotesResponse {
   success: boolean;
   message: string;
 }
+
+//api/data/insertData
+export interface InsertDataRequest {
+  title: string;
+  webSiteLink: string;
+  username: string;
+  password: string;
+  notes: string;
+}
+
+export interface InsertDataResponse {
+  success: boolean;
+  message: string;
+}
+//TODO make the api response a single type
