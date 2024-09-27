@@ -1,9 +1,7 @@
 import Image from "next/image";
-import IssueListProps from "./interfaces/IssueList.models";
+import type IssueListProps from "./interfaces/IssueList.models";
 import { Button } from "@nextui-org/react";
 import key from "~/../public/key-fill.svg";
-
-const handleChangePass = async (dataId: string) => {};
 
 const IssueList = ({ type, data }: IssueListProps) => {
   return (
@@ -12,7 +10,7 @@ const IssueList = ({ type, data }: IssueListProps) => {
         <div className="flex h-20 w-3/4 items-center justify-between rounded-md border-1 border-[#27272a] text-white">
           <div className="flex flex-row">
             <Image
-              src={key}
+              src={key as string}
               width={35}
               height={40}
               alt="password"
