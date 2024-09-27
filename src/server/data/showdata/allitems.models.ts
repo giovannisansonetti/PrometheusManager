@@ -1,4 +1,4 @@
-import { CardType } from "@prisma/client";
+import { type CardType } from "@prisma/client";
 
 type DataItem = {
   type: "data";
