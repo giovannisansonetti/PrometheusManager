@@ -37,3 +37,9 @@ export interface InsertCardRequest {
   cardholder: string;
   type: CardType;
 }
+
+//api/data/manageData/deleteType
+export interface DeleteTypeRequest {
+  id: string;
+  type: string;
+}

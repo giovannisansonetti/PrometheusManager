@@ -1,18 +1,30 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "utils/supabase/server";
+import {
+  type DeleteTypeRequest,
+  type GenericApiResponse,
+} from "~/interfaces/api.models";
 import { db } from "~/server/db";
 
-export async function POST(req: NextRequest) {
-  const request = await req.json();
+export async function POST(
+  req: NextRequest,
+): Promise<NextResponse<GenericApiResponse>> {
+  const request = (await req.json()) as DeleteTypeRequest;
 
   const { id, type } = request;
 
   const supabase = createClient();
   const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data.user) {
+  if (error ?? !data.user) {
     console.error("Failed to get user:", error);
-    return;
+    return NextResponse.json(
+      {
+        message: "Unauthorized user",
+        success: false,
+      },
+      { status: 401 },
+    );
   }
 
   const user = await db.user.findUnique({
@@ -38,7 +50,7 @@ export async function POST(req: NextRequest) {
       } catch (error) {
         return NextResponse.json(
           {
-            error: true,
+            success: false,
             message: "Internal Server Error",
           },
           { status: 500 },
@@ -64,7 +76,7 @@ export async function POST(req: NextRequest) {
       } catch (error) {
         return NextResponse.json(
           {
-            error: true,
+            success: false,
             message: "Internal Server Error",
           },
           { status: 500 },
@@ -90,7 +102,7 @@ export async function POST(req: NextRequest) {
       } catch (error) {
         return NextResponse.json(
           {
-            error: true,
+            success: false,
             message: "Internal Server Error",
           },
           { status: 500 },
@@ -98,4 +110,11 @@ export async function POST(req: NextRequest) {
       }
     }
   }
+  return NextResponse.json(
+    {
+      message: "User not found",
+      success: false,
+    },
+    { status: 404 },
+  );
 }

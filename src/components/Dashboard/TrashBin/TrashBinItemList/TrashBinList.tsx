@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react";
-import { AllItems, ApiResponse } from "~/server/data/showdata/allitems.models";
+import { useState } from "react";
+import {
+  type AllItems,
+  type ApiResponse,
+} from "~/server/data/showdata/allitems.models";
 import TrashBinListElement from "./TrashBinListElement";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
 import {
@@ -13,11 +16,15 @@ import {
 import useSWR from "swr";
 import { fetcher } from "~/server/fetcher";
 import axios from "axios";
+import {
+  type DeleteTypeRequest,
+  type GenericApiResponse,
+} from "~/interfaces/api.models";
 
 const TrashBinList = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const { data, error, isLoading } = useSWR<ApiResponse>(
+  const { data, isLoading } = useSWR<ApiResponse>(
     "/api/data/allitems",
     fetcher,
   );
@@ -33,11 +40,14 @@ const TrashBinList = () => {
   const handleDelete = async (item: AllItems, onClose: () => void) => {
     setDeleteLoading(true);
     if (item.type === "data") {
-      const body = {
+      const body: DeleteTypeRequest = {
         id: item.id,
         type: "data",
       };
-      const req = axios.post("/api/data/manageData/deleteType", body);
+      const req = axios.post<GenericApiResponse>(
+        "/api/data/manageData/deleteType",
+        body,
+      );
       const response = (await req).data;
       if (response.success) {
         setTimeout(() => {
@@ -49,11 +59,14 @@ const TrashBinList = () => {
     }
 
     if (item.type === "note") {
-      const body = {
+      const body: DeleteTypeRequest = {
         id: item.id,
         type: "note",
       };
-      const req = axios.post("/api/data/manageData/deleteType", body);
+      const req = axios.post<GenericApiResponse>(
+        "/api/data/manageData/deleteType",
+        body,
+      );
       const response = (await req).data;
       if (response.success) {
         setTimeout(() => {
@@ -67,11 +80,14 @@ const TrashBinList = () => {
   const handleRestore = async (item: AllItems, onClose: () => void) => {
     setRestoreLoading(true);
     if (item.type === "data") {
-      const body = {
+      const body: DeleteTypeRequest = {
         id: item.id,
         type: "data",
       };
-      const req = axios.post("/api/data/manageData/restoreType", body);
+      const req = axios.post<GenericApiResponse>(
+        "/api/data/manageData/restoreType",
+        body,
+      );
       const response = (await req).data;
       if (response.success) {
         setTimeout(() => {
@@ -83,11 +99,14 @@ const TrashBinList = () => {
     }
 
     if (item.type === "note") {
-      const body = {
+      const body: DeleteTypeRequest = {
         id: item.id,
         type: "note",
       };
-      const req = axios.post("/api/data/manageData/restoreType", body);
+      const req = axios.post<GenericApiResponse>(
+        "/api/data/manageData/restoreType",
+        body,
+      );
       const response = (await req).data;
       if (response.success) {
         setTimeout(() => {
@@ -98,11 +117,14 @@ const TrashBinList = () => {
     }
 
     if (item.type === "paymentCard") {
-      const body = {
+      const body: DeleteTypeRequest = {
         id: item.id,
         type: "card",
       };
-      const req = axios.post("/api/data/manageData/restoreType", body);
+      const req = axios.post<GenericApiResponse>(
+        "/api/data/manageData/restoreType",
+        body,
+      );
       const response = (await req).data;
       if (response.success) {
         setTimeout(() => {
@@ -131,7 +153,7 @@ const TrashBinList = () => {
 
   return (
     <div>
-      {data && data?.data.length ? (
+      {data?.data.length ? (
         data.data.map((item) => (
           <TrashBinListElement
             key={item.id}
