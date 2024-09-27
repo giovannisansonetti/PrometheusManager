@@ -166,7 +166,7 @@ const AllItemsList = () => {
         <div>
           {data?.data.length ? (
             data.data.map((item) => (
-              <div key={item.createdAt.toISOString()}>
+              <div key={Math.random()}>
                 {!item.isDeleted && (
                   <AllItemsListElement
                     item={item}
