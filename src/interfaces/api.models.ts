@@ -43,3 +43,9 @@ export interface DeleteTypeRequest {
   id: string;
   type: string;
 }
+
+//api/data/moveToTrash
+export interface MoveToTrashRequest {
+  id: string;
+  type: string;
+}

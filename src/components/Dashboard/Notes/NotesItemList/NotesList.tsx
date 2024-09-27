@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { type Note } from "../interfaces/Note";
 import NotesListItem from "./NotesListElement";
 import ListSkeleton from "~/components/ListSkeleton/ListSkeleton";
 import {
-  Textarea,
   Modal,
   ModalContent,
   ModalHeader,
@@ -11,16 +10,19 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-  Input,
 } from "@nextui-org/react";
 import NoteIcon from "~/../public/SideBar/Document.svg";
 import useSWR from "swr";
 import { fetcher } from "~/server/fetcher";
 import { type ApiResponse } from "../interfaces/NotesList.models";
 import axios from "axios";
+import {
+  type GenericApiResponse,
+  type MoveToTrashRequest,
+} from "~/interfaces/api.models";
 
 const NotesList = () => {
-  const { data, error, isLoading } = useSWR<ApiResponse>(
+  const { data, isLoading } = useSWR<ApiResponse>(
     "/api/data/showNotes",
     fetcher,
   );
@@ -30,9 +32,6 @@ const NotesList = () => {
 
   const [selectNote, setSelectNote] = useState<Note | null>(null);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState<boolean>(false);
-  const [errorAlert, setError] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
 
   const { isOpen: isModalOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -44,11 +43,14 @@ const NotesList = () => {
   const handleDelete = async (id: string, onClose: () => void) => {
     setLoading(true);
 
-    const req = {
+    const req: MoveToTrashRequest = {
       id: id,
       type: "note",
     };
-    const request = axios.post("/api/data/moveToTrash", req);
+    const request = axios.post<GenericApiResponse>(
+      "/api/data/moveToTrash",
+      req,
+    );
     const response = (await request).data;
 
     if (response.success) {
@@ -78,9 +80,7 @@ const NotesList = () => {
   if (!Array.isArray(data?.data)) {
     return (
       <div className="mt-5 flex flex-col items-center justify-center">
-        {data && data.message && (
-          <p className="text-gray-500">{data.message}</p>
-        )}
+        {data?.message && <p className="text-gray-500">{data.message}</p>}
 
         {data && data.error && <p className="text-gray-500">{data.error}</p>}
       </div>
@@ -93,10 +93,10 @@ const NotesList = () => {
         <div className="ml-auto mr-auto h-full w-full overflow-auto overflow-x-hidden">
           {data.data?.map((item) => {
             return (
-              <div>
+              <div key={item.id}>
                 {!item.isDeleted && (
                   <NotesListItem
-                    image={NoteIcon}
+                    image={NoteIcon as string}
                     title={item.noteTitle}
                     date={new Date(item.createdAt).toLocaleDateString("it-IT")}
                     onClick={() => handleClick(item)}
@@ -150,7 +150,7 @@ const NotesList = () => {
                           color="danger"
                           variant="flat"
                           onClick={async () => {
-                            handleDelete(selectNote.id, onClose);
+                            await handleDelete(selectNote.id, onClose);
                           }}
                         >
                           Delete note
