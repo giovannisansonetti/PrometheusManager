@@ -17,8 +17,3 @@ export interface InsertNotesResponse {
   success: boolean;
   message: string;
 }
-
-export interface FailedInsertNotesResponse {
-  message: string;
-  error: boolean;
-}

@@ -47,7 +47,7 @@ const ModalNote = ({ isOpen, onOpenChange }: ModalProps) => {
     };
     const req = axios.post("/api/data/insertNotes", request);
 
-    const response = (await req).data as InsertNotesResponse; //TODO check for error?
+    const response = (await req).data as InsertNotesResponse;
 
     if (response.success) {
       setSuccess(true);

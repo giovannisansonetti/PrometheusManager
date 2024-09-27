@@ -2,16 +2,13 @@ import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "utils/supabase/server";
 import {
   type InsertNotesResponse,
-  type FailedInsertNotesResponse,
   type InsertNotesRequest,
 } from "~/interfaces/api.models";
 import { db } from "~/server/db";
 
 export async function POST(
   req: NextRequest,
-): Promise<
-  NextResponse<InsertNotesResponse> | NextResponse<FailedInsertNotesResponse>
-> {
+): Promise<NextResponse<InsertNotesResponse>> {
   const supabase = createClient();
   const body = (await req.json()) as InsertNotesRequest;
 
@@ -22,7 +19,7 @@ export async function POST(
     return NextResponse.json(
       {
         message: "Unauthorized user",
-        error: true,
+        success: false,
       },
       { status: 401 },
     );
@@ -32,7 +29,7 @@ export async function POST(
     return NextResponse.json(
       {
         message: "Missing required fields",
-        error: true,
+        success: false,
       },
       { status: 400 },
     );
@@ -46,7 +43,7 @@ export async function POST(
     return NextResponse.json(
       {
         message: "User not found",
-        error: true,
+        success: false,
       },
       { status: 404 },
     );
