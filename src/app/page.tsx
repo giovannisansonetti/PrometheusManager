@@ -1,13 +1,12 @@
 import NavBar from "~/components/NavBar/NavBar";
 import { createClient } from "utils/supabase/server";
 import Main from "~/components/HomePage/Home";
-import { Divider } from "@nextui-org/react";
 
 export default async function HomePage() {
   const supabase = createClient();
   const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data.user) {
+  if (error ?? !data.user) {
   }
 
   return (

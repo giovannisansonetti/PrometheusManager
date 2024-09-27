@@ -4,7 +4,7 @@ import UserDashboard from "~/components/Dashboard/Dashboard";
 
 const dashboard = async () => {
   const supabase = createClient();
-  const { data, error } = await supabase.auth.getUser();
+  const { data } = await supabase.auth.getUser();
 
   if (data.user) {
     return <UserDashboard />;

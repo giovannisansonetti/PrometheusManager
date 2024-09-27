@@ -1,6 +1,6 @@
-import { CardProps } from "./interfaces/Card.models";
+import { type CardProps } from "./interfaces/Card.models";
 
-const Card = ({ header, content, image }: CardProps) => {
+const Card = ({ header, content }: CardProps) => {
   return (
     <>
       <div className="w-2/3 rounded-lg bg-[#131314] p-6 sm:w-full">
