@@ -9,7 +9,7 @@ import {
 } from "@nextui-org/react";
 import { type ModalProps } from "../interfaces/Modal.models";
 import AlertEvent from "~/components/Events/Alerts/Alert";
-import { type RestoreAllResponse } from "~/interfaces/api.models";
+import { type GenericApiResponse } from "~/interfaces/api.models";
 
 const TrashModalRestoreAll = ({ isOpen, onOpenChange }: ModalProps) => {
   const [restoreLoading, setRestoreLoading] = useState(false);
@@ -19,8 +19,10 @@ const TrashModalRestoreAll = ({ isOpen, onOpenChange }: ModalProps) => {
 
   const handleRestoreAll = async (onClose: () => void) => {
     setRestoreLoading(true);
-    const request = axios.post("/api/data/manageData/restoreAll");
-    const response = (await request).data as RestoreAllResponse;
+    const request = axios.post<GenericApiResponse>(
+      "/api/data/manageData/restoreAll",
+    );
+    const response = (await request).data;
 
     if (response.success) {
       setTimeout(() => {

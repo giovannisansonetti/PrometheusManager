@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { createClient } from "utils/supabase/server";
-import { type RestoreAllResponse } from "~/interfaces/api.models";
+import { type GenericApiResponse } from "~/interfaces/api.models";
 import { db } from "~/server/db";
 
-export async function POST(): Promise<NextResponse<RestoreAllResponse>> {
+export async function POST(): Promise<NextResponse<GenericApiResponse>> {
   const supabase = createClient();
   const { data, error } = await supabase.auth.getUser();
 

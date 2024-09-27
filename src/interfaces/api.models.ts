@@ -1,5 +1,10 @@
 import { type CardType } from "@prisma/client";
 
+export interface GenericApiResponse {
+  success: boolean;
+  message: string;
+}
+
 //api/auth/signout
 export interface SuccessfulSignOutResponse {
   success: boolean;
@@ -31,20 +36,4 @@ export interface InsertCardRequest {
   CVV: string;
   cardholder: string;
   type: CardType;
-}
-
-export interface InsertCardResponse {
-  message: string;
-  error: boolean;
-}
-
-//api/data/manageData/restoreAll
-export interface RestoreAllResponse {
-  success: boolean;
-  message: string;
-}
-
-export interface GenericApiResponse {
-  success: boolean;
-  message: string;
 }
