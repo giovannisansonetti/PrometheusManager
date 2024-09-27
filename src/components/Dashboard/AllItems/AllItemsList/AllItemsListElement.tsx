@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { AllItems } from "~/server/data/showdata/allitems.models";
+import { type AllItems } from "~/server/data/showdata/allitems.models";
 import { fetchImage } from "~/server/fetchImg/fetchimg";
 import NoteIcon from "~/../public/SideBar/Document.svg";
 import { getCardImage } from "utils/cardProvider";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface AllItemsListElementProps {
   item: AllItems;
@@ -16,13 +16,12 @@ const AllItemsListElement = ({
   date,
   onClick,
 }: AllItemsListElementProps) => {
-  const [maskedPan, setMaskedPan] = useState<string>();
-
-  useEffect(() => {
+  const [maskedPan] = useState<string>(() => {
     if (item.type === "paymentCard") {
       const masked = "• ".repeat(item.PAN.length - 4) + item.PAN.slice(-4);
-      setMaskedPan(masked);
+      return masked;
     }
+    return "";
   });
 
   return (
@@ -44,7 +43,12 @@ const AllItemsListElement = ({
                 />
               )}
               {item.type === "note" && (
-                <Image src={NoteIcon} width={32} height={32} alt="icon" />
+                <Image
+                  src={NoteIcon as string}
+                  width={32}
+                  height={32}
+                  alt="icon"
+                />
               )}
               {item.type === "paymentCard" && (
                 <Image
