@@ -5,8 +5,11 @@ import { IconBxXCircle } from "public/IconBxXCircle";
 import { IconBxTime } from "public/IconBxTime";
 import IssueList from "./IssueList/IssueList";
 import back from "~/../public/back-svgrepo-com.svg";
-import PswHealthCheckProps from "./interfaces/HealthCheck.models";
-import { type HealthCheck, ApiResponse } from "./interfaces/HealthCheck.models";
+import type PswHealthCheckProps from "./interfaces/HealthCheck.models";
+import {
+  type HealthCheck,
+  type ApiResponse,
+} from "./interfaces/HealthCheck.models";
 import PswHealthSkeleton from "~/components/ListSkeleton/PswHealthSkeleton";
 import useSWR from "swr";
 import { fetcher } from "~/server/fetcher";
@@ -19,10 +22,7 @@ type ViewState =
   | "oldPasswords";
 
 const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
-  const { data, error, isLoading } = useSWR<ApiResponse>(
-    "api/healthCheck",
-    fetcher,
-  );
+  const { data } = useSWR<ApiResponse>("api/healthCheck", fetcher);
   console.log(data);
 
   const [healthCheckItems, setHealthCheckItems] = useState<HealthCheck | null>(
@@ -36,7 +36,7 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
       console.log("Data from API:", data);
       setHealthCheckItems(data.data);
     }
-  }, [data]);
+  }, [data, healthCheckItems]);
 
   const renderIssue = () => {
     if (currentView === "weakPasswords") {
@@ -47,7 +47,7 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
         return (
           <div className="flex w-full justify-center">
             {healthCheckItems.weakPasswords.map((item) => (
-              <IssueList type="weakPasswords" data={item} />
+              <IssueList type="weakPasswords" data={item} key={Math.random()} />
             ))}
           </div>
         );
@@ -76,7 +76,7 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
         return (
           <div className="flex w-full justify-center">
             {healthCheckItems.oldPasswords.map((item) => (
-              <IssueList type="oldPasswords" data={item} />
+              <IssueList type="oldPasswords" data={item} key={Math.random()} />
             ))}
           </div>
         );
@@ -100,7 +100,7 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
                 className="ml-5 flex cursor-pointer flex-row items-center"
                 onClick={() => setCurrentView("overview")}
               >
-                <Image src={back} width={19} height={19} alt="back" />
+                <Image src={back as string} width={19} height={19} alt="back" />
                 <span className="ml-1 text-[14px] sm:text-[16px]">Back</span>
               </div>
             </div>
@@ -175,7 +175,7 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
                 <Image
                   width={"40"}
                   height={"40"}
-                  src={arrow}
+                  src={arrow as string}
                   alt=""
                   className="mr-2 flex cursor-pointer justify-end"
                 ></Image>
@@ -253,7 +253,7 @@ const PswHealthCheck = ({ handleMenu, isOpen }: PswHealthCheckProps) => {
                 <Image
                   width={"40"}
                   height={"40"}
-                  src={arrow}
+                  src={arrow as string}
                   alt=""
                   className="mr-2 flex cursor-pointer justify-end"
                 ></Image>
