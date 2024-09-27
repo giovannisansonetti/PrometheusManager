@@ -2,7 +2,7 @@
 
 import { useDisclosure } from "@nextui-org/react";
 import AllItemsList from "./AllItemsList/AllItemsList";
-import { DisplayItemsProps } from "./interfaces/DisplayData.models";
+import { type DisplayItemsProps } from "./interfaces/DisplayData.models";
 import DynamicActionButton from "../DynamicActionButton/DynamicActionButton";
 import { PageType } from "../DynamicActionButton/interfaces/DynamicActionButton.models";
 import BurgerMenu from "../Burger/BurgerMenu";
@@ -23,11 +23,8 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
     onOpenChange: onNoteModalOpenChange,
   } = useDisclosure();
 
-  const {
-    isOpen: isCardModalOpen,
-    onOpen: onCardModalOpen,
-    onOpenChange: onCardModalOpenChange,
-  } = useDisclosure();
+  const { isOpen: isCardModalOpen, onOpenChange: onCardModalOpenChange } =
+    useDisclosure();
 
   return (
     <div className="flex h-full w-full flex-col overflow-hidden overflow-y-auto bg-[#161616] text-white lg:rounded-lg">
@@ -50,19 +47,16 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
 
       <ModalData
         isOpen={isPasswordModalOpen}
-        onOpen={onPasswordModalOpen}
         onOpenChange={onPasswordModalOpenChange}
       />
 
       <ModalNote
         isOpen={isNoteModalOpen}
-        onOpen={onNoteModalOpen}
         onOpenChange={onNoteModalOpenChange}
       />
 
       <ModalCard
         isOpen={isCardModalOpen}
-        onOpen={onCardModalOpen}
         onOpenChange={onCardModalOpenChange}
       />
     </div>

@@ -51,7 +51,6 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
 
       <ModalData
         isOpen={isPasswordModalOpen}
-        onOpen={onPasswordModalOpen}
         onOpenChange={onPasswordModalOpenChange}
       />
     </div>
