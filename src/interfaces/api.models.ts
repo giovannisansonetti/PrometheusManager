@@ -1,3 +1,5 @@
+import { type CardType } from "@prisma/client";
+
 //api/auth/signout
 export interface SuccessfulSignOutResponse {
   success: boolean;
@@ -32,3 +34,16 @@ export interface InsertDataResponse {
   message: string;
 }
 //TODO make the api response a single type
+
+export interface InsertCardRequest {
+  PAN: string;
+  expiry: string;
+  CVV: string;
+  cardholder: string;
+  type: CardType;
+}
+
+export interface InsertCardResponse {
+  message: string;
+  error: boolean;
+}

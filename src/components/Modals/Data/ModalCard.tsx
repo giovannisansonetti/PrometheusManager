@@ -1,30 +1,31 @@
 import {
-  Textarea,
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalFooter,
   Button,
-  useDisclosure,
   Autocomplete,
-  AutocompleteSection,
   AutocompleteItem,
   Input,
 } from "@nextui-org/react";
 import AlertEvent from "../../Events/Alerts/Alert";
 import { useState } from "react";
 import axios from "axios";
-import { AddCard, cardProv, CardType } from "../interfaces/AddItem.models";
-import { ModalProps } from "../interfaces/Modal.models";
+import { type AddCard, cardProv, CardType } from "../interfaces/AddItem.models";
+import { type ModalProps } from "../interfaces/Modal.models";
 import { checkCardProvider } from "utils/cardProvider";
 import CreditCard from "~/../public/SideBar/CreditCard.svg";
 import Visa from "~/../public/128px-Visa_Inc._logo.svg.png";
 import MasterCard from "~/../public/mc_symbol.svg";
 import AmericanExpress from "~/../public/american-express.svg";
 import Image from "next/image";
+import {
+  type InsertCardRequest,
+  type InsertCardResponse,
+} from "~/interfaces/api.models";
 
-const ModalCard = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
+const ModalCard = ({ isOpen, onOpenChange }: ModalProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -41,6 +42,7 @@ const ModalCard = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
 
   const handleCard = async (onClose: () => void) => {
     const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const today = new Date(); //TODO: validate the date
 
     if (
@@ -76,15 +78,15 @@ const ModalCard = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
     }
 
     setLoading(true);
-
-    const req = axios.post("/api/data/insertCard", {
+    const request: InsertCardRequest = {
       PAN: cardForm.PAN,
       expiry: cardForm.expiry,
       CVV: cardForm.CVV,
       cardholder: cardForm.cardholder,
       type: cardForm.type,
-    });
-    const response = (await req).data;
+    };
+    const req = axios.post("/api/data/insertCard", request);
+    const response = (await req).data as InsertCardResponse;
     setSuccess(true);
     setTimeout(() => {
       onClose();
@@ -105,16 +107,16 @@ const ModalCard = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
     setCardProvider(checkCardProvider(value));
   };
 
-  const getImage = (cardProvider: cardProv) => {
+  const getImage = (cardProvider: cardProv): string => {
     switch (cardProvider) {
       case cardProv.MASTERCARD:
-        return MasterCard;
+        return MasterCard as string;
       case cardProv.VISA:
-        return Visa;
+        return Visa.src;
       case cardProv.MASTERCARD:
-        return AmericanExpress;
+        return AmericanExpress as string;
       default:
-        return CreditCard;
+        return CreditCard as string;
     }
   };
 

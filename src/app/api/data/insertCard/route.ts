@@ -1,17 +1,22 @@
-import { CardType } from "@prisma/client";
-import { NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "utils/supabase/server";
+import {
+  type InsertCardRequest,
+  type InsertCardResponse,
+} from "~/interfaces/api.models";
 import { db } from "~/server/db";
 
-export async function POST(req: NextRequest) {
+export async function POST(
+  req: NextRequest,
+): Promise<NextResponse<InsertCardResponse>> {
   const supabase = createClient();
-  const body = await req.json();
+  const body = (await req.json()) as InsertCardRequest;
 
   const { PAN, expiry, CVV, cardholder, type } = body;
   const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data.user) {
-    return Response.json(
+  if (error ?? !data.user) {
+    return NextResponse.json(
       {
         message: "Unauthorized user",
         error: true,
@@ -21,7 +26,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (!PAN || !expiry || !CVV || !cardholder || !type) {
-    return Response.json(
+    return NextResponse.json(
       {
         message: "Missing required fields",
         error: true,
@@ -35,7 +40,7 @@ export async function POST(req: NextRequest) {
   });
 
   if (!user) {
-    return Response.json(
+    return NextResponse.json(
       {
         message: "User not found",
         error: true,
@@ -50,12 +55,12 @@ export async function POST(req: NextRequest) {
         expiry,
         CVV,
         cardholder,
-        type: type as CardType,
+        type: type,
         userId: user.id,
         isDeleted: false,
       },
     });
-    return Response.json(
+    return NextResponse.json(
       {
         message: "Card added successfully",
         error: false,
@@ -63,7 +68,7 @@ export async function POST(req: NextRequest) {
       { status: 200 },
     );
   } catch (error) {
-    return Response.json(
+    return NextResponse.json(
       {
         message: "Internal Server Error",
         error: true,
