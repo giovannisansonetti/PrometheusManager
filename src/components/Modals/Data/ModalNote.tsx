@@ -15,7 +15,7 @@ import { type AddNotesProps } from "../interfaces/AddItem.models";
 import { type ModalProps } from "../interfaces/Modal.models";
 import {
   type InsertNotesRequest,
-  type InsertNotesResponse,
+  type GenericApiResponse,
 } from "~/interfaces/api.models";
 
 const ModalNote = ({ isOpen, onOpenChange }: ModalProps) => {
@@ -45,9 +45,12 @@ const ModalNote = ({ isOpen, onOpenChange }: ModalProps) => {
       title: noteForm.title,
       description: noteForm.description,
     };
-    const req = axios.post("/api/data/insertNotes", request);
+    const req = axios.post<GenericApiResponse>(
+      "/api/data/insertNotes",
+      request,
+    );
 
-    const response = (await req).data as InsertNotesResponse;
+    const response = (await req).data;
 
     if (response.success) {
       setSuccess(true);

@@ -1,14 +1,14 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "utils/supabase/server";
 import {
-  type InsertNotesResponse,
   type InsertNotesRequest,
+  type GenericApiResponse,
 } from "~/interfaces/api.models";
 import { db } from "~/server/db";
 
 export async function POST(
   req: NextRequest,
-): Promise<NextResponse<InsertNotesResponse>> {
+): Promise<NextResponse<GenericApiResponse>> {
   const supabase = createClient();
   const body = (await req.json()) as InsertNotesRequest;
 

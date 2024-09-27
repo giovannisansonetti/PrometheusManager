@@ -15,11 +15,6 @@ export interface InsertNotesRequest {
   description: string;
 }
 
-export interface InsertNotesResponse {
-  success: boolean;
-  message: string;
-}
-
 //api/data/insertData
 export interface InsertDataRequest {
   title: string;
