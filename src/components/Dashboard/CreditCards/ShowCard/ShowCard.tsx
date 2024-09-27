@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
-import { ShowCardProps } from "./interface/ShowCard.models";
+import { type ShowCardProps } from "./interface/ShowCard.models";
 import Image from "next/image";
-import { Button, card, Input } from "@nextui-org/react";
-import { EditCard } from "./interface/EditCard.models";
+import { Button, Input } from "@nextui-org/react";
+import { type EditCard } from "./interface/EditCard.models";
 import Trash from "~/../public/SideBar/Trash.svg";
 import Edit from "~/../public/pencil-square.svg";
 import axios from "axios";
 import { EyeFilledIcon } from "~/components/Eyes/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "~/components/Eyes/EyeSlashFilledIcon";
 import copy from "~/../public/copy.svg";
+import {
+  type UpdateCardRequest,
+  type GenericApiResponse,
+  type MoveToTrashRequest,
+} from "~/interfaces/api.models";
 
 const ShowCard = ({
   id,
@@ -50,16 +55,17 @@ const ShowCard = ({
     }
 
     setLoading(true);
-    const req = axios.post("/api/data/updateCard", {
+    const request: UpdateCardRequest = {
       id: id,
       PAN: editCardForm.PAN,
       expiry: editCardForm.expiry,
       cvv: editCardForm.cvv,
       cardholder: editCardForm.cardholder,
-    });
+    };
+    const req = axios.post<GenericApiResponse>("/api/data/updateCard", request);
 
     const response = (await req).data;
-    if (!response.error) {
+    if (response.success) {
       setTimeout(() => {
         setLoading(false);
         setEditView(false);
@@ -70,14 +76,18 @@ const ShowCard = ({
 
   const handleDelete = async (id: string) => {
     setLoading(true);
-    const request = axios.post("/api/data/moveToTrash/", {
+    const req: MoveToTrashRequest = {
       id: id,
       type: "card",
-    });
+    };
+    const request = axios.post<GenericApiResponse>(
+      "/api/data/moveToTrash/",
+      req,
+    );
 
     const response = (await request).data;
 
-    if (!response.error) {
+    if (response.success) {
       setTimeout(() => {
         setLoading(false);
         location.reload();
@@ -139,7 +149,7 @@ const ShowCard = ({
                     onClick={() => navigator.clipboard.writeText(PAN)}
                   >
                     <Image
-                      src={copy}
+                      src={copy as string}
                       width={20}
                       height={20}
                       alt={"copy"}
@@ -174,7 +184,7 @@ const ShowCard = ({
                   onClick={() => navigator.clipboard.writeText(expiry)}
                 >
                   <Image
-                    src={copy}
+                    src={copy as string}
                     width={20}
                     height={20}
                     alt={"copy"}
@@ -224,7 +234,7 @@ const ShowCard = ({
                     onClick={() => navigator.clipboard.writeText(cvv)}
                   >
                     <Image
-                      src={copy}
+                      src={copy as string}
                       width={20}
                       height={20}
                       alt={"copy"}
@@ -263,7 +273,7 @@ const ShowCard = ({
                     onClick={() => navigator.clipboard.writeText(cardholder)}
                   >
                     <Image
-                      src={copy}
+                      src={copy as string}
                       width={20}
                       height={20}
                       alt={"copy"}
@@ -309,7 +319,7 @@ const ShowCard = ({
                 color="danger"
                 variant="flat"
                 onClick={async () => {
-                  handleDelete(id);
+                  await handleDelete(id);
                 }}
               >
                 Deleting
@@ -319,10 +329,15 @@ const ShowCard = ({
                 color="danger"
                 variant="flat"
                 onClick={async () => {
-                  handleDelete(id);
+                  await handleDelete(id);
                 }}
               >
-                <Image src={Trash} width={20} height={20} alt="trash" />
+                <Image
+                  src={Trash as string}
+                  width={20}
+                  height={20}
+                  alt="trash"
+                />
                 Move to trash
               </Button>
             )}
@@ -339,7 +354,7 @@ const ShowCard = ({
               <Button
                 variant="flat"
                 onClick={async () => {
-                  saveEditCard();
+                  await saveEditCard();
                 }}
               >
                 Save data
@@ -355,12 +370,22 @@ const ShowCard = ({
                 variant="flat"
                 onClick={toggleEdit}
               >
-                <Image src={Edit} width={20} height={20} alt="trash" />
+                <Image
+                  src={Edit as string}
+                  width={20}
+                  height={20}
+                  alt="trash"
+                />
                 Edit
               </Button>
             ) : (
               <Button color="default" variant="flat" onClick={toggleEdit}>
-                <Image src={Edit} width={20} height={20} alt="trash" />
+                <Image
+                  src={Edit as string}
+                  width={20}
+                  height={20}
+                  alt="trash"
+                />
                 Edit
               </Button>
             )}

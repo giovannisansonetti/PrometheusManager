@@ -1,22 +1,25 @@
-import { NextRequest, NextResponse } from "next/server";
-import { encryptWithKey } from "utils/encryption/encryption";
-import checkSecurityPass from "utils/pswsecuritychecker";
+import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "utils/supabase/server";
-import { env } from "~/env";
+import {
+  type GenericApiResponse,
+  type UpdateCardRequest,
+} from "~/interfaces/api.models";
 import { db } from "~/server/db";
 
-export async function POST(req: NextRequest) {
+export async function POST(
+  req: NextRequest,
+): Promise<NextResponse<GenericApiResponse>> {
   const supabase = createClient();
-  const body = await req.json();
+  const body = (await req.json()) as UpdateCardRequest;
 
   const { PAN, expiry, cvv, cardholder, id } = body;
   const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data.user) {
+  if (error ?? !data.user) {
     return NextResponse.json(
       {
         message: "Unauthorized user",
-        error: true,
+        success: false,
       },
       { status: 401 },
     );
@@ -32,7 +35,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         message: "User not found",
-        error: true,
+        success: false,
       },
       { status: 404 },
     );
@@ -68,7 +71,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         message: "Internal Server Error",
-        error: true,
+        success: false,
       },
       { status: 500 },
     );

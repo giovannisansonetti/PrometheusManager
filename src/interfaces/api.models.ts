@@ -59,3 +59,12 @@ export interface UpdateDataRequest {
   notes: string;
   id: string;
 }
+
+//api/data/updateCard
+export interface UpdateCardRequest {
+  PAN: string;
+  expiry: string;
+  cvv: string;
+  cardholder: string;
+  id: string;
+}
