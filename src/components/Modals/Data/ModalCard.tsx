@@ -22,7 +22,7 @@ import AmericanExpress from "~/../public/american-express.svg";
 import Image from "next/image";
 import {
   type InsertCardRequest,
-  type InsertCardResponse,
+  type GenericApiResponse,
 } from "~/interfaces/api.models";
 
 const ModalCard = ({ isOpen, onOpenChange }: ModalProps) => {
@@ -85,21 +85,20 @@ const ModalCard = ({ isOpen, onOpenChange }: ModalProps) => {
       cardholder: cardForm.cardholder,
       type: cardForm.type,
     };
-    const req = axios.post("/api/data/insertCard", request);
-    const response = (await req).data as InsertCardResponse;
+    const req = axios.post<GenericApiResponse>("/api/data/insertCard", request);
+    const response = (await req).data;
+    if (!response.success) {
+      setLoading(false);
+      setError(true);
+      setMessage(response.message);
+      return;
+    }
     setSuccess(true);
     setTimeout(() => {
       onClose();
       setSuccess(false);
       setLoading(false);
     }, 1500);
-
-    if (response.error) {
-      setLoading(false);
-      setError(true);
-      setMessage(response.message);
-      return;
-    }
     location.reload();
   };
 

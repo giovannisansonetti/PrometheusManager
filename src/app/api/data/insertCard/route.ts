@@ -2,13 +2,13 @@ import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "utils/supabase/server";
 import {
   type InsertCardRequest,
-  type InsertCardResponse,
+  type GenericApiResponse,
 } from "~/interfaces/api.models";
 import { db } from "~/server/db";
 
 export async function POST(
   req: NextRequest,
-): Promise<NextResponse<InsertCardResponse>> {
+): Promise<NextResponse<GenericApiResponse>> {
   const supabase = createClient();
   const body = (await req.json()) as InsertCardRequest;
 
@@ -19,7 +19,7 @@ export async function POST(
     return NextResponse.json(
       {
         message: "Unauthorized user",
-        error: true,
+        success: false,
       },
       { status: 401 },
     );
@@ -29,7 +29,7 @@ export async function POST(
     return NextResponse.json(
       {
         message: "Missing required fields",
-        error: true,
+        success: false,
       },
       { status: 400 },
     );
@@ -43,7 +43,7 @@ export async function POST(
     return NextResponse.json(
       {
         message: "User not found",
-        error: true,
+        success: false,
       },
       { status: 404 },
     );
@@ -63,7 +63,7 @@ export async function POST(
     return NextResponse.json(
       {
         message: "Card added successfully",
-        error: false,
+        success: true,
       },
       { status: 200 },
     );
@@ -71,7 +71,7 @@ export async function POST(
     return NextResponse.json(
       {
         message: "Internal Server Error",
-        error: true,
+        success: false,
       },
       { status: 500 },
     );
