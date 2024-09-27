@@ -75,7 +75,7 @@ const ModalData = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
   useEffect(() => {
     setDataForm((props) => ({
       ...props,
-      password: pswgen(32, true, true, true),
+      password: pswgen(16, true, true, true),
     }));
   }, []);
 
