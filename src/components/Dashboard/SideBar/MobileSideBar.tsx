@@ -1,22 +1,16 @@
 "use client";
 
-import { Sidebar } from "flowbite-react";
-import SideMenuItem from "./SideMenuItem";
 import AllItemsLogo from "~/../public/SideBar/allitems.svg";
-import { useState } from "react";
-import DisplayData from "../Data/DisplayData";
-
 import CreditCard from "~/../public/SideBar/CreditCard.svg";
 import Document from "~/../public/SideBar/Document.svg";
 import Password from "~/../public/SideBar/Password.svg";
-import Settings from "~/../public/SideBar/Settings.svg";
 import Trash from "~/../public/SideBar/Trash.svg";
 import Gen from "~/../public/SideBar/Gen.svg";
 import HealthCheck from "~/../public/SideBar/HealthCheck.svg";
 import Image from "next/image";
-import { SideMenuProps } from "./SideMenu.models";
+import { type SideMenuProps } from "./SideMenu.models";
 
-const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
+const MobileSideBar = ({ setActive, isOpen }: SideMenuProps) => {
   const handleClick = (component: string) => {
     setActive(component);
   };
@@ -34,7 +28,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               className="mr-2"
               width={20}
               height={20}
-              src={AllItemsLogo}
+              src={AllItemsLogo as string}
               alt={"title"}
             />
             All items
@@ -51,7 +45,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               className="mr-2"
               width={20}
               height={20}
-              src={Password}
+              src={Password as string}
               alt={"title"}
             />{" "}
             Passwords
@@ -68,7 +62,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               className="mr-2"
               width={20}
               height={20}
-              src={Document}
+              src={Document as string}
               alt={"title"}
             />{" "}
             Secure notes
@@ -85,7 +79,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               className="mr-2"
               width={20}
               height={20}
-              src={CreditCard}
+              src={CreditCard as string}
               alt={"title"}
             />{" "}
             Credit Cards
@@ -102,7 +96,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               className="mr-2"
               width={20}
               height={20}
-              src={Trash}
+              src={Trash as string}
               alt={"title"}
             />{" "}
             Trash
@@ -119,7 +113,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               className="mr-2"
               width={20}
               height={20}
-              src={Gen}
+              src={Gen as string}
               alt={"title"}
             />{" "}
             Password Generator
@@ -136,7 +130,7 @@ const MobileSideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               className="mr-2"
               width={20}
               height={20}
-              src={HealthCheck}
+              src={HealthCheck as string}
               alt={"title"}
             />{" "}
             Password Health Check
