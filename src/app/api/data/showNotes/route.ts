@@ -1,9 +1,9 @@
-import { Data, Note } from "@prisma/client";
+import { type Note } from "@prisma/client";
 import { createClient } from "utils/supabase/server";
 import { db } from "~/server/db";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const response = await fetchNotes();
   if (response.error) {
     return NextResponse.json(
@@ -27,7 +27,7 @@ const fetchNotes = async () => {
 
   const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data.user) {
+  if (error ?? !data.user) {
     return { error: true, message: "User authentication failed", status: 401 };
   }
 

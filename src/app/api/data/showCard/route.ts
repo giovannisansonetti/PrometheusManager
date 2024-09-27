@@ -1,9 +1,9 @@
-import { PaymentCard } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import { type PaymentCard } from "@prisma/client";
+import { NextResponse } from "next/server";
 import { createClient } from "utils/supabase/server";
 import { db } from "~/server/db";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const response = await fetchCards();
   if (response.error) {
     return NextResponse.json({
@@ -25,7 +25,7 @@ const fetchCards = async () => {
 
   const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data.user) {
+  if (error ?? !data.user) {
     return { error: true, message: "User authentication failed", status: 401 };
   }
 

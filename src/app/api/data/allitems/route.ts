@@ -1,11 +1,11 @@
-import { AllItems } from "~/server/data/showdata/allitems.models";
+import { type AllItems } from "~/server/data/showdata/allitems.models";
 import { createClient } from "utils/supabase/server";
 import { db } from "~/server/db";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { decryptWithKey } from "utils/encryption/encryption";
 import { env } from "~/env";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const response = await fetchAllitems();
   if (response.error) {
     return NextResponse.json(
@@ -29,7 +29,7 @@ const fetchAllitems = async () => {
 
   const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data.user) {
+  if (error ?? !data.user) {
     console.error("Failed to get user:", error);
     return { error: true, message: "User authentication failed", status: 401 };
   }

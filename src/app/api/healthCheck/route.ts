@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createClient } from "utils/supabase/server";
 import { db } from "~/server/db";
 import { decryptWithKey } from "utils/encryption/encryption";
 import { env } from "~/env";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const response = await fetchHealthCheck();
   if (response.error) {
     return NextResponse.json(
@@ -24,11 +24,11 @@ export async function GET(req: NextRequest) {
 }
 
 const fetchHealthCheck = async () => {
-  const supabase = await createClient();
+  const supabase = createClient();
 
   const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data.user) {
+  if (error ?? !data.user) {
     return { error: true, message: "User authentication failed", status: 401 };
   }
 
