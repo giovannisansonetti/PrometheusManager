@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Slider, Switch } from "@nextui-org/react";
 import pswgen from "utils/pswgen";
 import checkSecurityPass from "utils/pswsecuritychecker";
-import { PswGeneratorProps } from "./PswGeneratorProps.models";
+import { type PswGeneratorProps } from "./PswGeneratorProps.models";
 import BurgerMenu from "../../Burger/BurgerMenu";
 
 const PswGenerator = ({ handleMenu, isOpen }: PswGeneratorProps) => {
@@ -27,7 +27,7 @@ const PswGenerator = ({ handleMenu, isOpen }: PswGeneratorProps) => {
 
   const copyButton = () => {
     if (password) {
-      navigator.clipboard.writeText(password);
+      void navigator.clipboard.writeText(password);
     }
   };
 
@@ -118,7 +118,7 @@ const PswGenerator = ({ handleMenu, isOpen }: PswGeneratorProps) => {
           <div className="mt-2 flex w-full border-1 border-[#27272a] sm:w-2/4"></div>
 
           <div className="mt-3 flex w-full flex-row justify-between px-4 sm:w-2/4 sm:px-0">
-            <div className="justify-start">Password's security</div>
+            <div className="justify-start">Password&apos;s security</div>
             <div>{security}</div>
           </div>
         </div>
