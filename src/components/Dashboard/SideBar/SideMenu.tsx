@@ -3,19 +3,18 @@
 import { Sidebar } from "flowbite-react";
 import SideMenuItem from "./SideMenuItem";
 import AllItemsLogo from "~/../public/SideBar/allitems.svg";
-
 import CreditCard from "~/../public/SideBar/CreditCard.svg";
 import Document from "~/../public/SideBar/Document.svg";
 import Password from "~/../public/SideBar/Password.svg";
 import Trash from "~/../public/SideBar/Trash.svg";
 import Gen from "~/../public/SideBar/Gen.svg";
 import HealthCheck from "~/../public/SideBar/HealthCheck.svg";
-import { SideMenuProps } from "./SideMenu.models";
+import { type SideMenuProps } from "./SideMenu.models";
 import useBackButtonStore from "../DynamicActionButton/DynamicActionButtonStore";
 import UserMenu from "./UserMenu";
 
-const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
-  const { goBack, setGoBack } = useBackButtonStore();
+const SideBar = ({ active, setActive }: SideMenuProps) => {
+  const { setGoBack } = useBackButtonStore();
   const handleClick = (component: string) => {
     setActive(component);
     setGoBack(false);
@@ -30,7 +29,7 @@ const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
         <Sidebar.Items className="p-3">
           <Sidebar.ItemGroup>
             <SideMenuItem
-              icon={AllItemsLogo}
+              icon={AllItemsLogo as string}
               isActive={active === "AllItems"}
               onClick={() => {
                 handleClick("AllItems");
@@ -38,7 +37,7 @@ const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               name="All items"
             />
             <SideMenuItem
-              icon={Password}
+              icon={Password as string}
               isActive={active === "Passwords"}
               onClick={() => {
                 handleClick("Passwords");
@@ -46,7 +45,7 @@ const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               name="Passwords"
             />
             <SideMenuItem
-              icon={Document}
+              icon={Document as string}
               isActive={active === "Notes"}
               onClick={() => {
                 handleClick("Notes");
@@ -54,7 +53,7 @@ const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               name="Secure Notes"
             />
             <SideMenuItem
-              icon={CreditCard}
+              icon={CreditCard as string}
               isActive={active === "CreditCards"}
               onClick={() => {
                 handleClick("CreditCards");
@@ -62,7 +61,7 @@ const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               name="Credit Cards"
             />
             <SideMenuItem
-              icon={Trash}
+              icon={Trash as string}
               isActive={active === "TrashBin"}
               onClick={() => {
                 handleClick("TrashBin");
@@ -70,7 +69,7 @@ const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               name="Trash"
             />
             <SideMenuItem
-              icon={Gen}
+              icon={Gen as string}
               isActive={active === "PswGen"}
               onClick={() => {
                 handleClick("PswGen");
@@ -78,7 +77,7 @@ const SideBar = ({ active, setActive, isOpen }: SideMenuProps) => {
               name="Password Gen"
             />
             <SideMenuItem
-              icon={HealthCheck}
+              icon={HealthCheck as string}
               isActive={active === "PswHealthCheck"}
               onClick={() => {
                 handleClick("PswHealthCheck");
