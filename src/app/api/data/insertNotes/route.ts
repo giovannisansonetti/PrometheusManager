@@ -1,16 +1,24 @@
-import { NextRequest, NextResponse } from "next/server";
-import checkSecurityPass from "utils/pswsecuritychecker";
+import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "utils/supabase/server";
+import {
+  type InsertNotesResponse,
+  type FailedInsertNotesResponse,
+  type InsertNotesRequest,
+} from "~/interfaces/api.models";
 import { db } from "~/server/db";
 
-export async function POST(req: NextRequest) {
+export async function POST(
+  req: NextRequest,
+): Promise<
+  NextResponse<InsertNotesResponse> | NextResponse<FailedInsertNotesResponse>
+> {
   const supabase = createClient();
-  const body = await req.json();
+  const body = (await req.json()) as InsertNotesRequest;
 
   const { title, description } = body;
   const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data.user) {
+  if (error ?? !data.user) {
     return NextResponse.json(
       {
         message: "Unauthorized user",
@@ -35,12 +43,12 @@ export async function POST(req: NextRequest) {
   });
 
   if (!user) {
-    return (
-      NextResponse.json({
+    return NextResponse.json(
+      {
         message: "User not found",
         error: true,
-      }),
-      { status: 404 }
+      },
+      { status: 404 },
     );
   }
 

@@ -29,7 +29,6 @@ const DisplayNotes = ({ handleMenu, isOpen }: DisplayNotesProps) => {
 
       <ModalNote
         isOpen={isNoteModalOpen}
-        onOpen={onNoteModalOpen}
         onOpenChange={onNoteModalOpenChange}
       />
     </div>

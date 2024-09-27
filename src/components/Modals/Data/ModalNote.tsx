@@ -6,16 +6,19 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useDisclosure,
   Input,
 } from "@nextui-org/react";
 import AlertEvent from "../../Events/Alerts/Alert";
 import { useState } from "react";
 import axios from "axios";
-import { AddNotesProps } from "../interfaces/AddItem.models";
-import { ModalProps } from "../interfaces/Modal.models";
+import { type AddNotesProps } from "../interfaces/AddItem.models";
+import { type ModalProps } from "../interfaces/Modal.models";
+import {
+  type InsertNotesRequest,
+  type InsertNotesResponse,
+} from "~/interfaces/api.models";
 
-const ModalNote = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
+const ModalNote = ({ isOpen, onOpenChange }: ModalProps) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<boolean>(false);
@@ -38,12 +41,13 @@ const ModalNote = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
     }
 
     setLoading(true);
-    const req = axios.post("/api/data/insertNotes", {
+    const request: InsertNotesRequest = {
       title: noteForm.title,
       description: noteForm.description,
-    });
+    };
+    const req = axios.post("/api/data/insertNotes", request);
 
-    const response = (await req).data;
+    const response = (await req).data as InsertNotesResponse; //TODO check for error?
 
     if (response.success) {
       setSuccess(true);
