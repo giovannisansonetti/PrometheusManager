@@ -1,4 +1,4 @@
-import { DisplayNotesProps } from "./DisplayNotes.models";
+import { type DisplayNotesProps } from "./DisplayNotes.models";
 import { Button, useDisclosure } from "@nextui-org/react";
 import NotesList from "./NotesItemList/NotesList";
 import BurgerMenu from "../Burger/BurgerMenu";

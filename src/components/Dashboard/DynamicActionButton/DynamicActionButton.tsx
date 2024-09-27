@@ -2,7 +2,7 @@ import BackButton from "./BackButton/BackButton";
 import DropdownButton from "./DropdownButton/DropdownButton";
 import useBackButtonStore from "./DynamicActionButtonStore";
 import {
-  DynamicActionButtonProps,
+  type DynamicActionButtonProps,
   PageType,
 } from "./interfaces/DynamicActionButton.models";
 import NormalButton from "./NormalButton/NormalButton";
@@ -15,7 +15,7 @@ const DynamicActionButton = ({
   onButtonClick,
   buttonText,
 }: DynamicActionButtonProps) => {
-  const { goBack, setGoBack } = useBackButtonStore();
+  const { goBack } = useBackButtonStore();
   if (goBack) {
     return <BackButton></BackButton>;
   }

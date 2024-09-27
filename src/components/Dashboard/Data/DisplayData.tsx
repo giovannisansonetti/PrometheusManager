@@ -1,23 +1,8 @@
 "use client";
 
-import { DisplayDataProps } from "./interfaces/DisplayData.models";
-import { useState } from "react";
-import {
-  Textarea,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-  Input,
-} from "@nextui-org/react";
-import { type AddItemsProps } from "./interfaces/AddItem.models";
-import { useRouter } from "next/navigation";
+import { type DisplayDataProps } from "./interfaces/DisplayData.models";
+import { useDisclosure } from "@nextui-org/react";
 import DataList from "./DataItemList/DataList";
-import AlertEvent from "~/components/Events/Alerts/Alert";
-import axios from "axios";
 import DynamicActionButton from "../DynamicActionButton/DynamicActionButton";
 import { PageType } from "../DynamicActionButton/interfaces/DynamicActionButton.models";
 import BurgerMenu from "../Burger/BurgerMenu";

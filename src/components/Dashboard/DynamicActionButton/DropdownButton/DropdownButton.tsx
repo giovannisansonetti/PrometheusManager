@@ -5,7 +5,7 @@ import {
   DropdownItem,
   Button,
 } from "@nextui-org/react";
-import { DropdownButtonProps } from "./interfaces/DropdownButton.models";
+import { type DropdownButtonProps } from "./interfaces/DropdownButton.models";
 
 const DropdownButton = ({
   onPasswordModalOpen,

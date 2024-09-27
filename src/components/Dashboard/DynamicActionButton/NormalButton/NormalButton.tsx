@@ -1,5 +1,5 @@
 import { Button } from "@nextui-org/react";
-import { NormalButtonProps } from "./interfaces/NormalButton.models";
+import { type NormalButtonProps } from "./interfaces/NormalButton.models";
 
 const NormalButton = ({ text, onClick }: NormalButtonProps) => {
   return (
