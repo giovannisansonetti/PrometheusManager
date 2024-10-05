@@ -16,6 +16,9 @@ import {
   type GenericApiResponse,
   type MoveToTrashRequest,
 } from "~/interfaces/api.models";
+import useBackButtonStore from "~/components/Dashboard/DynamicActionButton/DynamicActionButtonStore";
+import Mutate from "~/components/Modals/SwrMutate";
+import { useSWRConfig } from "swr";
 
 const ShowData = ({
   id,
@@ -28,11 +31,12 @@ const ShowData = ({
 }: ShowDataProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const { mutate } = useSWRConfig();
   const [passwordLen, setPasswordLen] = useState("");
   const [loading, setLoading] = useState(false);
   const [editview, setEditView] = useState(false);
   const toggleEdit = () => setEditView(!editview);
-
+  const { goBack, setGoBack } = useBackButtonStore();
   const [error, setError] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
 
@@ -82,7 +86,8 @@ const ShowData = ({
       setTimeout(() => {
         setLoading(false);
         setEditView(false);
-        location.reload();
+        setGoBack(!goBack);
+        void Mutate(mutate);
       }, 1000);
     }
   };
@@ -102,9 +107,10 @@ const ShowData = ({
     if (response.success) {
       setTimeout(() => {
         setLoading(false);
+        setGoBack(!goBack);
+        void Mutate(mutate);
       }, 1000);
     }
-    location.reload();
   };
 
   return (
