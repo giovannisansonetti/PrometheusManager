@@ -10,8 +10,14 @@ import {
 import { type ModalProps } from "../interfaces/Modal.models";
 import AlertEvent from "~/components/Events/Alerts/Alert";
 import { type GenericApiResponse } from "~/interfaces/api.models";
+import Mutate from "../SwrMutate";
+import { mutate } from "swr";
 
-const TrashModalRestoreAll = ({ isOpen, onOpenChange }: ModalProps) => {
+const TrashModalRestoreAll = ({
+  isOpen,
+  onOpenChange,
+  onClose,
+}: ModalProps) => {
   const [restoreLoading, setRestoreLoading] = useState(false);
 
   const [success, setSuccess] = useState(false);
@@ -28,8 +34,9 @@ const TrashModalRestoreAll = ({ isOpen, onOpenChange }: ModalProps) => {
       setTimeout(() => {
         onClose();
         setSuccess(false);
+        void Mutate(mutate);
+        onClose();
       }, 1000);
-      location.reload();
     }
   };
 
@@ -40,7 +47,7 @@ const TrashModalRestoreAll = ({ isOpen, onOpenChange }: ModalProps) => {
       className="bottom-[40%] w-[80%] bg-[#0a0a0a] sm:bottom-0 sm:w-2/4"
     >
       <ModalContent>
-        {(onClose) => (
+        {() => (
           <>
             {success ? (
               <div className="flex items-center justify-center">
