@@ -6,6 +6,7 @@ import {
   type SignInRequest,
 } from "~/interfaces/api.models";
 import { db } from "~/server/db";
+import { UAParser } from "ua-parser-js";
 
 export async function POST(
   req: NextRequest,
@@ -14,6 +15,9 @@ export async function POST(
   const response = (await req.json()) as SignInRequest;
   const { email, masterPass } = response;
   const ip = await getIp();
+  const ua = req.headers.get("user-agent") ?? "";
+  const parser = new UAParser(ua);
+  const result = parser.getResult();
 
   if (!email || !masterPass) {
     return NextResponse.json(
@@ -37,7 +41,8 @@ export async function POST(
       data: {
         userId: data.user.id,
         ipAddress: ip,
-        deviceInfo: "no device",
+        browser: `${result.browser.name ?? "Unknown"} ${result.browser.version ?? ""}`,
+        os: `${result.os.name ?? "Unknown"} ${result.os.version ?? ""}`,
       },
     });
     return NextResponse.json(
