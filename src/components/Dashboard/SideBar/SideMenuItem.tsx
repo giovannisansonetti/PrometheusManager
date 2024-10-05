@@ -11,7 +11,7 @@ interface SideMenuItemProps {
 const SideMenuItem = ({ name, isActive, icon, onClick }: SideMenuItemProps) => {
   return (
     <div
-      className={`mt-2.5 flex cursor-pointer items-center rounded-lg p-1.5 ${isActive ? "bg-[#383737] text-white" : "hover:bg-[#292828] hover:text-white"} `}
+      className={`mt-2.5 flex cursor-pointer items-center truncate rounded-lg p-1.5 ${isActive ? "bg-[#383737] text-white" : "hover:bg-[#292828] hover:text-white"} `}
       onClick={onClick}
     >
       <Image width={20} height={20} src={icon} alt={"title"} className="" />
