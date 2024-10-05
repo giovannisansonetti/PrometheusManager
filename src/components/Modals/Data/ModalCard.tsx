@@ -24,8 +24,11 @@ import {
   type InsertCardRequest,
   type GenericApiResponse,
 } from "~/interfaces/api.models";
+import { useSWRConfig } from "swr";
+import Mutate from "../SwrMutate";
 
-const ModalCard = ({ isOpen, onOpenChange }: ModalProps) => {
+const ModalCard = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
+  const { mutate } = useSWRConfig();
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -98,8 +101,9 @@ const ModalCard = ({ isOpen, onOpenChange }: ModalProps) => {
       onClose();
       setSuccess(false);
       setLoading(false);
+      void Mutate(mutate);
+      onClose();
     }, 1500);
-    location.reload();
   };
 
   const handleCardNumberChange = (value: string) => {
@@ -126,7 +130,7 @@ const ModalCard = ({ isOpen, onOpenChange }: ModalProps) => {
       className="bottom-[25%] w-[80%] bg-[#0a0a0a] sm:bottom-0 sm:w-2/4"
     >
       <ModalContent>
-        {(onClose) => (
+        {() => (
           <>
             {success ? (
               <div className="flex items-center justify-center">
