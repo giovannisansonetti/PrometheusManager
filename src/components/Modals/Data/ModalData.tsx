@@ -19,6 +19,7 @@ import {
   type GenericApiResponse,
 } from "~/interfaces/api.models";
 import { useSWRConfig } from "swr";
+import Mutate from "../SwrMutate";
 
 const ModalData = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
   const { mutate } = useSWRConfig();
@@ -66,10 +67,10 @@ const ModalData = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
       setTimeout(() => {
         setSuccess(false);
         setLoading(false);
+        void Mutate(mutate);
+        onClose();
       }, 1000);
     }
-    await mutate("/api/data/showData");
-    onClose();
   };
 
   const handleGenerate = () => {

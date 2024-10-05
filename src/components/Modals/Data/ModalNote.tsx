@@ -18,6 +18,7 @@ import {
   type GenericApiResponse,
 } from "~/interfaces/api.models";
 import { useSWRConfig } from "swr";
+import Mutate from "../SwrMutate";
 
 const ModalNote = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
   const { mutate } = useSWRConfig();
@@ -57,7 +58,7 @@ const ModalNote = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
     if (response.success) {
       setSuccess(true);
       setTimeout(() => {
-        void mutate("/api/data/showNotes");
+        void Mutate(mutate);
         onClose();
         setSuccess(false);
         setLoading(false);
