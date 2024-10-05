@@ -11,6 +11,7 @@ const DisplayCards = ({ handleMenu, isOpen }: DisplayCardsProps) => {
     isOpen: isCardsModalOpen,
     onOpen: onCardsModalOpen,
     onOpenChange: onCardsModalOpenChange,
+    onClose: onCardsModalClose,
   } = useDisclosure();
 
   return (
@@ -34,6 +35,7 @@ const DisplayCards = ({ handleMenu, isOpen }: DisplayCardsProps) => {
       <ModalCard
         isOpen={isCardsModalOpen}
         onOpenChange={onCardsModalOpenChange}
+        onClose={onCardsModalClose}
       />
     </div>
   );

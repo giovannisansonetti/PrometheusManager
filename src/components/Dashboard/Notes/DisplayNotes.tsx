@@ -9,6 +9,7 @@ const DisplayNotes = ({ handleMenu, isOpen }: DisplayNotesProps) => {
     isOpen: isNoteModalOpen,
     onOpen: onNoteModalOpen,
     onOpenChange: onNoteModalOpenChange,
+    onClose: onNoteModalClose,
   } = useDisclosure();
 
   return (
@@ -30,6 +31,7 @@ const DisplayNotes = ({ handleMenu, isOpen }: DisplayNotesProps) => {
       <ModalNote
         isOpen={isNoteModalOpen}
         onOpenChange={onNoteModalOpenChange}
+        onClose={onNoteModalClose}
       />
     </div>
   );

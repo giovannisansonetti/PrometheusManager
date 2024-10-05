@@ -17,11 +17,13 @@ const TrashBin = ({ handleMenu, isOpen }: TrashBinProps) => {
     isOpen: isDeleteAllModalOpen,
     onOpen: onDeleteAllModalOpen,
     onOpenChange: onDeleteAllOpenChange,
+    onClose: onDeleteAllModalClose,
   } = useDisclosure();
   const {
     isOpen: isRestoreAllModalOpen,
     onOpen: onRestoreAllModalOpen,
     onOpenChange: onRestoreAllModalOpenChange,
+    onClose: onRestoreAllModalClose,
   } = useDisclosure();
 
   return (
@@ -57,11 +59,13 @@ const TrashBin = ({ handleMenu, isOpen }: TrashBinProps) => {
       <TrashModalDeleteAll
         isOpen={isDeleteAllModalOpen}
         onOpenChange={onDeleteAllOpenChange}
+        onClose={onDeleteAllModalClose}
       />
 
       <TrashModalRestoreAll
         isOpen={isRestoreAllModalOpen}
         onOpenChange={onRestoreAllModalOpenChange}
+        onClose={onRestoreAllModalClose}
       />
     </div>
   );

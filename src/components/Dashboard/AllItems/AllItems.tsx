@@ -15,16 +15,21 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
     isOpen: isPasswordModalOpen,
     onOpen: onPasswordModalOpen,
     onOpenChange: onPasswordModalOpenChange,
+    onClose: onPasswordModalClose,
   } = useDisclosure();
 
   const {
     isOpen: isNoteModalOpen,
     onOpen: onNoteModalOpen,
     onOpenChange: onNoteModalOpenChange,
+    onClose: onNoteModalClose,
   } = useDisclosure();
 
-  const { isOpen: isCardModalOpen, onOpenChange: onCardModalOpenChange } =
-    useDisclosure();
+  const {
+    isOpen: isCardModalOpen,
+    onOpenChange: onCardModalOpenChange,
+    onClose: onCardModalClose,
+  } = useDisclosure();
 
   return (
     <div className="flex h-full w-full flex-col overflow-hidden overflow-y-auto bg-[#161616] text-white lg:rounded-lg">
@@ -48,16 +53,19 @@ const AllItems = ({ handleMenu, isOpen }: DisplayItemsProps) => {
       <ModalData
         isOpen={isPasswordModalOpen}
         onOpenChange={onPasswordModalOpenChange}
+        onClose={onPasswordModalClose}
       />
 
       <ModalNote
         isOpen={isNoteModalOpen}
         onOpenChange={onNoteModalOpenChange}
+        onClose={onNoteModalClose}
       />
 
       <ModalCard
         isOpen={isCardModalOpen}
         onOpenChange={onCardModalOpenChange}
+        onClose={onCardModalClose}
       />
     </div>
   );
