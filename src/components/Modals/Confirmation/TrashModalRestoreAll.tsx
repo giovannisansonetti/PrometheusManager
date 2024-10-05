@@ -11,7 +11,7 @@ import { type ModalProps } from "../interfaces/Modal.models";
 import AlertEvent from "~/components/Events/Alerts/Alert";
 import { type GenericApiResponse } from "~/interfaces/api.models";
 import Mutate from "../SwrMutate";
-import { mutate } from "swr";
+import { useSWRConfig } from "swr";
 
 const TrashModalRestoreAll = ({
   isOpen,
@@ -19,7 +19,7 @@ const TrashModalRestoreAll = ({
   onClose,
 }: ModalProps) => {
   const [restoreLoading, setRestoreLoading] = useState(false);
-
+  const { mutate } = useSWRConfig();
   const [success, setSuccess] = useState(false);
   const [error] = useState<string>("");
 
