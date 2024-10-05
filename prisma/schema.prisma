@@ -20,12 +20,13 @@ model User {
 }
 
 model UserLoginHistory {
-  id         String   @id @default(uuid())
-  ipAddress  String
-  deviceInfo String
-  loginAt    DateTime @default(now())
-  userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id @default(uuid())
+  ipAddress String
+  browser   String?
+  os        String?
+  loginAt   DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // perhaps add a user preference and settings table in the future
