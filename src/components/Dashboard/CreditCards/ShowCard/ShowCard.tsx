@@ -14,6 +14,9 @@ import {
   type GenericApiResponse,
   type MoveToTrashRequest,
 } from "~/interfaces/api.models";
+import { useSWRConfig } from "swr";
+import useBackButtonStore from "../../DynamicActionButton/DynamicActionButtonStore";
+import Mutate from "~/components/Modals/SwrMutate";
 
 const ShowCard = ({
   id,
@@ -27,10 +30,10 @@ const ShowCard = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [editview, setEditView] = useState<boolean>(false);
   const toggleEdit = () => setEditView(!editview);
-
+  const { mutate } = useSWRConfig();
   const [maskedPan, setMaskedPAN] = useState<string>("");
   const [IsPANVisible, setIsPANVisible] = useState<boolean>(false);
-
+  const { goBack, setGoBack } = useBackButtonStore();
   const [maskedCVV, setmaskedCVV] = useState<string>("");
   const [isCVVvisible, setCVVvisible] = useState<boolean>(false);
 
@@ -69,7 +72,8 @@ const ShowCard = ({
       setTimeout(() => {
         setLoading(false);
         setEditView(false);
-        location.reload();
+        setGoBack(!goBack);
+        void Mutate(mutate);
       }, 1500);
     }
   };
@@ -90,7 +94,8 @@ const ShowCard = ({
     if (response.success) {
       setTimeout(() => {
         setLoading(false);
-        location.reload();
+        setGoBack(!goBack);
+        void Mutate(mutate);
       }, 1500);
     }
   };
