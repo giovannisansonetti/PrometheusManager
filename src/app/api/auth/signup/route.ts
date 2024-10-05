@@ -6,6 +6,7 @@ import {
   type GenericApiResponse,
   type SignUpRequest,
 } from "~/interfaces/api.models";
+import UAParser from "ua-parser-js";
 
 export async function POST(
   req: NextRequest,
@@ -13,6 +14,9 @@ export async function POST(
   const supabase = createClient();
   const response = (await req.json()) as SignUpRequest;
   const { email, masterPass, phoneNumber } = response;
+  const ua = req.headers.get("user-agent") ?? "";
+  const parser = new UAParser(ua);
+  const result = parser.getResult();
 
   if (!email || !masterPass) {
     return NextResponse.json(
@@ -43,7 +47,8 @@ export async function POST(
       data: {
         userId: data.user.id,
         ipAddress: ip,
-        deviceInfo: "no device",
+        browser: `${result.browser.name ?? "Unknown"} ${result.browser.version ?? ""}`,
+        os: `${result.os.name ?? "Unknown"} ${result.os.version ?? ""}`,
       },
     });
 
