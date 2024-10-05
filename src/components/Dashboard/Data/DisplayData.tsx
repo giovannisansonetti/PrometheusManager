@@ -13,6 +13,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
     isOpen: isPasswordModalOpen,
     onOpen: onPasswordModalOpen,
     onOpenChange: onPasswordModalOpenChange,
+    onClose: onPasswordModalClose,
   } = useDisclosure();
 
   return (
@@ -37,6 +38,7 @@ const DisplayData = ({ handleMenu, isOpen }: DisplayDataProps) => {
       <ModalData
         isOpen={isPasswordModalOpen}
         onOpenChange={onPasswordModalOpenChange}
+        onClose={onPasswordModalClose}
       />
     </div>
   );

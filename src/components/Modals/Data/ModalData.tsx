@@ -18,8 +18,10 @@ import {
   type InsertDataRequest,
   type GenericApiResponse,
 } from "~/interfaces/api.models";
+import { useSWRConfig } from "swr";
 
-const ModalData = ({ isOpen, onOpenChange }: ModalProps) => {
+const ModalData = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
+  const { mutate } = useSWRConfig();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<boolean>(false);
@@ -65,8 +67,9 @@ const ModalData = ({ isOpen, onOpenChange }: ModalProps) => {
         setSuccess(false);
         setLoading(false);
       }, 1000);
-      location.reload();
     }
+    await mutate("/api/data/showData");
+    onClose();
   };
 
   const handleGenerate = () => {
