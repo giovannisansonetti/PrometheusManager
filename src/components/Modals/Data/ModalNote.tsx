@@ -17,8 +17,10 @@ import {
   type InsertNotesRequest,
   type GenericApiResponse,
 } from "~/interfaces/api.models";
+import { useSWRConfig } from "swr";
 
-const ModalNote = ({ isOpen, onOpenChange }: ModalProps) => {
+const ModalNote = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
+  const { mutate } = useSWRConfig();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<boolean>(false);
@@ -55,10 +57,10 @@ const ModalNote = ({ isOpen, onOpenChange }: ModalProps) => {
     if (response.success) {
       setSuccess(true);
       setTimeout(() => {
+        void mutate("/api/data/showNotes");
         onClose();
         setSuccess(false);
         setLoading(false);
-        location.reload();
       }, 1000);
     }
   };
@@ -70,7 +72,7 @@ const ModalNote = ({ isOpen, onOpenChange }: ModalProps) => {
       className="bottom-[25%] w-[80%] bg-[#0a0a0a] sm:bottom-0 sm:w-2/4"
     >
       <ModalContent>
-        {(onClose) => (
+        {() => (
           <>
             {success ? (
               <div className="flex items-center justify-center">
