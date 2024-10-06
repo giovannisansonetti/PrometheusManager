@@ -41,13 +41,17 @@ const SignUp = () => {
 
     const req = axios.post<GenericApiResponse>("/api/auth/signup", request);
 
-    const response = (await req).data;
+    try {
+      const response = (await req).data;
 
-    if (!response.success) {
-      setError(response.message);
-    }
-    if (response.success) {
-      router.push("/dashboard");
+      if (!response.success) {
+        setError(response.message);
+      }
+      if (response.success) {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      setError("Internal server error");
     }
   };
 
