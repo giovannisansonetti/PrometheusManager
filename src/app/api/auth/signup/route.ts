@@ -93,7 +93,7 @@ export async function POST(
   return NextResponse.json(
     {
       success: false,
-      message: "An error occurred, " + error,
+      message: "An error occurred, " + error?.message,
     },
     { status: 500 },
   );
