@@ -13,6 +13,7 @@ import {
   type GenericApiResponse,
   type SignUpRequest,
 } from "~/interfaces/api.models";
+import argon2 from "argon2";
 
 const SignUp = () => {
   const router = useRouter();

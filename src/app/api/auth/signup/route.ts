@@ -7,6 +7,7 @@ import {
   type SignUpRequest,
 } from "~/interfaces/api.models";
 import UAParser from "ua-parser-js";
+import argon2 from "argon2";
 
 export async function POST(
   req: NextRequest,
@@ -34,11 +35,13 @@ export async function POST(
   });
 
   const ip = await getIp();
+  const hashedPass = (await argon2.hash(masterPass)).toString(); // will be used as a key to encrypt and decrypt data
 
   if (!error && data.user) {
     await db.user.create({
       data: {
         id: data.user?.id,
+        hashed_password: hashedPass,
         email: email,
         phoneNumber: phoneNumber,
       },
@@ -93,7 +96,7 @@ export async function POST(
   return NextResponse.json(
     {
       success: false,
-      message: "An error occurred, " + error,
+      message: "An error occurred, ",
     },
     { status: 500 },
   );
