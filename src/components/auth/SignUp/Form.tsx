@@ -13,7 +13,6 @@ import {
   type GenericApiResponse,
   type SignUpRequest,
 } from "~/interfaces/api.models";
-import argon2 from "argon2";
 
 const SignUp = () => {
   const router = useRouter();
@@ -23,6 +22,8 @@ const SignUp = () => {
     repeatPass: "",
     phoneNumber: "",
   });
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSignUp = async () => {
     if (!form.email || !form.masterPass) {
@@ -40,6 +41,8 @@ const SignUp = () => {
       phoneNumber: form.phoneNumber,
     };
 
+    setLoading(true);
+
     const req = axios.post<GenericApiResponse>("/api/auth/signup", request);
 
     try {
@@ -52,7 +55,10 @@ const SignUp = () => {
         router.push("/dashboard");
       }
     } catch (error) {
-      setError("Internal server error");
+      setTimeout(() => {
+        setError("Internal server error");
+        setLoading(false);
+      }, 3000);
     }
   };
 
@@ -143,17 +149,32 @@ const SignUp = () => {
             setForm((f) => ({ ...f, phoneNumber: value }));
           }}
         />
-        <Button
-          className="mt-4 max-w-sm"
-          color="primary"
-          href="/signup"
-          variant="flat"
-          onClick={async () => {
-            await handleSignUp();
-          }}
-        >
-          Sign Up
-        </Button>
+        {loading ? (
+          <Button
+            className="mt-4 max-w-sm"
+            color="primary"
+            href="/signup"
+            variant="flat"
+            isLoading
+            onClick={async () => {
+              await handleSignUp();
+            }}
+          >
+            Signing up
+          </Button>
+        ) : (
+          <Button
+            className="mt-4 max-w-sm"
+            color="primary"
+            href="/signup"
+            variant="flat"
+            onClick={async () => {
+              await handleSignUp();
+            }}
+          >
+            Sign Up
+          </Button>
+        )}
 
         <div className="mt-3 flex justify-center gap-1 text-[#71717a]">
           Already a member?{" "}

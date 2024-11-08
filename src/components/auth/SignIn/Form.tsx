@@ -15,6 +15,7 @@ import {
 const Login = () => {
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [form, setForm] = useState<FormProps>({
     email: "",
@@ -28,6 +29,8 @@ const Login = () => {
       setError("Both fields are required");
       return;
     }
+
+    setLoading(true);
 
     const request: SignInRequest = {
       email: form.email,
@@ -46,6 +49,7 @@ const Login = () => {
         location.reload();
       }
     } catch (error) {
+      setLoading(false);
       setError("Invalid credentials");
     }
   };
@@ -96,17 +100,33 @@ const Login = () => {
             setForm((f) => ({ ...f, masterPass: value }));
           }}
         />
-        <Button
-          className="mt-4 w-full"
-          color="primary"
-          href=""
-          variant="flat"
-          onClick={async () => {
-            await handleLogin();
-          }}
-        >
-          Login
-        </Button>
+        {loading ? (
+          <Button
+            className="mt-4 w-full"
+            color="primary"
+            href=""
+            isLoading
+            variant="flat"
+            onClick={async () => {
+              await handleLogin();
+            }}
+          >
+            Logging
+          </Button>
+        ) : (
+          <Button
+            className="mt-4 w-full"
+            color="primary"
+            href=""
+            variant="flat"
+            onClick={async () => {
+              await handleLogin();
+            }}
+          >
+            Login
+          </Button>
+        )}
+
         <div className="mt-5 flex justify-center gap-1 text-[#71717a]">
           Don&apos;t have an account?{" "}
           <a className="" href={"/auth/signup"}>
