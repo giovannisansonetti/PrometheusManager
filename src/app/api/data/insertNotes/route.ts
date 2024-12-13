@@ -1,4 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { encryptWithKey } from "utils/encryption/encryption";
+import {
+  extractPass,
+  extractSalt,
+  keyGeneration,
+} from "utils/encryption/keysmanagement";
 import { createClient } from "utils/supabase/server";
 import {
   type InsertNotesRequest,
@@ -49,25 +55,39 @@ export async function POST(
     );
   }
 
-  const insertNote = {
-    title,
-    description,
-  };
+  const pass = await extractPass(user.id);
+  const salt = await extractSalt(user.id);
 
-  await db.note.create({
-    data: {
-      userId: user.id,
-      noteTitle: insertNote.title,
-      noteDescription: insertNote.description,
-      isDeleted: false,
-    },
-  });
+  if (pass?.hashed_password && salt?.salt) {
+    const key = await keyGeneration(pass.hashed_password, salt.salt);
 
+    const encryptedTitle = await encryptWithKey(title, key);
+    const encryptedDescription = await encryptWithKey(description, key);
+
+    await db.note.create({
+      data: {
+        userId: user.id,
+        noteTitle: encryptedTitle.data,
+        noteDescription: encryptedDescription.data,
+        titleIV: encryptedTitle.iv,
+        descriptionIV: encryptedDescription.iv,
+        isDeleted: false,
+      },
+    });
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Item created successfully",
+      },
+      { status: 200 },
+    );
+  }
   return NextResponse.json(
     {
-      success: true,
-      message: "Item created successfully",
+      success: false,
+      message: "Internal Server Error",
     },
-    { status: 200 },
+    { status: 500 },
   );
 }

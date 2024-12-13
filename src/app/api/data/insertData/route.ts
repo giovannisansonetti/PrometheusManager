@@ -1,8 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { encryptWithKey } from "utils/encryption/encryption";
+import {
+  extractPass,
+  keyGeneration,
+  extractSalt,
+} from "utils/encryption/keysmanagement";
 import checkSecurityPass from "utils/pswsecuritychecker";
 import { createClient } from "utils/supabase/server";
-import { env } from "~/env";
 import {
   type GenericApiResponse,
   type InsertDataRequest,
@@ -51,46 +55,62 @@ export async function POST(
       { status: 404 },
     );
   }
-  const encryptedPassword = await encryptWithKey(password, env.AES_KEY);
-  const insertData = {
-    title,
-    webSiteLink,
-    username,
-    password,
-    encryptedPassword,
-    notes,
-  };
 
-  const passwordSecurity = checkSecurityPass(insertData.password);
-  try {
-    await db.data.create({
-      data: {
-        userId: user.id,
-        title: insertData.title,
-        webSiteLink: insertData.webSiteLink,
-        username: insertData.username,
-        password: insertData.encryptedPassword.data,
-        iv: insertData.encryptedPassword.iv,
-        notes: insertData.notes,
-        passwordSecurity: passwordSecurity,
-        isDeleted: false,
-      },
-    });
+  const pass = await extractPass(user.id);
+  const salt = await extractSalt(user.id);
 
-    return NextResponse.json(
-      {
-        success: true,
-        message: "Item created successfully",
-      },
-      { status: 200 },
-    );
-  } catch (error) {
-    return NextResponse.json(
-      {
-        message: "Internal Server Error",
-        success: false,
-      },
-      { status: 500 },
-    );
+  if (pass?.hashed_password && salt?.salt) {
+    const key = await keyGeneration(pass?.hashed_password, salt?.salt);
+    const encryptedPassword = await encryptWithKey(password, key);
+
+    const insertData = {
+      title,
+      webSiteLink,
+      username,
+      password,
+      encryptedPassword,
+      notes,
+    };
+
+    const passwordSecurity = checkSecurityPass(insertData.password);
+
+    try {
+      await db.data.create({
+        data: {
+          userId: user.id,
+          title: insertData.title,
+          webSiteLink: insertData.webSiteLink,
+          username: insertData.username,
+          password: insertData.encryptedPassword.data,
+          iv: insertData.encryptedPassword.iv,
+          notes: insertData.notes,
+          passwordSecurity: passwordSecurity,
+          isDeleted: false,
+        },
+      });
+
+      return NextResponse.json(
+        {
+          success: true,
+          message: "Item created successfully",
+        },
+        { status: 200 },
+      );
+    } catch (error) {
+      return NextResponse.json(
+        {
+          message: "Internal Server Error",
+          success: false,
+        },
+        { status: 500 },
+      );
+    }
   }
+  return NextResponse.json(
+    {
+      message: "Internal Server Error",
+      success: false,
+    },
+    { status: 500 },
+  );
 }

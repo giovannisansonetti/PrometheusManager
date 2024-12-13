@@ -3,7 +3,11 @@ import { createClient } from "utils/supabase/server";
 import { db } from "~/server/db";
 import { NextResponse } from "next/server";
 import { decryptWithKey } from "utils/encryption/encryption";
-import { env } from "~/env";
+import {
+  keyGeneration,
+  extractPass,
+  extractSalt,
+} from "utils/encryption/keysmanagement";
 
 export async function GET() {
   const response = await fetchData();
@@ -48,13 +52,30 @@ const fetchData = async () => {
     },
   });
 
-  for (const data of dataList) {
-    data.password = await decryptWithKey(data.iv, data.password, env.AES_KEY);
-  }
+  try {
+    const pass = await extractPass(user.id);
+    const salt = await extractSalt(user.id);
 
-  if (dataList.length !== 0) {
-    return { status: 200, message: "OK", data: dataList };
-  }
+    if (pass?.hashed_password && salt?.salt) {
+      const key = await keyGeneration(pass?.hashed_password, salt?.salt);
 
-  return { status: 404, message: "No data found", error: true };
+      for (const data of dataList) {
+        data.password = await decryptWithKey(data.iv, data.password, key);
+      }
+
+      if (dataList.length !== 0) {
+        return { status: 200, message: "OK", data: dataList };
+      }
+
+      return { status: 404, message: "No data found", error: true };
+    } else {
+      return {
+        status: 500,
+        message: "Decryption failed due to missing data",
+        error: true,
+      };
+    }
+  } catch (error) {
+    return { status: 500, message: "Internal Server Error", error: true };
+  }
 };

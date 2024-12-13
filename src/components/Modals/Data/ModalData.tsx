@@ -60,16 +60,25 @@ const ModalData = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
       password: dataform.password,
       notes: dataform.notes,
     };
-    const req = axios.post<GenericApiResponse>("/api/data/insertData", request);
-    const response = (await req).data;
-    if (response.success) {
-      setSuccess(true);
-      setTimeout(() => {
-        setSuccess(false);
-        setLoading(false);
-        void Mutate(mutate);
-        onClose();
-      }, 1000);
+    try {
+      const req = axios.post<GenericApiResponse>(
+        "/api/data/insertData",
+        request,
+      );
+      const response = (await req).data;
+      if (response.success) {
+        setSuccess(true);
+        setTimeout(() => {
+          setSuccess(false);
+          setLoading(false);
+          void Mutate(mutate);
+          onClose();
+        }, 1000);
+      }
+    } catch (error) {
+      setSuccess(false);
+      setLoading(false);
+      setMessage("There was an error while adding data");
     }
   };
 
