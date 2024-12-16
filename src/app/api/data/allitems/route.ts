@@ -70,6 +70,20 @@ const fetchAllitems = async () => {
       for (const data of dataItems) {
         data.password = await decryptWithKey(data.iv, data.password, key);
       }
+
+      for (const note of noteItems) {
+        note.noteTitle = await decryptWithKey(
+          note.titleIV,
+          note.noteTitle,
+          key,
+        );
+        note.noteDescription = await decryptWithKey(
+          note.descriptionIV,
+          note.noteDescription,
+          key,
+        );
+      }
+
       const items: AllItems[] = [
         ...dataItems.map((item) => ({
           ...item,
@@ -87,6 +101,8 @@ const fetchAllitems = async () => {
           type: "note" as const,
           noteTitle: item.noteTitle,
           noteDescription: item.noteDescription,
+          titleIV: item.titleIV,
+          descriptionIV: item.descriptionIV,
           isDeleted: item.isDeleted,
         })),
         ...paymentCardItems.map((item) => ({
