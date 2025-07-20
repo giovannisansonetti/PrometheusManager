@@ -45,10 +45,22 @@ export async function POST(
         os: `${result.os.name ?? "Unknown"} ${result.os.version ?? ""}`,
       },
     });
-    return NextResponse.json(
-      { success: true, message: "User logged in" },
-      { status: 200 },
-    );
+
+    const saltHex = await db.user.findUnique({
+      where: {
+        id: data.user.id,
+      },
+      select: {
+        salt: true,
+      },
+    });
+
+    if (saltHex) {
+      return NextResponse.json(
+        { success: true, message: "User logged in", data: saltHex.salt },
+        { status: 200 },
+      );
+    }
   }
 
   return NextResponse.json(

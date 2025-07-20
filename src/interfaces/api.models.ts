@@ -5,11 +5,13 @@ export interface GenericApiResponse {
   message: string;
 }
 
-//api/auth/signout
-export interface SuccessfulSignOutResponse {
+export interface SuccessfulSigninResponse {
   success: boolean;
+  message: string;
+  data: string;
 }
 
+//api/auth/signout
 export interface FailedSignOutResponse {
   message: string;
 }
@@ -74,6 +76,8 @@ export interface SignUpRequest {
   email: string;
   masterPass: string;
   phoneNumber: string;
+  verificationHash: string;
+  salt: string;
 }
 
 //api/auth/signin

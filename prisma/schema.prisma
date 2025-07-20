@@ -9,8 +9,8 @@ datasource db {
 
 model User {
   id               String             @id @default(uuid())
-  hashed_password  String?
   salt             String?
+  verificationHash  String?
   email            String             @unique
   phoneNumber      String?            @unique
   createdAt        DateTime           @default(now())

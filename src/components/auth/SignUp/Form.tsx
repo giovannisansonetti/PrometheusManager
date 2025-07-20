@@ -13,9 +13,16 @@ import {
   type GenericApiResponse,
   type SignUpRequest,
 } from "~/interfaces/api.models";
+import * as crypto from "crypto";
+import argon2 from "argon2";
+import {
+  deriveKey,
+  sha256Hex,
+} from "../../../../utils/encryption/keysmanagement";
 
 const SignUp = () => {
   const router = useRouter();
+
   const [form, setForm] = useState<FormProps>({
     email: "",
     masterPass: "",
@@ -35,10 +42,24 @@ const SignUp = () => {
       return;
     }
 
-    const request: SignUpRequest = {
+    const saltBytes = window.crypto.getRandomValues(new Uint8Array(16));
+
+    const saltHex = Array.from(saltBytes)
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+
+    const derivedKey = await deriveKey(form.masterPass, saltHex);
+
+    console.log(derivedKey);
+    // compute verification hash, e.g. SHA-256 of derivedKey
+    const verificationHash = await sha256Hex(derivedKey);
+
+    const request = {
       email: form.email,
       masterPass: form.masterPass,
       phoneNumber: form.phoneNumber,
+      salt: saltHex,
+      verificationHash,
     };
 
     setLoading(true);
@@ -51,12 +72,11 @@ const SignUp = () => {
       if (!response.success) {
         setError(response.message);
       }
-      if (response.success) {
-        router.push("/dashboard");
-      }
+
+      router.push("/dashboard");
     } catch (error) {
       setTimeout(() => {
-        setError("Internal server error");
+        setError("Internal Server Error");
         setLoading(false);
       }, 3000);
     }

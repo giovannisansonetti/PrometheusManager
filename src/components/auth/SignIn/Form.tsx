@@ -8,9 +8,10 @@ import axios from "axios";
 import { EyeFilledIcon } from "~/components/Eyes/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "~/components/Eyes/EyeSlashFilledIcon";
 import {
-  type GenericApiResponse,
+  type SuccessfulSigninResponse,
   type SignInRequest,
 } from "~/interfaces/api.models";
+import { deriveKey } from "utils/encryption/keysmanagement";
 
 const Login = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -36,10 +37,18 @@ const Login = () => {
       email: form.email,
       masterPass: form.masterPass,
     };
-    const req = axios.post<GenericApiResponse>("/api/auth/signin", request);
+
+    const req = axios
+      .post<SuccessfulSigninResponse>("/api/auth/signin", request)
+      .catch((e) => e.response);
 
     try {
       const response = (await req).data;
+      console.log(response);
+      const saltHex = response.data;
+
+      const derivedKey = await deriveKey(form.masterPass, saltHex);
+      //
 
       if (!response.success) {
         setError(response.message);
@@ -50,7 +59,7 @@ const Login = () => {
       }
     } catch (error) {
       setLoading(false);
-      setError("Invalid credentials");
+      setError("Internal Server Error");
     }
   };
 

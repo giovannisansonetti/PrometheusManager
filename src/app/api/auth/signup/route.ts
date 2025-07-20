@@ -7,15 +7,15 @@ import {
   type SignUpRequest,
 } from "~/interfaces/api.models";
 import UAParser from "ua-parser-js";
-import argon2 from "argon2";
-import * as crypto from "crypto";
 
 export async function POST(
   req: NextRequest,
 ): Promise<NextResponse<GenericApiResponse>> {
   const supabase = createClient();
+
   const response = (await req.json()) as SignUpRequest;
-  const { email, masterPass, phoneNumber } = response;
+  const { email, masterPass, phoneNumber, salt, verificationHash } = response;
+
   const ua = req.headers.get("user-agent") ?? "";
   const parser = new UAParser(ua);
   const result = parser.getResult();
@@ -37,16 +37,11 @@ export async function POST(
 
   const ip = await getIp();
 
-  // generate the key with the plain text pass
-
-  const hashedPass = (await argon2.hash(masterPass)).toString(); // will be used as a key to encrypt and decrypt data
-  const salt = crypto.randomBytes(16).toString("hex"); // random salt that will be used for the key derivation
-
   if (!error && data.user) {
     await db.user.create({
       data: {
         id: data.user?.id,
-        hashed_password: hashedPass,
+        verificationHash: verificationHash,
         salt: salt,
         email: email,
         phoneNumber: phoneNumber,
