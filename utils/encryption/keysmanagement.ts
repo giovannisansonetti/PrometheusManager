@@ -9,6 +9,7 @@ export async function deriveKey(
   const passwordBuffer = enc.encode(password);
 
   // import password as key material
+
   const keyMaterial = await window.crypto.subtle.importKey(
     "raw",
     passwordBuffer,
@@ -33,7 +34,7 @@ export async function deriveKey(
   return arrayBufferToHex(derivedBits);
 }
 
-function hexToArrayBuffer(hexString: string): ArrayBuffer {
+export function hexToArrayBuffer(hexString: string): ArrayBuffer {
   const bytes = new Uint8Array(hexString.length / 2);
   for (let i = 0; i < bytes.length; i++) {
     bytes[i] = parseInt(hexString.substr(i * 2, 2), 16);
@@ -41,7 +42,7 @@ function hexToArrayBuffer(hexString: string): ArrayBuffer {
   return bytes.buffer;
 }
 
-function arrayBufferToHex(buffer: ArrayBuffer): string {
+export function arrayBufferToHex(buffer: ArrayBuffer): string {
   return Array.from(new Uint8Array(buffer))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");

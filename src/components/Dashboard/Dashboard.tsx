@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SideBar from "./SideBar/SideMenu";
 import DisplayData from "./Data/DisplayData";
 import MobileSideBar from "./SideBar/MobileSideBar";
@@ -9,11 +9,28 @@ import TrashBin from "./TrashBin/TrashBin";
 import PswGenerator from "./Tools/PswGenerator/PswGenerator";
 import PswHealthCheck from "./Tools/PasswordHealthCheck/PswHealthCheck";
 import DisplayCards from "./CreditCards/DisplayCards";
+import UnlockVaultModal from "../Modals/UnlockVault/UnlockVault";
+import { useDisclosure } from "@nextui-org/react";
 
 const UserDashboard = () => {
+  const {
+    isOpen: isUnlockVaultOpen,
+    onOpen: onUnlockVaultOpen,
+    onOpenChange: onUnlockVaultOpenChange,
+    onClose: onUnlockVaultClose,
+  } = useDisclosure();
+
   const [active, setActive] = useState("AllItems");
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const key = false;
+
+  useEffect(() => {
+    if (!key) {
+      onUnlockVaultOpen();
+    }
+  }, [key]);
 
   const renderComponent = () => {
     switch (active) {
@@ -57,6 +74,13 @@ const UserDashboard = () => {
         ></MobileSideBar>
         {renderComponent()}
       </div>
+      {!key && (
+        <UnlockVaultModal
+          isOpen={isUnlockVaultOpen}
+          onClose={onUnlockVaultClose}
+          onOpenChange={onUnlockVaultOpenChange}
+        />
+      )}
     </div>
   );
 };

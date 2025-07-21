@@ -3,11 +3,7 @@ import { createClient } from "utils/supabase/server";
 import { db } from "~/server/db";
 import { NextResponse } from "next/server";
 import { decryptWithKey } from "utils/encryption/encryption";
-import {
-  extractPass,
-  extractSalt,
-  keyGeneration,
-} from "utils/encryption/keysmanagement";
+import {} from "utils/encryption/keysmanagement";
 
 export async function GET() {
   const response = await fetchAllitems();
@@ -61,8 +57,8 @@ const fetchAllitems = async () => {
   ]);
 
   try {
-    const pass = await extractPass(user.id);
-    const salt = await extractSalt(user.id);
+    /* const pass = await extractPass(user.id);
+    const salt = await extractSalt(user.id);*/
 
     if (pass?.hashed_password && salt?.salt) {
       const key = await keyGeneration(pass.hashed_password, salt.salt);

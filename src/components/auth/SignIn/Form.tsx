@@ -44,19 +44,16 @@ const Login = () => {
 
     try {
       const response = (await req).data;
-      console.log(response);
       const saltHex = response.data;
 
       const derivedKey = await deriveKey(form.masterPass, saltHex);
-      //
+      // TODO add the derived key to the redux container
 
       if (!response.success) {
         setError(response.message);
       }
 
-      if (response.success) {
-        location.reload();
-      }
+      location.reload();
     } catch (error) {
       setLoading(false);
       setError("Internal Server Error");

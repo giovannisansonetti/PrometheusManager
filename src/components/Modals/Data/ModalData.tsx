@@ -53,6 +53,9 @@ const ModalData = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
     }
 
     setLoading(true);
+
+    // TODO encryption of data client sided before sending it to the endpoint
+
     const request: InsertDataRequest = {
       title: dataform.title,
       webSiteLink: dataform.webSiteLink,
@@ -60,6 +63,7 @@ const ModalData = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
       password: dataform.password,
       notes: dataform.notes,
     };
+
     try {
       const req = axios.post<GenericApiResponse>(
         "/api/data/insertData",

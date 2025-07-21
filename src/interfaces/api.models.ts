@@ -12,8 +12,27 @@ export interface SuccessfulSigninResponse {
 }
 
 //api/auth/signout
+export interface SuccessfulSignOutResponse {
+  success: boolean;
+}
+
 export interface FailedSignOutResponse {
   message: string;
+}
+
+export interface MasterPassVerificationRequest {
+  verificationHash: string;
+}
+
+interface verificationHashDb {
+  salt: string;
+  verificationHash: string;
+}
+
+export interface MasterPassVerificationResponse {
+  success: boolean;
+  message: string;
+  data: verificationHashDb; // salt
 }
 
 //api/data/insertNotes

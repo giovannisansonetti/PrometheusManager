@@ -50,7 +50,6 @@ const SignUp = () => {
 
     const derivedKey = await deriveKey(form.masterPass, saltHex);
 
-    console.log(derivedKey);
     // compute verification hash, e.g. SHA-256 of derivedKey
     const verificationHash = await sha256Hex(derivedKey);
 

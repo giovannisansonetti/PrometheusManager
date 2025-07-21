@@ -10,7 +10,7 @@ datasource db {
 model User {
   id               String             @id @default(uuid())
   salt             String?
-  verificationHash  String?
+  verificationHash String
   email            String             @unique
   phoneNumber      String?            @unique
   createdAt        DateTime           @default(now())

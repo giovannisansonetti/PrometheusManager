@@ -56,7 +56,7 @@ export async function POST(
     );
   }
 
-  // encryption must be made on the client
+  // TODO switch to client encryption
 
   const pass = await extractPass(user.id);
   const salt = await extractSalt(user.id);
