@@ -25,6 +25,8 @@ import {
   type GenericApiResponse,
   type MoveToTrashRequest,
 } from "~/interfaces/api.models";
+import { decryptWithDerivedKey } from "utils/encryption/encryption";
+import { store } from "~/store/vaultSlice";
 
 const AllItemsList = () => {
   type ViewData = "overview" | "password" | "card";
@@ -41,13 +43,33 @@ const AllItemsList = () => {
   const [loading, setLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState<AllItems | null>(null);
   const [currentView, setCurrentView] = useState<ViewData>("overview");
+  const [decryptedPass, setDecryptedPass] = useState<string | null>(null);
   const { goBack, setGoBack } = useBackButtonStore();
 
   useEffect(() => {
     if (!goBack) {
       setCurrentView("overview");
     }
-  }, [goBack]);
+
+    const decrypt = async () => {
+      if (
+        currentView === "password" &&
+        selectedItem &&
+        selectedItem.type === "data"
+      ) {
+        const derivedKey = store.getState().key;
+        if (derivedKey) {
+          const pass = await decryptWithDerivedKey(
+            selectedItem.password,
+            derivedKey,
+            selectedItem.iv,
+          );
+          setDecryptedPass(pass);
+        }
+      }
+    };
+    decrypt();
+  }, [goBack, currentView, selectedItem]);
 
   const handleClick = (item: AllItems) => {
     if (item.type === "data") {
@@ -103,17 +125,19 @@ const AllItemsList = () => {
       selectedItem &&
       selectedItem.type === "data"
     ) {
-      return (
-        <ShowData
-          id={selectedItem.id}
-          title={selectedItem.title}
-          webSiteLink={selectedItem.webSiteLink}
-          username={selectedItem.username}
-          password={selectedItem.password}
-          passwordSecurity={selectedItem.passwordSecurity}
-          notes={selectedItem.notes ?? undefined}
-        />
-      );
+      if (decryptedPass) {
+        return (
+          <ShowData
+            id={selectedItem.id}
+            title={selectedItem.title}
+            webSiteLink={selectedItem.webSiteLink}
+            username={selectedItem.username}
+            password={decryptedPass}
+            passwordSecurity={selectedItem.passwordSecurity}
+            notes={selectedItem.notes ?? undefined}
+          />
+        );
+      }
     }
     if (
       currentView === "card" &&

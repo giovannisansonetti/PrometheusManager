@@ -19,6 +19,8 @@ import {
 import useBackButtonStore from "~/components/Dashboard/DynamicActionButton/DynamicActionButtonStore";
 import Mutate from "~/components/Modals/SwrMutate";
 import { useSWRConfig } from "swr";
+import { store } from "~/store/vaultSlice";
+import { encryptWithDerivedKey } from "utils/encryption/encryption";
 
 const ShowData = ({
   id,
@@ -72,23 +74,37 @@ const ShowData = ({
 
     setLoading(true);
 
-    const req: UpdateDataRequest = {
-      title: editForm.title,
-      webSiteLink: editForm.webSiteLink,
-      username: editForm.username,
-      password: editForm.password,
-      notes: editForm.notes ?? "",
-      id: id,
-    };
-    const request = axios.post<GenericApiResponse>("/api/data/updateData", req);
-    const response = (await request).data;
-    if (response.success) {
-      setTimeout(() => {
-        setLoading(false);
-        setEditView(false);
-        setGoBack(!goBack);
-        void Mutate(mutate);
-      }, 1000);
+    // TODO: encryption of the password with the saved data
+    const derivedKey = store.getState().key;
+
+    if (derivedKey) {
+      const encryptedPass = await encryptWithDerivedKey(
+        editForm.password,
+        derivedKey,
+      );
+
+      const req: UpdateDataRequest = {
+        title: editForm.title,
+        webSiteLink: editForm.webSiteLink,
+        username: editForm.username,
+        password: encryptedPass.data,
+        iv: encryptedPass.iv,
+        notes: editForm.notes ?? "",
+        id: id,
+      };
+      const request = axios.post<GenericApiResponse>(
+        "/api/data/updateData",
+        req,
+      );
+      const response = (await request).data;
+      if (response.success) {
+        setTimeout(() => {
+          setLoading(false);
+          setEditView(false);
+          setGoBack(!goBack);
+          void Mutate(mutate);
+        }, 1000);
+      }
     }
   };
 

@@ -63,6 +63,7 @@ const fetchAllitems = async () => {
         webSiteLink: item.webSiteLink,
         username: item.username,
         password: item.password,
+        iv: item.iv,
         notes: item.notes,
         passwordSecurity: item.passwordSecurity,
         isDeleted: item.isDeleted,

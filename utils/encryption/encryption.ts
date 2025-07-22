@@ -55,3 +55,35 @@ export async function encryptWithDerivedKey(data: string, derivedkey: string) {
     data: arrayBufferToHex(encrypted_content),
   };
 }
+
+export async function decryptWithDerivedKey(
+  data: string,
+  derivedKey: string,
+  iv: string,
+) {
+  const derivedKeyBuffer = hexToArrayBuffer(derivedKey);
+  const ivBuffer = hexToArrayBuffer(iv);
+
+  const ciphertextBuffer = hexToArrayBuffer(data); // data should be hex string
+
+  const key = await window.crypto.subtle.importKey(
+    "raw",
+    derivedKeyBuffer,
+    { name: "AES-CTR" },
+    false,
+    ["decrypt"],
+  );
+
+  const decryptedBuffer = await window.crypto.subtle.decrypt(
+    {
+      name: "AES-CTR",
+      counter: ivBuffer,
+      length: 128,
+    },
+    key,
+    ciphertextBuffer,
+  );
+
+  const decoder = new TextDecoder();
+  return decoder.decode(decryptedBuffer);
+}

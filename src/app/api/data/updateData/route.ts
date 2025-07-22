@@ -1,8 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { encryptWithKey } from "utils/encryption/encryption";
 import checkSecurityPass from "utils/pswsecuritychecker";
 import { createClient } from "utils/supabase/server";
-import { env } from "~/env";
 import {
   type GenericApiResponse,
   type UpdateDataRequest,
@@ -15,7 +13,7 @@ export async function POST(
   const supabase = createClient();
   const body = (await req.json()) as UpdateDataRequest;
 
-  const { title, webSiteLink, username, password, notes, id } = body;
+  const { title, webSiteLink, username, password, iv, notes, id } = body;
   const { data, error } = await supabase.auth.getUser();
 
   if (error ?? !data.user) {
@@ -44,13 +42,12 @@ export async function POST(
     );
   }
 
-  const encryptedPassword = await encryptWithKey(password, env.AES_KEY);
   const insertData = {
     title,
     webSiteLink,
     username,
     password,
-    encryptedPassword,
+    iv,
     notes,
     id,
   };
@@ -63,8 +60,8 @@ export async function POST(
         title: insertData.title,
         webSiteLink: insertData.webSiteLink,
         username: insertData.username,
-        password: insertData.encryptedPassword.data,
-        iv: insertData.encryptedPassword.iv,
+        password: insertData.password,
+        iv: insertData.iv,
         notes: insertData.notes,
         passwordSecurity: passwordSecurity,
       },

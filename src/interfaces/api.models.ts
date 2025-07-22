@@ -78,6 +78,7 @@ export interface UpdateDataRequest {
   webSiteLink: string;
   username: string;
   password: string;
+  iv: string;
   notes: string;
   id: string;
 }

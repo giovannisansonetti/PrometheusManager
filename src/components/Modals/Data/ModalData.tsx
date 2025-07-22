@@ -20,6 +20,8 @@ import {
 } from "~/interfaces/api.models";
 import { useSWRConfig } from "swr";
 import Mutate from "../SwrMutate";
+import { encryptWithDerivedKey } from "utils/encryption/encryption";
+import { store } from "~/store/vaultSlice";
 
 const ModalData = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
   const { mutate } = useSWRConfig();
@@ -56,33 +58,44 @@ const ModalData = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
 
     // TODO encryption of data client sided before sending it to the endpoint
 
-    const request: InsertDataRequest = {
-      title: dataform.title,
-      webSiteLink: dataform.webSiteLink,
-      username: dataform.username,
-      password: dataform.password,
-      notes: dataform.notes,
-    };
-
-    try {
-      const req = axios.post<GenericApiResponse>(
-        "/api/data/insertData",
-        request,
+    const derivedKey = store.getState().key;
+    if (derivedKey) {
+      const encryptedPass = await encryptWithDerivedKey(
+        dataform.password,
+        derivedKey,
       );
-      const response = (await req).data;
-      if (response.success) {
-        setSuccess(true);
-        setTimeout(() => {
-          setSuccess(false);
-          setLoading(false);
-          void Mutate(mutate);
-          onClose();
-        }, 1000);
+
+      // TODO encrypt other things too
+
+      const request: InsertDataRequest = {
+        title: dataform.title,
+        webSiteLink: dataform.webSiteLink,
+        username: dataform.username,
+        password: encryptedPass.data,
+        iv: encryptedPass.iv,
+        notes: dataform.notes,
+      };
+
+      try {
+        const req = axios.post<GenericApiResponse>(
+          "/api/data/insertData",
+          request,
+        );
+        const response = (await req).data;
+        if (response.success) {
+          setSuccess(true);
+          setTimeout(() => {
+            setSuccess(false);
+            setLoading(false);
+            void Mutate(mutate);
+            onClose();
+          }, 1000);
+        }
+      } catch (error) {
+        setSuccess(false);
+        setLoading(false);
+        setMessage("There was an error while adding data");
       }
-    } catch (error) {
-      setSuccess(false);
-      setLoading(false);
-      setMessage("There was an error while adding data");
     }
   };
 

@@ -50,14 +50,12 @@ export async function POST(
     );
   }
 
-  // TODO switch to client encryption
-
   const insertData = {
     title,
     webSiteLink,
     username,
     password,
-    iv: "fewuifhw",
+    iv,
     notes,
   };
 

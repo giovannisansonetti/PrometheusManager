@@ -8,6 +8,7 @@ type DataItem = {
   webSiteLink: string;
   username: string;
   password: string;
+  iv: string;
   notes: string | null;
   createdAt: Date;
   updatedAt: Date;
