@@ -13,17 +13,18 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { fetcher } from "~/server/fetcher";
 import axios from "axios";
 import {
   type DeleteTypeRequest,
   type GenericApiResponse,
 } from "~/interfaces/api.models";
+import Mutate from "~/components/Modals/SwrMutate";
 
 const TrashBinList = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+  const { mutate } = useSWRConfig();
   const { data, isLoading } = useSWR<ApiResponse>(
     "/api/data/allitems",
     fetcher,
@@ -54,7 +55,6 @@ const TrashBinList = () => {
           onClose();
           setDeleteLoading(false);
         }, 1000);
-        location.reload();
       }
     }
 
@@ -94,7 +94,7 @@ const TrashBinList = () => {
           onClose();
           setDeleteLoading(false);
         }, 1000);
-        location.reload();
+        void Mutate(mutate);
       }
     }
 
@@ -167,7 +167,7 @@ const TrashBinList = () => {
           <p className="text-gray-500">No items found</p>
         </div>
       )}
-
+      {/* TODO: move this modal to modal component*/}
       {selectedItem && (
         <Modal
           isOpen={isOpen}

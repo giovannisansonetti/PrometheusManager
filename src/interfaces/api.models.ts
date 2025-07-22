@@ -47,6 +47,7 @@ export interface InsertDataRequest {
   webSiteLink: string;
   username: string;
   password: string;
+  iv: string;
   notes: string;
 }
 

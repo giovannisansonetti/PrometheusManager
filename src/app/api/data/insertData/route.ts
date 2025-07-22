@@ -1,10 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { encryptWithKey } from "utils/encryption/encryption";
-import {
-  extractPass,
-  keyGeneration,
-  extractSalt,
-} from "utils/encryption/keysmanagement";
 import checkSecurityPass from "utils/pswsecuritychecker";
 import { createClient } from "utils/supabase/server";
 import {
@@ -19,7 +13,7 @@ export async function POST(
   const supabase = createClient();
   const body = (await req.json()) as InsertDataRequest;
 
-  const { title, webSiteLink, username, password, notes } = body;
+  const { title, webSiteLink, username, password, iv, notes } = body;
   const { data, error } = await supabase.auth.getUser();
 
   if (error ?? !data.user) {
@@ -58,56 +52,49 @@ export async function POST(
 
   // TODO switch to client encryption
 
-  const pass = await extractPass(user.id);
-  const salt = await extractSalt(user.id);
+  const insertData = {
+    title,
+    webSiteLink,
+    username,
+    password,
+    iv: "fewuifhw",
+    notes,
+  };
 
-  if (pass?.hashed_password && salt?.salt) {
-    const key = await keyGeneration(pass?.hashed_password, salt?.salt);
-    const encryptedPassword = await encryptWithKey(password, key);
+  const passwordSecurity = checkSecurityPass(insertData.password);
 
-    const insertData = {
-      title,
-      webSiteLink,
-      username,
-      password,
-      encryptedPassword,
-      notes,
-    };
+  try {
+    await db.data.create({
+      data: {
+        userId: user.id,
+        title: insertData.title,
+        webSiteLink: insertData.webSiteLink,
+        username: insertData.username,
+        password: insertData.password,
+        iv: insertData.iv,
+        notes: insertData.notes,
+        passwordSecurity: passwordSecurity,
+        isDeleted: false,
+      },
+    });
 
-    const passwordSecurity = checkSecurityPass(insertData.password);
-
-    try {
-      await db.data.create({
-        data: {
-          userId: user.id,
-          title: insertData.title,
-          webSiteLink: insertData.webSiteLink,
-          username: insertData.username,
-          password: insertData.encryptedPassword.data,
-          iv: insertData.encryptedPassword.iv,
-          notes: insertData.notes,
-          passwordSecurity: passwordSecurity,
-          isDeleted: false,
-        },
-      });
-
-      return NextResponse.json(
-        {
-          success: true,
-          message: "Item created successfully",
-        },
-        { status: 200 },
-      );
-    } catch (error) {
-      return NextResponse.json(
-        {
-          message: "Internal Server Error",
-          success: false,
-        },
-        { status: 500 },
-      );
-    }
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Item created successfully",
+      },
+      { status: 200 },
+    );
+  } catch (error) {
+    return NextResponse.json(
+      {
+        message: "Internal Server Error",
+        success: false,
+      },
+      { status: 500 },
+    );
   }
+
   return NextResponse.json(
     {
       message: "Internal Server Error",

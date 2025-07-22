@@ -41,9 +41,10 @@ const UnlockVaultModal = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
 
     const derivedKey = await deriveKey(masterPass, verificationData.salt);
     const verification = await sha256Hex(derivedKey);
-    console.log(verification);
+
     if (verification === verificationData.verificationHash) {
       store.dispatch(setDerivedKey(derivedKey));
+      void Mutate(mutate);
       onClose();
     } else {
       setError("Wrong master password");

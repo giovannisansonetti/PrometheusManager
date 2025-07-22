@@ -2,8 +2,6 @@ import { type AllItems } from "~/server/data/showdata/allitems.models";
 import { createClient } from "utils/supabase/server";
 import { db } from "~/server/db";
 import { NextResponse } from "next/server";
-import { decryptWithKey } from "utils/encryption/encryption";
-import {} from "utils/encryption/keysmanagement";
 
 export async function GET() {
   const response = await fetchAllitems();
@@ -57,73 +55,43 @@ const fetchAllitems = async () => {
   ]);
 
   try {
-    /* const pass = await extractPass(user.id);
-    const salt = await extractSalt(user.id);*/
+    const items: AllItems[] = [
+      ...dataItems.map((item) => ({
+        ...item,
+        type: "data" as const,
+        title: item.title,
+        webSiteLink: item.webSiteLink,
+        username: item.username,
+        password: item.password,
+        notes: item.notes,
+        passwordSecurity: item.passwordSecurity,
+        isDeleted: item.isDeleted,
+      })),
+      ...noteItems.map((item) => ({
+        ...item,
+        type: "note" as const,
+        noteTitle: item.noteTitle,
+        noteDescription: item.noteDescription,
+        titleIV: item.titleIV,
+        descriptionIV: item.descriptionIV,
+        isDeleted: item.isDeleted,
+      })),
+      ...paymentCardItems.map((item) => ({
+        ...item,
+        type: "paymentCard" as const,
+        PAN: item.PAN,
+        cardholder: item.cardholder,
+        cardType: item.type,
+        expiry: item.expiry,
+        CVV: item.CVV,
+        isDeleted: item.isDeleted,
+        createdAt: item.createdAt,
+        updatedAt: item.updatedAt,
+      })),
+    ];
 
-    if (pass?.hashed_password && salt?.salt) {
-      const key = await keyGeneration(pass.hashed_password, salt.salt);
-
-      for (const data of dataItems) {
-        data.password = await decryptWithKey(data.iv, data.password, key);
-      }
-
-      for (const note of noteItems) {
-        note.noteTitle = await decryptWithKey(
-          note.titleIV,
-          note.noteTitle,
-          key,
-        );
-        note.noteDescription = await decryptWithKey(
-          note.descriptionIV,
-          note.noteDescription,
-          key,
-        );
-      }
-
-      const items: AllItems[] = [
-        ...dataItems.map((item) => ({
-          ...item,
-          type: "data" as const,
-          title: item.title,
-          webSiteLink: item.webSiteLink,
-          username: item.username,
-          password: item.password,
-          notes: item.notes,
-          passwordSecurity: item.passwordSecurity,
-          isDeleted: item.isDeleted,
-        })),
-        ...noteItems.map((item) => ({
-          ...item,
-          type: "note" as const,
-          noteTitle: item.noteTitle,
-          noteDescription: item.noteDescription,
-          titleIV: item.titleIV,
-          descriptionIV: item.descriptionIV,
-          isDeleted: item.isDeleted,
-        })),
-        ...paymentCardItems.map((item) => ({
-          ...item,
-          type: "paymentCard" as const,
-          PAN: item.PAN,
-          cardholder: item.cardholder,
-          cardType: item.type,
-          expiry: item.expiry,
-          CVV: item.CVV,
-          isDeleted: item.isDeleted,
-          createdAt: item.createdAt,
-          updatedAt: item.updatedAt,
-        })),
-      ];
-
-      items.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-      return { status: 200, message: "Data found", data: items };
-    } else {
-      return {
-        status: 500,
-        message: "Decryption failed due to missing data",
-        error: true,
-      };
-    }
+    items.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    return { status: 200, message: "Data found", data: items };
   } catch (error) {
     return { status: 500, message: "Internal Server Error", error: true };
   }

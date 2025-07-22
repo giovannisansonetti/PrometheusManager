@@ -11,6 +11,7 @@ import PswHealthCheck from "./Tools/PasswordHealthCheck/PswHealthCheck";
 import DisplayCards from "./CreditCards/DisplayCards";
 import UnlockVaultModal from "../Modals/UnlockVault/UnlockVault";
 import { useDisclosure } from "@nextui-org/react";
+import { store } from "~/store/vaultSlice";
 
 const UserDashboard = () => {
   const {
@@ -24,7 +25,7 @@ const UserDashboard = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const key = false;
+  const key = store.getState().key;
 
   useEffect(() => {
     if (!key) {
