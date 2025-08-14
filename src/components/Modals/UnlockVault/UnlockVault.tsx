@@ -44,7 +44,6 @@ const UnlockVaultModal = ({ isOpen, onOpenChange, onClose }: ModalProps) => {
 
     if (verification === verificationData.verificationHash) {
       store.dispatch(setDerivedKey(derivedKey));
-      void Mutate(mutate);
       onClose();
     } else {
       setError("Wrong master password");

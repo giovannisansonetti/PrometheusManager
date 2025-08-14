@@ -8,9 +8,8 @@ const initialState: VaultState = {
 
 export const vaultSlice = createSlice({
   name: "vault",
-  initialState, // takes the initial state declared above
+  initialState,
   reducers: {
-    // two reducers, the key state takes the string given in the payload
     setDerivedKey(state, action: PayloadAction<string>) {
       state.key = action.payload;
       state.isVaultUnlocked = true;
